@@ -1,0 +1,49 @@
+html{
+    height: 100%;
+}
+
+body{
+    background-color: #5D2E2E;
+    height: 99%;
+    margin: 0;
+}
+input{
+    background: #5D2E2E;
+    color: #FF4646;
+    border: none;
+}
+select:after{
+    background: #5D2E2E;
+    color: #FF4646;
+    border: none;
+}
+
+#container{
+    border:1px solid black;
+    height: 100%;
+    width:80%;
+    margin: 0 auto;
+    background: #69D0E5;
+}
+
+#inputNames{
+    display: flex;
+    justify-content: space-around;
+}
+#inputs{
+    display:flex;
+    justify-content: space-around;
+}
+
+#title{
+    text-align:center;
+}
+
+#bpm{
+    position: fixed;
+    top:0;
+}
+#bpmInp{
+    border:1px solid steelblue;
+    background: rgb(37, 77, 110);
+}
