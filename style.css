@@ -38,12 +38,6 @@ select:after{
 #title{
     text-align:center;
 }
-
-#bpm{
-    position: fixed;
-    top:0;
-}
-#bpmInp{
-    border:1px solid steelblue;
-    background: rgb(37, 77, 110);
+.playing{
+    color:red;
 }

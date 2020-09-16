@@ -13,19 +13,21 @@ let mainGOut     = document.querySelector("#bigg");
 let scaleIn     = document.querySelector("#scales");
 let lengthIn    = document.querySelector("#length");
 let rootIn      = document.querySelector("#root");
-let doubleIn    = document.querySelector("#double");
 
 let btn1    = document.querySelector("#btn1");
 let btn2    = document.querySelector("#btn2");
 
 // Scales
-let minorPentatonicScale = [0,3,5,7,10];
-let majorPentatonicScale = [0,2,4,7,9];
-let bluesScale = [0,3,5,6,7,10,12];
-let ionianScale = [0,2,4,5,7,9,11,12];
-let aeolianScale = [0,2,3,5,7,8,10,12];
+let minorPentatonicScale    = [0,3,5,7,10];
+let majorPentatonicScale    = [0,2,4,7,9];
+let bluesScale              = [0,3,5,6,7,10,12];
+let ionianScale             = [0,2,4,5,7,9,11,12];
+let aeolianScale            = [0,2,3,5,7,8,10,12];
+let dorianScale             = [0,2,3,5,7,9,10,12];
+let phyrygianScale          = [0,1,3,5,7,8,10,12];
+let lydianScale             = [0,2,4,6,7,9,11,12];
 
-let scales = [minorPentatonicScale,majorPentatonicScale,bluesScale,ionianScale,aeolianScale];
+let scales = [minorPentatonicScale,majorPentatonicScale,bluesScale,ionianScale,aeolianScale,dorianScale,phyrygianScale,lydianScale];
 
 let scalesObj = [
     {name: "minorPentatonic",   scale: scales[0]},
@@ -33,6 +35,9 @@ let scalesObj = [
     {name: "blues",             scale: scales[2]},
     {name: "ionian",            scale: scales[3]},
     {name: "aeolian",           scale: scales[4]},
+    {name: "dorian",            scale: scales[5]},
+    {name: "phyrygian",         scale: scales[6]},
+    {name: "lydian",            scale: scales[7]}
 ]
 
 let tabTemp = []; // Used so the synth can play
@@ -50,20 +55,22 @@ function tabArray(pick, length, root, chance){
     let len = chose.length;
     let riff = [];
     for (i=0; i<bars; i++){
-        // Random number
-        let ran = Math.floor(Math.random()*chance);
-
-        //random number
-        let num = Math.floor(Math.random()*len);
-        if(i==0){
-            riff.push(root);
+        
+        // Add the root note
+        if (i==0){
+            riff.push({note : root,leng : "8n"});
         } else {
-            if (ran == 0){
-                riff.push(chose[num]+root);
+            let lengChose = Math.floor(2*(Math.random()));
+            if (lengChose == 0){
+                // Random number
+                let num = Math.floor(Math.random()*len);
+
+                riff.push({note : chose[num]+root,leng : "8n"});
             } else {
-                riff.push(chose[num]+root);
-                riff.push("a");
-                i++;
+                // Random number
+                let num = Math.floor(Math.random()*len);
+
+                riff.push({note : chose[num]+root,leng : "4n"});
             }
         }
     }
@@ -84,7 +91,7 @@ function arrtoTab(tab){
 
 
     for(i=0;i<len;i++){
-        let x = tab[i];
+        let x = tab[i].note;
         // Push the note to a string and marker to other strings
 
         if (x < 5) e.push(x);
@@ -111,16 +118,32 @@ function outputTab(arr){
         for (j=0; j<arr[0].length; j++){
             switch(i){
                 case 0 : 
-                    eOut.innerHTML += `<td>${arr[i][j]}</td>`;
+                    if (arr[i][j] != marker){
+                        eOut.innerHTML += `<td id="note${j}">${arr[i][j]}</td>`;
+                    } else {
+                        eOut.innerHTML += `<td>${arr[i][j]}</td>`;
+                    }
                     break;
                 case 1 : 
-                    aOut.innerHTML += `<td>${arr[i][j]}</td>`;
+                    if (arr[i][j] != marker){
+                        aOut.innerHTML += `<td id="note${j}">${arr[i][j]}</td>`;
+                    } else {
+                        aOut.innerHTML += `<td>${arr[i][j]}</td>`;
+                    }
                     break;
                 case 2 : 
-                    dOut.innerHTML += `<td>${arr[i][j]}</td>`;
+                    if (arr[i][j] != marker){
+                        dOut.innerHTML += `<td id="note${j}">${arr[i][j]}</td>`;
+                    } else {
+                        dOut.innerHTML += `<td>${arr[i][j]}</td>`;
+                    }
                     break;
                 case 3 : 
-                    gOut.innerHTML += `<td>${arr[i][j]}</td>`;
+                    if (arr[i][j] != marker){
+                        gOut.innerHTML += `<td id="note${j}">${arr[i][j]}</td>`;
+                    } else {
+                        gOut.innerHTML += `<td>${arr[i][j]}</td>`;
+                    }
                     break;
             }
             if (j == arr[0].length-1){
@@ -154,7 +177,7 @@ function tabRefresh(){
     } else {
         c = parseInt(rootIn.value)
     }
-    let d = parseInt(doubleIn.value);
+    let d = parseInt(bpmIn.value);
     outputTab(arrtoTab(tabArray(a, b, c, d)));
 
 }
