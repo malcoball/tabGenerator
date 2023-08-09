@@ -1,0 +1,8 @@
+#newTabPrompt {
+  position: absolute;
+  left: 20px;
+  top: 20px;
+  z-index: 1;
+  background-color: rgba(6, 6, 6, 0.9176470588);
+  color: whitesmoke;
+}/*# sourceMappingURL=NewTabPrompt.css.map */

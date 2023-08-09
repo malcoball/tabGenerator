@@ -1,0 +1,14 @@
+#tabTable {
+  border: 1px solid red;
+}
+#tabTable tbody {
+  display: flex;
+  flex-direction: row;
+}
+#tabTable tbody tr {
+  display: flex;
+  flex-direction: column-reverse;
+}
+#tabTable tbody .highlight {
+  color: red;
+}/*# sourceMappingURL=TabTable.css.map */

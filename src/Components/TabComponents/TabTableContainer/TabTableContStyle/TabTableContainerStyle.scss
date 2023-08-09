@@ -1,0 +1,7 @@
+#TabTableContainer{
+    padding-inline: 36px;
+    #tables{
+        display:grid;
+        grid-template-columns: repeat(3, 33%);
+    }
+}
