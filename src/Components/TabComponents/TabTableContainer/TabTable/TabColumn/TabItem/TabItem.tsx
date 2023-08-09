@@ -16,6 +16,7 @@ type TabItemProps = {
 
 const TabItem = (props:TabItemProps)=>{
     const {value,state,tabIndex,noteIndex,noteLength,shortestLength} = props;
+    console.log("value : ",value);
     const [showPrompt,setShowPrompt] = useState(false);
     const context = useContext(AppContext);
     if (!context){
@@ -28,23 +29,27 @@ const TabItem = (props:TabItemProps)=>{
     const handleClick = ()=>{
         setShowPrompt(true);
 
-        // const noteOut : note = {note:'4',length:'16n'}
-
-        // context.changeTabs.singleNote(tabIndex,noteIndex,noteOut);
     }
     const closePrompt = ()=>{
         setShowPrompt(false);
     }
     // Could be optimised 
+    let displayValue ; 
+    const valueInt = parseInt(value);
+    if (!isNaN(valueInt)){
+        displayValue = valueInt < 0 ? "D" : value;
+    } else {
+        displayValue = "-";
+    }
     const noteLengths = conversions.length.toTabShorten(noteLength,shortestLength);
     const arrNew = [...Array(noteLengths)];
     // Current way to toggle multi items, could also be optimised
-    const singleItem = <td id="TabItem" className={state}>{value !== "-" ? value : "-"}</td>;
+    const singleItem = <td id="TabItem" className={state}>{displayValue}</td>;
     const noteLengthDisplay = props.showNoteLengths !== "compressed" ? arrNew.map(()=> singleItem) : <></>;
     
     return (
         <div onClick={handleClick}>
-            <td  id="TabItem" className={state}>{value}</td>
+            <td  id="TabItem" className={state}>{displayValue}</td>
             {noteLengthDisplay}
             {showPrompt && <NewNotePrompt tabIndex={tabIndex} 
                             noteIndex={noteIndex} noteChange={context.changeTabs.singleNote.change} 

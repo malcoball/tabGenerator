@@ -1,7 +1,7 @@
 import { FormEvent, useContext, useEffect, useRef, useState, useReducer } from "react";
 import {TabColumnCell, TabColumnHeader} from "./TabColumn/TabColumn";
 import { AppContext, TabDefault } from "../../../../Data/AppContent";
-import {AppContextType, instrumentName, noteLengthDisplays, noteLengths, tab, tabType} from '../../../../Data/@types/types'
+import {AppContextType, instrumentName, noteLengthDisplays, noteLengths, note, tabType} from '../../../../Data/@types/types'
 import TabItem from "./TabColumn/TabItem/TabItem";
 import DropDown from "../../../Inputs/DropDown";
 import { Instruments } from "../../../../Data/Music/Instruments";
@@ -47,6 +47,16 @@ const TabTable = (props:TabTableProps)=>{
             'This cant be used here, firgure that one out loser'
         )
     };
+    const removeNoteBtnFunc = ()=>{
+        context.changeTabs.singleNote.remove(index)
+    }
+    const addNoteBtnFunc = ()=>{
+        const newValue:note = {
+            note:'0',
+            length:shortestNoteLength
+        }
+        context.changeTabs.singleNote.add(index,newValue);
+    }
     const closeBtnFunc = ()=>{
         context.changeTabs.remove(index);
     }
@@ -146,8 +156,8 @@ const TabTable = (props:TabTableProps)=>{
             <button onClick={()=>{setRepeat(!repeat)}}>Repeat {repeat ? "+" : "-"}</button>
             <DropDown options={['bass','guitar']} onChangeFunc={dropDownInstrumentChange}/>
             <br></br>
-            <button>remove note</button>
-            <button>new note</button>
+            <button onClick={removeNoteBtnFunc}>remove note</button>
+            <button onClick={addNoteBtnFunc}>new note</button>
             <br/>
             <DropDown options={['compressed','simplified','simplified raw']} onChangeFunc={dropDownLengthChange}/>
             <button onClick={closeBtnFunc}>X</button>
