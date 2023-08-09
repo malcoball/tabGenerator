@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../../../../../../Data/AppContent";
-import { note, noteLengths } from "../../../../../../Data/@types/types";
+import { note, noteLengthDisplays, noteLengths } from "../../../../../../Data/@types/types";
 import { conversions } from "../../../../../../Data/StaticFunctions";
 import NewNotePrompt from "../../../../../Prompts/NewNotePrompt";
 
@@ -9,11 +9,13 @@ type TabItemProps = {
     state : "playing" | "played" | "notPlayed",
     tabIndex : number,
     noteIndex : number,
+    shortestLength : noteLengths,
+    showNoteLengths : noteLengthDisplays,
     noteLength : noteLengths,
 }
 
 const TabItem = (props:TabItemProps)=>{
-    const {value,state,tabIndex,noteIndex,noteLength} = props;
+    const {value,state,tabIndex,noteIndex,noteLength,shortestLength} = props;
     const [showPrompt,setShowPrompt] = useState(false);
     const context = useContext(AppContext);
     if (!context){
@@ -34,16 +36,19 @@ const TabItem = (props:TabItemProps)=>{
         setShowPrompt(false);
     }
     // Could be optimised 
-    const noteLengths = conversions.length.toTabShorten(noteLength);
+    const noteLengths = conversions.length.toTabShorten(noteLength,shortestLength);
     const arrNew = [...Array(noteLengths)];
-    const noteLengthDisplay = arrNew.map(()=><td id="TabItem" className={state}>{value !== "-" ? value : "-"}</td>)
-
+    // Current way to toggle multi items, could also be optimised
+    const singleItem = <td id="TabItem" className={state}>{value !== "-" ? value : "-"}</td>;
+    const noteLengthDisplay = props.showNoteLengths !== "compressed" ? arrNew.map(()=> singleItem) : <></>;
     
     return (
         <div onClick={handleClick}>
             <td  id="TabItem" className={state}>{value}</td>
             {noteLengthDisplay}
-            {showPrompt && <NewNotePrompt tabIndex={tabIndex} noteIndex={noteIndex} noteChange={context.changeTabs.singleNote} closeFunc={closePrompt} noteValue={getNoteValue}/>}
+            {showPrompt && <NewNotePrompt tabIndex={tabIndex} 
+                            noteIndex={noteIndex} noteChange={context.changeTabs.singleNote.change} 
+                            closeFunc={closePrompt} noteValue={getNoteValue}/>}
         </div>
     )
 }

@@ -1,13 +1,13 @@
 import { FormEvent, useContext, useEffect, useRef, useState, useReducer } from "react";
 import {TabColumnCell, TabColumnHeader} from "./TabColumn/TabColumn";
 import { AppContext, TabDefault } from "../../../../Data/AppContent";
-import {AppContextType, instrumentName, tab, tabType} from '../../../../Data/@types/types'
+import {AppContextType, instrumentName, noteLengthDisplays, noteLengths, tab, tabType} from '../../../../Data/@types/types'
 import TabItem from "./TabColumn/TabItem/TabItem";
 import DropDown from "../../../Inputs/DropDown";
 import { Instruments } from "../../../../Data/Music/Instruments";
 import './TabTableStyle/TabTable.css';
 import { playNote } from "../../../../Data/Tone/Tone";
-import { conversions } from "../../../../Data/StaticFunctions";
+import { conversions, getShortestNote } from "../../../../Data/StaticFunctions";
 interface TabTableProps {
     tab : tabType;
 }
@@ -38,6 +38,7 @@ const TabTable = (props:TabTableProps)=>{
     const [title,setTitle] = useState(props.tab.title);
     const [playOctave,setPlayOctave] = useState(1);
     const [tempo,setTempo] = useState(props.tab.tempo);
+    const [noteLengthDisplay,setNoteLengthDisplay] =useState<noteLengthDisplays>("simplified")
 
 
     const context = useContext(AppContext);
@@ -102,18 +103,36 @@ const TabTable = (props:TabTableProps)=>{
         firstUpdate.current = false;
     },[])
     // const body = tab.map((line,mapIndex)=><TabColumnCell highlight={isHighlight(mapIndex)} noteIndex={mapIndex} change={change} key={mapIndex} tabIndex={index} instrument={instrumentName} line={line.note}/>)
+    const lengths :noteLengths[] = [];
+    tab.forEach(item=>lengths.push(item.length))
+    const shortestNoteLength = noteLengthDisplay === "simplified" ? getShortestNote(lengths).length : "32n";
     const body = tab.map((line,mapIndex)=>{
         return <>
-            <TabColumnCell noteLength={line.length} highlight={isHighlight(mapIndex)} noteIndex={mapIndex} change={change} key={mapIndex} tabIndex={index} instrument={instrumentName} line={line.note}/>
+            <TabColumnCell 
+                shortestNoteLength={shortestNoteLength}
+                showNoteLengths={noteLengthDisplay}
+                noteLength={line.length} highlight={isHighlight(mapIndex)} 
+                noteIndex={mapIndex} change={change} key={mapIndex} tabIndex={index} 
+                instrument={instrumentName} line={line.note}/>
         </>
     })
-    const dropDownFunc = (e:React.ChangeEvent<HTMLSelectElement>)=>{
+    const dropDownInstrumentChange = (e:React.ChangeEvent<HTMLSelectElement>)=>{
         const targetValue = e.target.value;
         let output : instrumentName = 'bass';
         switch (targetValue) {
             case "guitar" : output = 'guitar';
         }
         context.changeTabs.instrument(index,output)
+    }
+    const dropDownLengthChange = (e:React.ChangeEvent<HTMLSelectElement>)=>{
+        const targetValue = e.target.value;
+        let output : noteLengthDisplays = 'compressed';
+        switch (targetValue) {
+            case "simplified" : output = 'simplified'; break;
+            case "simplified raw" : output = "simplified raw"; break;
+        }
+        setNoteLengthDisplay(output);
+        // context.changeTabs.instrument(index,output)
     }
     return (
         <div id="tabTable">
@@ -125,7 +144,12 @@ const TabTable = (props:TabTableProps)=>{
                 />
             <button onClick={playBtnFunc}>{playing}</button>
             <button onClick={()=>{setRepeat(!repeat)}}>Repeat {repeat ? "+" : "-"}</button>
-            <DropDown options={['bass','guitar']} onChangeFunc={dropDownFunc}/>
+            <DropDown options={['bass','guitar']} onChangeFunc={dropDownInstrumentChange}/>
+            <br></br>
+            <button>remove note</button>
+            <button>new note</button>
+            <br/>
+            <DropDown options={['compressed','simplified','simplified raw']} onChangeFunc={dropDownLengthChange}/>
             <button onClick={closeBtnFunc}>X</button>
             <h5>currentNote {currentNote}</h5>
             Octave:

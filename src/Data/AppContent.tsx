@@ -90,12 +90,28 @@ const AppContextProvider: React.FC<Props> = ({children}) =>{
         }
     }
     const changeTabs = {
-        singleNote : (tabIndex:number,noteIndex:number,changeValue:note)=>{
-            const index = getTabs.single.arrIndex(tabIndex);
-            const tabsNew = [...tabs];
-            tabsNew[index].tab[noteIndex] = changeValue;
-            tabsNew[index].change = !tabsNew[index].change;
-            setTabs(tabsNew);
+        singleNote : {
+            change : (tabIndex:number,noteIndex:number,changeValue:note)=>{
+                const index = getTabs.single.arrIndex(tabIndex);
+                const tabsNew = [...tabs];
+                tabsNew[index].tab[noteIndex] = changeValue;
+                tabsNew[index].change = !tabsNew[index].change;
+                setTabs(tabsNew);
+            },
+            add : (tabIndex:number,newValue:note)=>{
+                const index = getTabs.single.arrIndex(tabIndex);
+                const tabsNew = [...tabs];
+                tabsNew[index].tab.push(newValue);
+                tabsNew[index].change = !tabsNew[index].change;
+                setTabs(tabsNew);
+            },
+            remove :(tabIndex:number)=>{
+                const index = getTabs.single.arrIndex(tabIndex);
+                const tabsNew = [...tabs];
+                tabsNew[index].tab.pop();
+                tabsNew[index].change = !tabsNew[index].change;
+                setTabs(tabsNew);
+            }
         },
         instrument : (tabIndex:number,instrumentName : instrumentName)=>{
             const index = getTabs.single.arrIndex(tabIndex);

@@ -82,16 +82,31 @@ export const conversions = {
                 return bpmDiff / noteLengthNumber;
             }
         },
-        toTabShorten : (noteLength:noteLengths)=>{
-            // Currently the 32 is pretty much ignored, to fix this will need a modifier
-            // Not important though so we'll see how long everything takes.
+        toNumber:(noteLength:noteLengths)=>{
+            // Used in other functions to help parse data.
+            // Should not be used for display as it wont make sense
             switch (noteLength){
                 case "32n": return 0;
-                case "16n": return 0;
-                case "8n":  return 1;
+                case "16n": return 1;
+                case "8n":  return 2;
                 case "4n":  return 3;
-                case "2n":  return 7;
-                case "1n":  return 15;
+                case "2n":  return 4;
+                case "1n":  return 5;
+            }
+        },
+        toTabShorten : (noteLength:noteLengths,shortestNote:noteLengths)=>{
+            // Tells the display how many times to repeat a note to show it's timing.
+            const shortestNoteIn = conversions.length.toNumber(shortestNote);
+            const numberIn = conversions.length.toNumber(noteLength);
+            const dataIn = numberIn - shortestNoteIn;
+            switch (dataIn){
+                case 0:  return 0;
+                case 1:  return 1; // +1
+                case 2:  return 3; // +2
+                case 3:  return 7; // +4
+                case 4:  return 15;// +8
+                case 5:  return 31;// +16
+                default : return 0;
             }
         },
         toBooleans : (noteLength:noteLengths)=>{
@@ -162,5 +177,24 @@ export const conversions = {
             }
         }
     },
+}
+export const getShortestNote = (notesIn:noteLengths[])=>{
+    type lengthType = {
+        length : noteLengths,
+        number : number
+    }
+    let shortestLength :lengthType ={
+        length : notesIn[0],
+        number : conversions.length.toNumber(notesIn[0])
+    } ;
     
+    notesIn.forEach(note =>{
+        if (conversions.length.toNumber(note) < shortestLength.number){
+            shortestLength = {
+                length : note,
+                number : conversions.length.toNumber(note)
+            }
+        }
+    });
+    return shortestLength;
 }

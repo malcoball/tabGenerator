@@ -8,7 +8,6 @@ export const playNote = (note:note,octave:number,bpm:number)=>{
     const now = Tone.now()
 
     const timing = conversions.length.note.noteToMilisecond(note.length,bpm);
-    console.log("timing : ",timing);
     // Note conversion
     let noteIn = (parseInt(note.note)+(octave*12)).toString();
     const noteOut = conversions.noteTo.tone({note : noteIn,length:note.length});

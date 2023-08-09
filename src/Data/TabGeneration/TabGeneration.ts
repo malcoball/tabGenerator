@@ -24,7 +24,7 @@ export const newTab =  (scaleName:scaleName,length:number,rootNoteIn:number,octa
             note.note = randomNote(scale,rootNote);
         }
         // Affect the length based on what note length has been chosen
-        const tabShorted = conversions.length.toTabShorten(note.length);
+        const tabShorted = conversions.length.toTabShorten(note.length,'16n');
         i += tabShorted;
         out.push(note);
     }

@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react"
 import { breakPoints } from "../../../../../Data/StaticFunctions"
 import TabItem from "./TabItem/TabItem"
-import { instrumentName, noteLengths } from "../../../../../Data/@types/types"
+import { instrumentName, noteLengthDisplays, noteLengths } from "../../../../../Data/@types/types"
 type headerProps = {
     data : string[]
 }
@@ -18,25 +18,32 @@ type cellProps = {
     instrument : instrumentName,
     line : string,
     noteLength:noteLengths,
+    shortestNoteLength : noteLengths,
     tabIndex : number,
     change : boolean,
     noteIndex : number,
     highlight : boolean
+    showNoteLengths : noteLengthDisplays
 }
 
 
 export const TabColumnCell = (props:cellProps)=>{
-    const {instrument,line,noteLength,tabIndex,change,noteIndex,highlight} = props;
+    const {instrument,line,noteLength,shortestNoteLength,tabIndex,change,noteIndex,showNoteLengths} = props;
     
     const parseData = useMemo(()=>{
         return(breakPoints.line.parseFull(props.line,props.instrument))
     },[props.change])
 
-    const data = parseData.map((item,index)=><TabItem noteLength={noteLength} key={index} noteIndex={noteIndex} tabIndex={tabIndex} value={item} state="notPlayed"/>)
+    const data = parseData.map((item,index)=>
+    <TabItem showNoteLengths={showNoteLengths} 
+            shortestLength={shortestNoteLength}
+            noteLength={noteLength} key={index} noteIndex={noteIndex}  
+            tabIndex={tabIndex} value={item} state="notPlayed"/>)
     const highlightClass = props.highlight ? "highlight" : "";
     return (
         <tr className={highlightClass}>
             {data}
+            {showNoteLengths === "compressed" && <td>{noteLength}</td> }
         </tr>
     )
 }

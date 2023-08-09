@@ -26,6 +26,8 @@ export interface instrument{
     stringNames : string[],
     rootNote : string
 }
+export type noteLengthDisplays = "compressed" | "simplified raw" | "simplified"; 
+
 export type AppContextType = {
     tabs : tabType[];
     getTabs : {
@@ -37,7 +39,12 @@ export type AppContextType = {
     }
     
     changeTabs : {
-        singleNote : (tabIndex:number,noteIndex:number,changeValue:note)=> void;
+        // singleNote : (tabIndex:number,noteIndex:number,changeValue:note)=> void;
+        singleNote : {
+            change : (tabIndex:number,noteIndex:number,changeValue:note) =>void;
+            add : (tabIndex:number,newValue:note)=>void;
+            remove : (tabIndex:number)=>void;
+        };
         instrument : (tabIndex:number,instrumentName : instrumentName) =>void;
         add : (title:string,scale:scaleName,instrument:instrumentName,length:number,rootNote:number,octave:number,noteLengths:boolean[])=>void;
         remove : (tabIndex:number)=>void;
