@@ -16,7 +16,6 @@ type TabItemProps = {
 
 const TabItem = (props:TabItemProps)=>{
     const {value,state,tabIndex,noteIndex,noteLength,shortestLength} = props;
-    console.log("value : ",value);
     const [showPrompt,setShowPrompt] = useState(false);
     const context = useContext(AppContext);
     if (!context){

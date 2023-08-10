@@ -26,6 +26,8 @@ export interface instrument{
     stringNames : string[],
     rootNote : string
 }
+export type synthName = "Duo" | "Synth" | "FMSynth" | "AMSynth" | "MembraneSynth" |"MetalSynth"|
+"MonoSynth"|"NoiseSynth"|"PluckSynth"|"PolySynth";
 export type noteLengthDisplays = "compressed" | "simplified raw" | "simplified"; 
 
 export type AppContextType = {
@@ -46,7 +48,7 @@ export type AppContextType = {
             remove : (tabIndex:number)=>void;
         };
         instrument : (tabIndex:number,instrumentName : instrumentName) =>void;
-        add : (title:string,scale:scaleName,instrument:instrumentName,length:number,rootNote:number,octave:number,noteLengths:boolean[])=>void;
+        add : (title:string,scale:scaleName,instrument:instrumentName,length:number,rootNote:number,octave:number,noteLengths:boolean[],deadNoteChance:number)=>void;
         remove : (tabIndex:number)=>void;
         changeTitle : (tabIndex:number,title:string)=>void;
         changeTempo : (tabIndex:number,tempo:number)=>void;

@@ -38,7 +38,7 @@ const TabTable = (props:TabTableProps)=>{
     const [title,setTitle] = useState(props.tab.title);
     const [playOctave,setPlayOctave] = useState(1);
     const [tempo,setTempo] = useState(props.tab.tempo);
-    const [noteLengthDisplay,setNoteLengthDisplay] =useState<noteLengthDisplays>("simplified")
+    const [noteLengthDisplay,setNoteLengthDisplay] =useState<noteLengthDisplays>("simplified");
 
 
     const context = useContext(AppContext);
@@ -154,12 +154,12 @@ const TabTable = (props:TabTableProps)=>{
                 />
             <button onClick={playBtnFunc}>{playing}</button>
             <button onClick={()=>{setRepeat(!repeat)}}>Repeat {repeat ? "+" : "-"}</button>
-            <DropDown options={['bass','guitar']} onChangeFunc={dropDownInstrumentChange}/>
+            <DropDown defaultOption={instrumentName} options={['bass','guitar']} onChangeFunc={dropDownInstrumentChange}/>
             <br></br>
             <button onClick={removeNoteBtnFunc}>remove note</button>
             <button onClick={addNoteBtnFunc}>new note</button>
             <br/>
-            <DropDown options={['compressed','simplified','simplified raw']} onChangeFunc={dropDownLengthChange}/>
+            <DropDown defaultOption={noteLengthDisplay} options={['compressed','simplified','simplified raw']} onChangeFunc={dropDownLengthChange}/>
             <button onClick={closeBtnFunc}>X</button>
             <h5>currentNote {currentNote}</h5>
             Octave:

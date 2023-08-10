@@ -6,9 +6,14 @@ const randomNote = (scale:number[],rootNote:number) : string=>{
     let number = Math.floor(Math.random()*scale.length) ;
     return (scale[number]+rootNote).toString();
 }
+const isDeadnote = (chance:number):boolean=>{
+    const randomNumber = Math.round(Math.random()*100);
+    if (randomNumber < chance) return true;
+    else return false;
+}
 
 
-export const newTab =  (scaleName:scaleName,length:number,rootNoteIn:number,octave:number,noteLengths:boolean[]) : note[]=>{
+export const newTab =  (scaleName:scaleName,length:number,rootNoteIn:number,octave:number,noteLengths:boolean[],deadNoteChance:number) : note[]=>{
     const scale = scales[scaleName].scale;
     const out = [];
     const parseNoteLength = conversions.lengths.booleansToLengths(noteLengths);
@@ -21,7 +26,7 @@ export const newTab =  (scaleName:scaleName,length:number,rootNoteIn:number,octa
         if (i === 0){
             note.note = rootNote.toString();
         } else {
-            note.note = randomNote(scale,rootNote);
+            note.note = isDeadnote(deadNoteChance) ? "-1" : randomNote(scale,rootNote);
         }
         // Affect the length based on what note length has been chosen
         const tabShorted = conversions.length.toTabShorten(note.length,'16n');

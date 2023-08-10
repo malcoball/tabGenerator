@@ -89,6 +89,8 @@ const NewTabPrompt = (props:NewTabProps)=>{
         setNoteLengths(lengthsOut);
     }
 
+    const [deadNotes,setDeadnotes] = useState<number>(0);
+
     const handleLengthChange = (event: Event, newValue: number | number[]) => {
         setLength(newValue as number);
       };
@@ -98,12 +100,15 @@ const NewTabPrompt = (props:NewTabProps)=>{
     const handleRootnoteChange = (event: Event, newValue: number | number[]) => {
         setRootnote(newValue as number);
       };
+    const handleDeadNotesChange = (event: Event, newValue: number | number[]) => {
+        setDeadnotes(newValue as number);
+      };
 
     const onCloseClick = ()=>{
         props.closeFunc();
     }
     const handleCreateButton = ()=>{
-        context.changeTabs.add(title,scale,instrumentName,length,rootnote,octave,noteLengths);
+        context.changeTabs.add(title,scale,instrumentName,length,rootnote,octave,noteLengths,deadNotes);
         onCloseClick();
     }
     return (
@@ -122,6 +127,8 @@ const NewTabPrompt = (props:NewTabProps)=>{
             Rootnote : {rootnote}
             <Slider aria-label="Rootnote" value={rootnote} onChange={handleRootnoteChange} min={0} max={11}/>
             <MultiSelectInput updateState={noteLengthChange} options={noteLengthOptions} active={noteLengths}/>
+            Deadnote chance : {deadNotes}
+            <Slider aria-label="Deadnotes" value={deadNotes} onChange={handleDeadNotesChange} step={5} min={0} max={100}/>
 
             <br></br>
             <button onClick={handleCreateButton}>Create!</button>

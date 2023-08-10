@@ -120,9 +120,9 @@ const AppContextProvider: React.FC<Props> = ({children}) =>{
             tabsNew[index].change = !tabsNew[index].change;
             setTabs(tabsNew);
         },
-        add : (title:string,scale:scaleName,instrument:instrumentName,length:number,rootNote:number,octave:number,noteLengths:boolean[])=>{
+        add : (title:string,scale:scaleName,instrument:instrumentName,length:number,rootNote:number,octave:number,noteLengths:boolean[],deadNoteChance:number)=>{
             const tabOut : tabType = {
-                tab : newTab(scale,length,rootNote,octave,noteLengths),
+                tab : newTab(scale,length,rootNote,octave,noteLengths,deadNoteChance),
                 index : tabIndex,
                 title:title,
                 scale : scale,
