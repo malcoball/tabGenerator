@@ -1,12 +1,13 @@
 import * as Tone from 'tone';
-import { note } from '../@types/types';
+import { note, synthName } from '../@types/types';
 import { conversions } from '../StaticFunctions';
 import Synths from './Instruments/Synths/Synths';
 
 //create a synth and connect it to the main output (your speakers)
-export const playNote = (note:note,octave:number,bpm:number)=>{
+export const playNote = (note:note,octave:number,bpm:number,synthIn:synthName)=>{
     // const synth = new Tone.Synth().toDestination();
-    const synth = Synths.membraneSynth.synth;
+    // const synth = Synths.synths[1].synth;
+    const synth = Synths.getSynth(synthIn).synth;
     const now = Tone.now()
 
     const timing = conversions.length.note.noteToMilisecond(note.length,bpm);

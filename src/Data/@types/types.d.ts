@@ -26,8 +26,12 @@ export interface instrument{
     stringNames : string[],
     rootNote : string
 }
-export type synthName = "Duo" | "Synth" | "FMSynth" | "AMSynth" | "MembraneSynth" |"MetalSynth"|
-"MonoSynth"|"NoiseSynth"|"PluckSynth"|"PolySynth";
+export type synthName ="Bass1" | "Bass2" | "Guitar1" | "Piano1" | "Banjo1" |"Duo" | "Synth" | "FMSynth" 
+| "AMSynth" | "MembraneSynth" |"MetalSynth"| "MonoSynth"|"PluckSynth" | "Woah";
+export type synthType = {
+    title:synthName,
+    synth:any
+}
 export type noteLengthDisplays = "compressed" | "simplified raw" | "simplified"; 
 
 export type AppContextType = {
@@ -41,7 +45,6 @@ export type AppContextType = {
     }
     
     changeTabs : {
-        // singleNote : (tabIndex:number,noteIndex:number,changeValue:note)=> void;
         singleNote : {
             change : (tabIndex:number,noteIndex:number,changeValue:note) =>void;
             add : (tabIndex:number,newValue:note)=>void;

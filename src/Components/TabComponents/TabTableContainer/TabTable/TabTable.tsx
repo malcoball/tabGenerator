@@ -1,13 +1,14 @@
 import { FormEvent, useContext, useEffect, useRef, useState, useReducer } from "react";
 import {TabColumnCell, TabColumnHeader} from "./TabColumn/TabColumn";
 import { AppContext, TabDefault } from "../../../../Data/AppContent";
-import {AppContextType, instrumentName, noteLengthDisplays, noteLengths, note, tabType} from '../../../../Data/@types/types'
+import {AppContextType, instrumentName, noteLengthDisplays, noteLengths, note, tabType, synthName} from '../../../../Data/@types/types'
 import TabItem from "./TabColumn/TabItem/TabItem";
 import DropDown from "../../../Inputs/DropDown";
 import { Instruments } from "../../../../Data/Music/Instruments";
 import './TabTableStyle/TabTable.css';
 import { playNote } from "../../../../Data/Tone/Tone";
 import { conversions, getShortestNote } from "../../../../Data/StaticFunctions";
+import Synths from "../../../../Data/Tone/Instruments/Synths/Synths";
 interface TabTableProps {
     tab : tabType;
 }
@@ -39,6 +40,8 @@ const TabTable = (props:TabTableProps)=>{
     const [playOctave,setPlayOctave] = useState(1);
     const [tempo,setTempo] = useState(props.tab.tempo);
     const [noteLengthDisplay,setNoteLengthDisplay] =useState<noteLengthDisplays>("simplified");
+    const [synth,setSynth] = useState<synthName>("Synth");
+    const synthNames = Synths.getAllNames();
 
 
     const context = useContext(AppContext);
@@ -84,7 +87,7 @@ const TabTable = (props:TabTableProps)=>{
     useEffect(()=>{
         if (firstUpdate.current === false){
             if (currentNote != -1 && playing === "playing"){
-                playNote(tab[currentNote],playOctave,tempo).then(()=>{
+                playNote(tab[currentNote],playOctave,tempo,synth).then(()=>{
                     nextNote();
                 });
             } else {
@@ -144,6 +147,28 @@ const TabTable = (props:TabTableProps)=>{
         setNoteLengthDisplay(output);
         // context.changeTabs.instrument(index,output)
     }
+    const dropDownSynthChange = (e:React.ChangeEvent<HTMLSelectElement>)=>{
+        const targetValue = e.target.value;
+        let output : synthName  = "Synth";
+        // This is quite messy lulz
+        switch (targetValue){
+            case "Duo" : output = "Duo"; break;
+            case "Synth" : output = "Synth"; break;
+            case "FMSynth" : output = "FMSynth"; break;
+            case "AMSynth" : output = "AMSynth"; break;
+            case "MembraneSynth" : output = "MembraneSynth"; break;
+            case "MetalSynth" : output = "MetalSynth"; break;
+            case "MonoSynth" :  output = "MonoSynth"; break;
+            case "PluckSynth" : output = "PluckSynth"; break;
+            case "Bass1" : output = "Bass1"; break;
+            case "Bass2" : output = "Bass2"; break;
+            case "Guitar1" : output = "Guitar1"; break;
+            case "Piano1"   : output = "Piano1"; break;
+            case "Banjo1"   : output = "Banjo1"; break;
+            case "Woah"    : output = "Woah"; break;
+        }        
+        setSynth(output);
+    }
     return (
         <div id="tabTable">
             <input 
@@ -160,6 +185,7 @@ const TabTable = (props:TabTableProps)=>{
             <button onClick={addNoteBtnFunc}>new note</button>
             <br/>
             <DropDown defaultOption={noteLengthDisplay} options={['compressed','simplified','simplified raw']} onChangeFunc={dropDownLengthChange}/>
+            <DropDown defaultOption={synth} options={synthNames} onChangeFunc={dropDownSynthChange}/>
             <button onClick={closeBtnFunc}>X</button>
             <h5>currentNote {currentNote}</h5>
             Octave:
