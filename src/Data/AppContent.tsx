@@ -13,7 +13,7 @@ const AppContextProvider: React.FC<Props> = ({children}) =>{
     const [tabIndex,setTabIndex] = React.useState<number>(3);
     const [tabs,setTabs] = React.useState<tabType[]>([
         {
-            title:'Erika',
+            title:'For whom the bell tolls intro - bass',
             index:0,
             tab:[
                 {note:'34',length:'8n'},
@@ -32,16 +32,18 @@ const AppContextProvider: React.FC<Props> = ({children}) =>{
             change:false
         },
         {
-            title:'Luna',
+            title:'Dueling Banjos',
             index:1,
             tab:[
-                {note:'2',length:'16n'},
-                {note:'-1',length:'8n'},
-                {note:'7',length:'16n'},
-                {note:'2',length:'8n'},
+                {note:'29',length:'4n'},
+                {note:'29',length:'4n'},
+                {note:'29',length:'4n'},
+                {note:'30',length:'4n'},
+                {note:'29',length:'4n'},
+                // {note:'24',length:'4n'},
             ],
             scale:'aeolian',
-            instrumentName : 'bass',
+            instrumentName : 'guitar',
             tempo:120,
             change:false
         },

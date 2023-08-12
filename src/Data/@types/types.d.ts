@@ -26,8 +26,8 @@ export interface instrument{
     stringNames : string[],
     rootNote : string
 }
-export type synthName ="Bass1" | "Bass2" | "Guitar1" | "Piano1" | "Banjo1" |"Duo" | "Synth" | "FMSynth" 
-| "AMSynth" | "MembraneSynth" |"MetalSynth"| "MonoSynth"|"PluckSynth" | "Woah";
+export type synthName ="Bass1" | "Bass2" | "Guitar1" | "AcousticGuitar1" | "Piano1" | "Banjo1" |"Duo" 
+| "Synth" | "FMSynth" | "AMSynth" | "MembraneSynth" |"MetalSynth"| "MonoSynth"|"PluckSynth" | "Woah";
 export type synthType = {
     title:synthName,
     synth:any

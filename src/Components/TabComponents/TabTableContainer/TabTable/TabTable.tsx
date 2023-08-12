@@ -163,6 +163,7 @@ const TabTable = (props:TabTableProps)=>{
             case "Bass1" : output = "Bass1"; break;
             case "Bass2" : output = "Bass2"; break;
             case "Guitar1" : output = "Guitar1"; break;
+            case "AcousticGuitar1" : output = "AcousticGuitar1"; break;
             case "Piano1"   : output = "Piano1"; break;
             case "Banjo1"   : output = "Banjo1"; break;
             case "Woah"    : output = "Woah"; break;

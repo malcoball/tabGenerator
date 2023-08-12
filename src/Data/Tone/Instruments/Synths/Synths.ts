@@ -6,6 +6,7 @@ import GuitarSample1 from './Samples/GuitarSample1';
 import PianoSample from './Samples/PianoSample1';
 import BanjoSample1 from './Samples/BanjoSample1';
 import CrashWoahSample from './Samples/CrashWoahSample1';
+import AcousticGuitarSample1 from './Samples/AcousticGuitar1';
 
 
 type SynthProps = {
@@ -54,6 +55,7 @@ new Synth ("PluckSynth",new Tone.PluckSynth().toDestination());
 new Synth (BassSample1.title,BassSample1.synth);
 new Synth (BassSample2.title,BassSample2.synth);
 new Synth (GuitarSample1.title,GuitarSample1.synth);
+new Synth (AcousticGuitarSample1.title,AcousticGuitarSample1.synth);
 new Synth (PianoSample.title,PianoSample.synth);
 new Synth (BanjoSample1.title,BanjoSample1.synth);
 new Synth (CrashWoahSample.title,CrashWoahSample.synth);
