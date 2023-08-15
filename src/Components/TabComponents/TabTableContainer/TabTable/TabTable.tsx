@@ -9,6 +9,7 @@ import './TabTableStyle/TabTable.css';
 import { playNote } from "../../../../Data/Tone/Tone";
 import { conversions, getShortestNote } from "../../../../Data/StaticFunctions";
 import Synths from "../../../../Data/Tone/Instruments/Synths/Synths";
+import './TabTableStyle/TabTable.css';
 interface TabTableProps {
     tab : tabType;
 }
@@ -171,7 +172,7 @@ const TabTable = (props:TabTableProps)=>{
         setSynth(output);
     }
     return (
-        <div id="tabTable">
+        <div id="tabTable" className="backgroundColor2">
             <input 
                 typeof="text" 
                 value={title}

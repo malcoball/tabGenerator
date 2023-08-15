@@ -5,11 +5,12 @@ import TabTable from './Components/TabComponents/TabTableContainer/TabTable/TabT
 import TabTableContainer from './Components/TabComponents/TabTableContainer/TabTableContainer';
 import AppContextProvider from './Data/AppContent';
 import * as Tone from 'tone'
+import './GlobalStyles.css';
 
 
 function App() {
   return (
-    <div className="App">
+    <div className="App backgroundColor1">
       <AppContextProvider>
         <TabTableContainer/>
       </AppContextProvider>
