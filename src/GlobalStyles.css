@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box;
+}
+
 .backgroundColor1 {
   background-color: #D3D3D3;
 }

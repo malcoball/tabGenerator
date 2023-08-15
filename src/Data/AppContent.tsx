@@ -31,40 +31,40 @@ const AppContextProvider: React.FC<Props> = ({children}) =>{
             tempo:120,
             change:false
         },
-        {
-            title:'Dueling Banjos',
-            index:1,
-            tab:[
-                {note:'15',length:'16n'},
-                {note:'15',length:'16n'},
-                {note:'15',length:'16n'},
-                {note:'17',length:'8n'},
-                {note:'19',length:'8n'},
-                {note:'20',length:'8n'},
-                {note:'22',length:'8n'},
-                {note:'20',length:'8n'},
-                {note:'19',length:'4n'},
-                // {note:'24',length:'4n'},
-            ],
-            scale:'aeolian',
-            instrumentName : 'guitar',
-            tempo:120,
-            change:false
-        },
-        {
-            title:'Jasmine',
-            index:2,
-            tab:[
-                {note:'5',length:'16n'},
-                {note:'3',length:'16n'},
-                {note:'2',length:'16n'},
-                {note:'16',length:'16n'},
-            ],
-            scale:'aeolian',
-            instrumentName : 'guitar',
-            tempo:120,
-            change:false
-        },
+        // {
+        //     title:'Dueling Banjos',
+        //     index:1,
+        //     tab:[
+        //         {note:'15',length:'16n'},
+        //         {note:'15',length:'16n'},
+        //         {note:'15',length:'16n'},
+        //         {note:'17',length:'8n'},
+        //         {note:'19',length:'8n'},
+        //         {note:'20',length:'8n'},
+        //         {note:'22',length:'8n'},
+        //         {note:'20',length:'8n'},
+        //         {note:'19',length:'4n'},
+        //         // {note:'24',length:'4n'},
+        //     ],
+        //     scale:'aeolian',
+        //     instrumentName : 'guitar',
+        //     tempo:120,
+        //     change:false
+        // },
+        // {
+        //     title:'Jasmine',
+        //     index:2,
+        //     tab:[
+        //         {note:'5',length:'16n'},
+        //         {note:'3',length:'16n'},
+        //         {note:'2',length:'16n'},
+        //         {note:'16',length:'16n'},
+        //     ],
+        //     scale:'aeolian',
+        //     instrumentName : 'guitar',
+        //     tempo:120,
+        //     change:false
+        // },
     ])
     const getTabs = {
         single:{

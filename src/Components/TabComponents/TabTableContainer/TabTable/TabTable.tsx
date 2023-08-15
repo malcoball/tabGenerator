@@ -8,7 +8,9 @@ import { Instruments } from "../../../../Data/Music/Instruments";
 import './TabTableStyle/TabTable.css';
 import { playNote } from "../../../../Data/Tone/Tone";
 import { conversions, getShortestNote } from "../../../../Data/StaticFunctions";
+import SynthChangeDropDown from "./Dropdowns/SynthChangeDropDown";
 import Synths from "../../../../Data/Tone/Instruments/Synths/Synths";
+import BtnIcon from "../../../Icons/Buttons/BtnIcon";
 import './TabTableStyle/TabTable.css';
 interface TabTableProps {
     tab : tabType;
@@ -65,7 +67,6 @@ const TabTable = (props:TabTableProps)=>{
         context.changeTabs.remove(index);
     }
 
-
     // All for playing the tab
     const playBtnFunc = ()=>{
         playingStateChange();
@@ -116,7 +117,6 @@ const TabTable = (props:TabTableProps)=>{
     useEffect(()=>{
         firstUpdate.current = false;
     },[])
-    // const body = tab.map((line,mapIndex)=><TabColumnCell highlight={isHighlight(mapIndex)} noteIndex={mapIndex} change={change} key={mapIndex} tabIndex={index} instrument={instrumentName} line={line.note}/>)
     const lengths :noteLengths[] = [];
     tab.forEach(item=>lengths.push(item.length))
     const shortestNoteLength = noteLengthDisplay === "simplified" ? getShortestNote(lengths).length : "32n";
@@ -148,67 +148,47 @@ const TabTable = (props:TabTableProps)=>{
         setNoteLengthDisplay(output);
         // context.changeTabs.instrument(index,output)
     }
-    const dropDownSynthChange = (e:React.ChangeEvent<HTMLSelectElement>)=>{
-        const targetValue = e.target.value;
-        let output : synthName  = "Synth";
-        // This is quite messy lulz
-        switch (targetValue){
-            case "Duo" : output = "Duo"; break;
-            case "Synth" : output = "Synth"; break;
-            case "FMSynth" : output = "FMSynth"; break;
-            case "AMSynth" : output = "AMSynth"; break;
-            case "MembraneSynth" : output = "MembraneSynth"; break;
-            case "MetalSynth" : output = "MetalSynth"; break;
-            case "MonoSynth" :  output = "MonoSynth"; break;
-            case "PluckSynth" : output = "PluckSynth"; break;
-            case "Bass1" : output = "Bass1"; break;
-            case "Bass2" : output = "Bass2"; break;
-            case "Guitar1" : output = "Guitar1"; break;
-            case "AcousticGuitar1" : output = "AcousticGuitar1"; break;
-            case "Piano1"   : output = "Piano1"; break;
-            case "Banjo1"   : output = "Banjo1"; break;
-            case "Woah"    : output = "Woah"; break;
-        }        
-        setSynth(output);
-    }
     return (
         <div id="tabTable" className="backgroundColor2">
-            <input 
-                typeof="text" 
-                value={title}
-                onChange={(e)=>setTitle(e.target.value)}
-                onBlur={(e)=>textOnExit(e.target.value)}
-                />
-            <button onClick={playBtnFunc}>{playing}</button>
-            <button onClick={()=>{setRepeat(!repeat)}}>Repeat {repeat ? "+" : "-"}</button>
-            <DropDown defaultOption={instrumentName} options={['bass','guitar']} onChangeFunc={dropDownInstrumentChange}/>
-            <br></br>
-            <button onClick={removeNoteBtnFunc}>remove note</button>
-            <button onClick={addNoteBtnFunc}>new note</button>
-            <br/>
-            <DropDown defaultOption={noteLengthDisplay} options={['compressed','simplified','simplified raw']} onChangeFunc={dropDownLengthChange}/>
-            <DropDown defaultOption={synth} options={synthNames} onChangeFunc={dropDownSynthChange}/>
-            <button onClick={closeBtnFunc}>X</button>
-            <h5>currentNote {currentNote}</h5>
-            Octave:
-            <input 
-                typeof="number" 
-                value={playOctave}
-                onChange={(e)=>setPlayOctave(parseInt(e.target.value))}
-                />
-            Tempo:
-            <input 
-                typeof="number" 
-                value={tempo}
-                onChange={(e)=>setTempo(parseInt(e.target.value))}
-                onBlur={(e)=>changeTempo(parseInt(e.target.value))}
-                />
-            <table>
-                <tbody>
-                    <TabColumnHeader data={stringNames}/>
-                    {body}
-                </tbody>
-            </table>
+            <div className="topSection row">
+                <input className="textInput" typeof="text" value={title} onChange={(e)=>setTitle(e.target.value)} onBlur={(e)=>textOnExit(e.target.value)}/>
+                <div className="topIcons iconDiv">
+                    <BtnIcon icon="save"/>
+                    <BtnIcon icon="cancel" onClick={closeBtnFunc}/>
+                </div>
+            </div>
+            <div className="midSection row">
+                <span className="inputContainer text">Octave :  <input className="textInput text" typeof="number" value={playOctave} onChange={(e)=>setPlayOctave(parseInt(e.target.value))}/></span>
+                <span className="inputContainer text">BPM : <input className="textInput text" typeof="number" value={tempo}onChange={(e)=>setTempo(parseInt(e.target.value))}onBlur={(e)=>changeTempo(parseInt(e.target.value))}/></span>
+                <div className="midIcons">
+                    <div className="midLeftIcons iconDiv">
+                        <BtnIcon onClick={playBtnFunc} icon="play"/>
+                        <BtnIcon icon="stop"/>
+                        <BtnIcon onClick={()=>{setRepeat(!repeat)}} icon="loop"/>
+                    </div>
+                    <div className="midRightIcons iconDiv">
+                        <BtnIcon icon="remove"/>
+                        <BtnIcon icon="add"/>
+                    </div>
+                </div>
+            </div>
+            <div className="bottomSection row">
+                <div className="bottomLeftSection">
+                    <SynthChangeDropDown stateChange={setSynth} activeSynth={synth} synthNames={synthNames}/>
+
+                    <DropDown defaultOption={noteLengthDisplay} options={['compressed','simplified','simplified raw']} onChangeFunc={dropDownLengthChange}/>
+                    <DropDown defaultOption={instrumentName} options={['bass','guitar']} onChangeFunc={dropDownInstrumentChange}/>
+                </div>
+                <div className="bottomRightSection">
+                    <table>
+                        <tbody>
+                            <TabColumnHeader data={stringNames}/>
+                            {body}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+           
         </div>
     )
 }

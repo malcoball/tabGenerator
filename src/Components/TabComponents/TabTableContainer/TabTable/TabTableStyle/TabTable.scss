@@ -1,9 +1,47 @@
 #tabTable{
-    max-width: 393px;
+    width: 393px;
     border-color: #00000088; border-style:solid;
     border-width:0px;
     border-bottom-width: 1px; border-right-width: 1px;
     border-top-left-radius: 24px;
+    .row{
+        border:1px solid rgba(255, 0, 0, 0.479);
+        width:100%;
+        display:flex;
+        .textInput{
+            font-size: 16px;
+            width:70%;
+        }
+    }
+    .topSection{
+        justify-content: space-around;
+        margin:11px 0px;
+    }
+    .midSection{
+        flex-direction: column;
+        padding:0px 12px 0px 128px;
+        .text{
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .inputContainer{
+            display:flex; 
+        }
+        .midIcons{
+            display:flex;
+            justify-content: space-between;
+        }
+    }
+
+    .iconDiv{
+        display:flex;
+    }
+    .textInput{
+        border: none;
+        border-color: transparent;
+        outline:none;
+    }
+    
     tbody{
         display:flex;
         flex-direction: row;

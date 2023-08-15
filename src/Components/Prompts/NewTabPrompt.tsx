@@ -3,7 +3,7 @@ import { instrumentName, noteLengths, scaleName } from '../../Data/@types/types'
 import './NewTabPromptStyle/NewTabPrompt.css';
 import { scaleMethods } from '../../Data/Music/Scales';
 import { Instruments, InstrumentsAll } from '../../Data/Music/Instruments';
-// import { Slider } from '@mui/material';
+import { Slider } from '@mui/material';
 import { AppContext } from '../../Data/AppContent';
 type NewTabProps = {
     closeFunc : ()=>void,
@@ -121,14 +121,14 @@ const NewTabPrompt = (props:NewTabProps)=>{
             <DropDownInput title='instrument' items={scales}  updateState={setScale}/>
             <br></br>
             Length : {length}
-            {/* <Slider aria-label="TabLength" value={length} onChange={handleLengthChange} marks min={1} max={12}/> */}
+            <Slider aria-label="TabLength" value={length} onChange={handleLengthChange} marks min={1} max={12}/>
             Octave : {octave}
-            {/* <Slider aria-label="OctaveLength" value={octave} onChange={handleOctaveChange} marks min={0} max={5}/> */}
+            <Slider aria-label="OctaveLength" value={octave} onChange={handleOctaveChange} marks min={0} max={5}/>
             Rootnote : {rootnote}
-            {/* <Slider aria-label="Rootnote" value={rootnote} onChange={handleRootnoteChange} min={0} max={11}/> */}
+            <Slider aria-label="Rootnote" value={rootnote} onChange={handleRootnoteChange} min={0} max={11}/>
             <MultiSelectInput updateState={noteLengthChange} options={noteLengthOptions} active={noteLengths}/>
             Deadnote chance : {deadNotes}
-            {/* <Slider aria-label="Deadnotes" value={deadNotes} onChange={handleDeadNotesChange} step={5} min={0} max={100}/> */}
+            <Slider aria-label="Deadnotes" value={deadNotes} onChange={handleDeadNotesChange} step={5} min={0} max={100}/>
 
             <br></br>
             <button onClick={handleCreateButton}>Create!</button>
