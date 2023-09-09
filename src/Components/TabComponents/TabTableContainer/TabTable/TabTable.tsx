@@ -1,17 +1,16 @@
-import { FormEvent, useContext, useEffect, useRef, useState, useReducer } from "react";
+import {useContext, useEffect, useRef, useState, useReducer } from "react";
 import {TabColumnCell, TabColumnHeader} from "./TabColumn/TabColumn";
-import { AppContext, TabDefault } from "../../../../Data/AppContent";
-import {AppContextType, instrumentName, noteLengthDisplays, noteLengths, note, tabType, synthName} from '../../../../Data/@types/types'
-import TabItem from "./TabColumn/TabItem/TabItem";
-import DropDown from "../../../Inputs/DropDown";
+import { AppContext } from "../../../../Data/AppContent";
+import {instrumentName, noteLengthDisplays, noteLengths, note, tabType, synthName} from '../../../../Data/@types/types'
 import { Instruments } from "../../../../Data/Music/Instruments";
 import './TabTableStyle/TabTable.css';
-import { playNote } from "../../../../Data/Tone/Tone";
-import { conversions, getShortestNote } from "../../../../Data/StaticFunctions";
-import SynthChangeDropDown from "./Dropdowns/SynthChangeDropDown";
+import {playNote} from "../../../../Data/Tone/Tone";
+import {getShortestNote} from "../../../../Data/StaticFunctions";
 import Synths from "../../../../Data/Tone/Instruments/Synths/Synths";
 import BtnIcon from "../../../Icons/Buttons/BtnIcon";
-import './TabTableStyle/TabTable.css';
+import TimingDisplayIcon from "../../../Icons/Other/TimingDisplayIcon";
+import MidSection from "./Sections/MidSection";
+import * as Tone from 'tone';
 interface TabTableProps {
     tab : tabType;
 }
@@ -39,13 +38,26 @@ const TabTable = (props:TabTableProps)=>{
     const changeNote = useRef<boolean>(false);
     const [currentNote,setCurrentNote] = useState(-1);
 
+    const markerPosition = useRef(0);
+    const setMarkerPosition = ()=>{
+        const length = tab.length;
+        const step = 100 / length;
+        markerPosition.current = (currentNote+1) * step;
+    }
+
     const [title,setTitle] = useState(props.tab.title);
     const [playOctave,setPlayOctave] = useState(1);
     const [tempo,setTempo] = useState(props.tab.tempo);
-    const [noteLengthDisplay,setNoteLengthDisplay] =useState<noteLengthDisplays>("simplified");
+    const [noteLengthDisplay,setNoteLengthDisplay] =useState<noteLengthDisplays>("compressed");
     const [synth,setSynth] = useState<synthName>("Synth");
+    const [effectName,setEffectName] = useState('off');
     const synthNames = Synths.getAllNames();
+    const noteColors = {
+        primaryColor    : 'col10',
+        secondColor     : 'col11'
+    }
 
+    const [showSettings,setShowSettings] = useState(false);
 
     const context = useContext(AppContext);
     if (!context){
@@ -53,6 +65,24 @@ const TabTable = (props:TabTableProps)=>{
             'This cant be used here, firgure that one out loser'
         )
     };
+    const currentSynth = useRef(
+        Synths.getSynth(synth).synth
+    )
+    const changeSynth = (synthName : synthName)=>{
+        currentSynth.current = Synths.getSynth(synthName).synth;
+    }
+
+    useEffect(()=>{
+        changeSynth(synth);
+        const newEffect = context.getEffects.single.toTone(effectName);
+        if (firstUpdate.current !== true && newEffect.length > 0){
+            currentSynth.current.disconnect();
+            newEffect.forEach(effect=>{
+                currentSynth.current.connect(effect);
+            })
+        }
+    },[effectName,synth])
+
     const removeNoteBtnFunc = ()=>{
         context.changeTabs.singleNote.remove(index)
     }
@@ -66,15 +96,17 @@ const TabTable = (props:TabTableProps)=>{
     const closeBtnFunc = ()=>{
         context.changeTabs.remove(index);
     }
+    const saveBtnFunc = ()=>{
+        context.changePrompts.set.save(index);
+    }
 
     // All for playing the tab
     const playBtnFunc = ()=>{
         playingStateChange();
     }
-    const isHighlight = (mapIndex:number):boolean=>{
-        let out = false;
-        if (mapIndex === currentNote) out = true;
-        return out;
+    const stopBtnFunc = ()=>{
+        setPlaying("stopped")
+        setCurrentNote(-1);
     }
     useEffect(()=>{
         if (firstUpdate.current === false){
@@ -89,17 +121,17 @@ const TabTable = (props:TabTableProps)=>{
     useEffect(()=>{
         if (firstUpdate.current === false){
             if (currentNote != -1 && playing === "playing"){
-                playNote(tab[currentNote],playOctave,tempo,synth).then(()=>{
+                playNote(tab[currentNote],playOctave,tempo,currentSynth.current).then(()=>{
                     nextNote();
                 });
             } else {
                 setPlaying("stopped");
             }
         }
+        setMarkerPosition();
     },[currentNote])
     const nextNote = ()=>{
         if (changeNote.current === true){
-            // currentNote < tab.length-1 ?  setCurrentNote(currentNote +1) : setCurrentNote(-1);
             if (currentNote < tab.length-1) setCurrentNote(currentNote + 1); else {
                 repeat ? setCurrentNote(0) : setCurrentNote(-1);
             }
@@ -116,79 +148,75 @@ const TabTable = (props:TabTableProps)=>{
     // Check for first render
     useEffect(()=>{
         firstUpdate.current = false;
+        setMarkerPosition();
     },[])
     const lengths :noteLengths[] = [];
     tab.forEach(item=>lengths.push(item.length))
     const shortestNoteLength = noteLengthDisplay === "simplified" ? getShortestNote(lengths).length : "32n";
     const body = tab.map((line,mapIndex)=>{
-        return <>
+        return (
             <TabColumnCell 
-                shortestNoteLength={shortestNoteLength}
-                showNoteLengths={noteLengthDisplay}
-                noteLength={line.length} highlight={isHighlight(mapIndex)} 
+                shortestNoteLength={shortestNoteLength} showNoteLengths={noteLengthDisplay}
+                noteLength={line.length} activeIndex={currentNote} 
                 noteIndex={mapIndex} change={change} key={mapIndex} tabIndex={index} 
-                instrument={instrumentName} line={line.note}/>
-        </>
+                instrument={instrumentName} line={line.note} lengthColor={noteColors.secondColor} noteColor={noteColors.primaryColor}/>
+        )
     })
-    const dropDownInstrumentChange = (e:React.ChangeEvent<HTMLSelectElement>)=>{
-        const targetValue = e.target.value;
+    const dropDownInstrumentChange = (valueIn:string)=>{
         let output : instrumentName = 'bass';
-        switch (targetValue) {
+        switch (valueIn) {
             case "guitar" : output = 'guitar';
         }
         context.changeTabs.instrument(index,output)
     }
-    const dropDownLengthChange = (e:React.ChangeEvent<HTMLSelectElement>)=>{
-        const targetValue = e.target.value;
+    const dropDownLengthChange = (valueIn:string)=>{
         let output : noteLengthDisplays = 'compressed';
-        switch (targetValue) {
+        switch (valueIn) {
             case "simplified" : output = 'simplified'; break;
             case "simplified raw" : output = "simplified raw"; break;
         }
         setNoteLengthDisplay(output);
-        // context.changeTabs.instrument(index,output)
     }
+    const dropDownEffectChange = (valueIn:string)=>{
+        setEffectName(valueIn);
+    }
+
+
     return (
-        <div id="tabTable" className="backgroundColor2">
-            <div className="topSection row">
-                <input className="textInput" typeof="text" value={title} onChange={(e)=>setTitle(e.target.value)} onBlur={(e)=>textOnExit(e.target.value)}/>
-                <div className="topIcons iconDiv">
-                    <BtnIcon icon="save"/>
+        <div id="tabTable" className="bgCol2 font1">
+            <div className="topIcons iconDiv">
+                    <BtnIcon icon="save" onClick={saveBtnFunc}/>
                     <BtnIcon icon="cancel" onClick={closeBtnFunc}/>
                 </div>
+            <div className="topSection row">
+                <input className="textInput font2 col6" typeof="text" value={title} onChange={(e)=>setTitle(e.target.value)} onBlur={(e)=>textOnExit(e.target.value)}/>
+                
             </div>
-            <div className="midSection row">
-                <span className="inputContainer text">Octave :  <input className="textInput text" typeof="number" value={playOctave} onChange={(e)=>setPlayOctave(parseInt(e.target.value))}/></span>
-                <span className="inputContainer text">BPM : <input className="textInput text" typeof="number" value={tempo}onChange={(e)=>setTempo(parseInt(e.target.value))}onBlur={(e)=>changeTempo(parseInt(e.target.value))}/></span>
-                <div className="midIcons">
-                    <div className="midLeftIcons iconDiv">
-                        <BtnIcon onClick={playBtnFunc} icon="play"/>
-                        <BtnIcon icon="stop"/>
-                        <BtnIcon onClick={()=>{setRepeat(!repeat)}} icon="loop"/>
-                    </div>
-                    <div className="midRightIcons iconDiv">
-                        <BtnIcon icon="remove"/>
-                        <BtnIcon icon="add"/>
-                    </div>
-                </div>
-            </div>
-            <div className="bottomSection row">
-                <div className="bottomLeftSection">
-                    <SynthChangeDropDown stateChange={setSynth} activeSynth={synth} synthNames={synthNames}/>
+            {/* Tried to clean it a bit with seperate components but I think the prop drilling looks worse. */}
+            <MidSection settings={{showSettings:showSettings,setShowSettings:setShowSettings}} 
+                        synth={{synthName:synth,setSynth:setSynth,synthNames:synthNames}}
+                        octave={{playOctave:playOctave,setPlayOctave:setPlayOctave}}
+                        tempo={{tempoValue:tempo,setTempo:setTempo,changeTempo:changeTempo}} 
+                        notes={{noteLengthDisplay:noteLengthDisplay, dropDownLengthChange:dropDownLengthChange}}
+                        instruments={{instrumentName:instrumentName,dropDownInstrumentChange:dropDownInstrumentChange}}
+                        effects={{effectName:effectName, dropDownEffectChange:dropDownEffectChange}}
+                        noteFunctions={{addNote:addNoteBtnFunc,removeNote:removeNoteBtnFunc}}
+                        playControls={{playBtnFunc:playBtnFunc,stopBtnFunc:stopBtnFunc,setRepeat:setRepeat,repeat:repeat}}
+                        playing={playing}/>
 
-                    <DropDown defaultOption={noteLengthDisplay} options={['compressed','simplified','simplified raw']} onChangeFunc={dropDownLengthChange}/>
-                    <DropDown defaultOption={instrumentName} options={['bass','guitar']} onChangeFunc={dropDownInstrumentChange}/>
-                </div>
+            <div className="bottomSection row">
                 <div className="bottomRightSection">
-                    <table>
-                        <tbody>
-                            <TabColumnHeader data={stringNames}/>
+                    <div className="tableContainer bgCol2 borderCol7 col10">
+                        <div className="tableBody ">
+                            <TabColumnHeader data={stringNames} noteClass={noteColors.secondColor}/>
                             {body}
-                        </tbody>
-                    </table>
+                            <div className="tableFooter">
+                                <TimingDisplayIcon left={markerPosition.current}/>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-           
         </div>
     )
 }

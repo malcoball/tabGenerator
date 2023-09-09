@@ -1,0 +1,44 @@
+.effectsPrompt {
+  display: grid;
+  width: -moz-max-content;
+  width: max-content;
+  justify-content: space-around;
+  grid-template-columns: auto 20% auto;
+  border: 1px solid black;
+  border-radius: 32px 32px 8px 8px;
+  position: fixed;
+  padding: 16px;
+  z-index: 4;
+  left: 96px;
+  top: 32px;
+  box-shadow: 16px 12px 16px 8px rgba(255, 255, 255, 0.1) inset;
+}
+.effectsPrompt section .effectContainer:nth-of-type(1) {
+  margin-bottom: 64px;
+}
+.effectsPrompt .midSection {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.effectsPrompt .midSection input {
+  background: none;
+  font-size: 1.5em;
+  text-align: center;
+  border-width: 0px 0px 1px 0px;
+  border-color: black;
+  border-style: solid;
+  outline: none;
+}
+.effectsPrompt .midSection button {
+  position: absolute;
+  left: 20%;
+  bottom: -70px;
+  border-radius: 0 0 16px 16px;
+  width: 60%;
+  font-size: 18px;
+  height: 56px;
+  margin-bottom: 12px;
+  border-color: inherit;
+  border-top-width: 0px;
+}/*# sourceMappingURL=NewEffectPromptStyle.css.map */

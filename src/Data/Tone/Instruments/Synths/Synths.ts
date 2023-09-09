@@ -1,12 +1,12 @@
 import * as Tone from 'tone';
 import {synthType, synthName } from '../../../@types/types';
 import BassSample1 from './Samples/BassSample1';
-import BassSample2 from './Samples/BassSample2';
 import GuitarSample1 from './Samples/GuitarSample1';
 import PianoSample from './Samples/PianoSample1';
 import BanjoSample1 from './Samples/BanjoSample1';
 import CrashWoahSample from './Samples/CrashWoahSample1';
 import AcousticGuitarSample1 from './Samples/AcousticGuitar1';
+import FluteSample1 from './Samples/FluteSample1';
 
 
 type SynthProps = {
@@ -53,11 +53,11 @@ new Synth ("MetalSynth",new Tone.MetalSynth().toDestination());
 new Synth ("MonoSynth",new Tone.MonoSynth().toDestination());
 new Synth ("PluckSynth",new Tone.PluckSynth().toDestination());
 new Synth (BassSample1.title,BassSample1.synth);
-new Synth (BassSample2.title,BassSample2.synth);
 new Synth (GuitarSample1.title,GuitarSample1.synth);
 new Synth (AcousticGuitarSample1.title,AcousticGuitarSample1.synth);
 new Synth (PianoSample.title,PianoSample.synth);
 new Synth (BanjoSample1.title,BanjoSample1.synth);
 new Synth (CrashWoahSample.title,CrashWoahSample.synth);
+new Synth (FluteSample1.title,FluteSample1.synth);
 
 export default Synths

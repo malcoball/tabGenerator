@@ -1,0 +1,112 @@
+#newNotePromptFretboard{
+    display:flex; 
+    position:fixed;
+    z-index: 4;
+    left:10vw;
+    border: 2px solid black;
+    width:max-content;
+    height:max-content;
+    color:black;
+    background-image: url('../../../../Assets/Images/Textures/Wooden1.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    
+    .headerContainer{
+        display:flex;
+        flex-direction: column-reverse;
+    }
+    .stringsContainer{
+        position:relative;
+        .string{
+            position:relative;
+            display:flex; flex-direction: row;
+            border-width:0px 1px;
+            border-style:solid;
+            border-color:black;
+            .fret{
+                cursor: pointer;
+                position:relative;
+                display:flex; flex-direction: column;
+                justify-content: center;
+                .fretMarker{
+                    position:absolute;
+                    top:0px; left:0px;
+                    width:100%;
+                    height:100%;
+                    border-width: 0px 1px 0px 2px;
+                    border-left-color: rgb(216, 216, 216);
+                    border-right-color: rgb(102, 102, 102);
+                    border-style:ridge;
+                    // outline-width: 0px 2px 0px 1px;
+                    // outline-style: solid;
+                    // outline-color: red;
+                }
+                .stringMarker{
+                    position: relative;
+                    z-index: 2;
+                    .stringOverlay{
+                        background-image: url('../../../../Assets/Images/Textures/Metal2.jpg');
+                        filter: brightness(0.5);
+                        opacity: 0.25;
+                        z-index:3;
+                        position:absolute;
+                        top:0px; left:0px;
+                        width:100%; height:100%;
+                    }
+                }
+            }
+            .stringShadow{
+                position:absolute;
+                top:50%;left:0px;
+                width:100%;height:100%;
+                box-shadow: 0px 1px 4px saddlebrown;
+                // border:1px solid black;
+            }
+        }
+        .string[class~='bassStrings']{
+            height:25%;
+        }
+        .fretMarkersContainer{
+            display:flex;
+            position:absolute;
+            top:0px;left:0px;
+            height:100%;
+            .fretDotsContainer{
+                display:flex;
+                flex-direction: column;
+                justify-content: space-around;
+                align-items: center;
+                span{
+                    width:12px; aspect-ratio: 1;
+                    border-radius: 12px;
+                    background-color: #fafafa;
+                    border: 1px solid #313131;
+                }
+            }
+            span{
+                display:block;
+                width:32px;
+            }
+        }
+    }
+    .bassString{
+        background: rgb(210,216,218);
+        background: linear-gradient(180deg, rgba(210,216,218,1) 8%, rgba(120,126,126,1) 50%, rgba(139,146,147,1) 72%);
+    }
+    
+    #BassE{
+        height:4px;
+    }
+    #BassA{
+        height:3px;
+    }
+    #BassD{
+        height:2px;
+    }
+    #BassG{
+        height:2px;
+    }
+}
+
+// I'm doing the different strings with CSS rather than JS for performance, if it'd be faster in JS please let me know. If it's not me reading this anyway.

@@ -28,7 +28,6 @@ export const breakPoints : breakPointType = {
     },
     parseNote : (noteIn:string,breakPoint:number)=>{
         const noteInParse = parseInt(noteIn);
-        console.log("I'm cumming")
         return breakPoint === 0 ? (noteInParse).toString() : (noteInParse-5).toString();
     },
     parseFull : (noteIn:string,breakPointsInput:breakPointInput)=>{
@@ -57,7 +56,7 @@ export const conversions = {
             // Get the ocatave and note
             let octave = 0;
             let noteNum = parseInt(noteIn.note);
-            while (noteNum > 12){
+            while (noteNum >= 12){
                 octave ++;
                 noteNum -= 12;
             }
@@ -65,6 +64,16 @@ export const conversions = {
                 note : conversions.misc.numberToNote(noteNum)+octave.toString(),
                 length : noteIn.length}
             return out;
+        },
+        noteLetter : (noteIn:string) : string=>{
+            return conversions.noteTo.tone({note:noteIn,length:'1n'}).note;
+        }
+    },
+    noteLetterTo:{
+        number:(noteLetter:string)=>{
+            const letter = conversions.misc.noteToNumber(noteLetter.charAt(0));
+            const number = parseInt(noteLetter.slice(1)) * 12;
+            return letter + number;
         }
     },
     length : {
@@ -142,7 +151,7 @@ export const conversions = {
     },
     misc : {
         noteToNumber : (note:string)=>{
-            switch(note){
+            switch(note.toUpperCase()){
                 case  "C" : return 0;
                 case "C#" : return 1;
                 case  "D" : return 2;

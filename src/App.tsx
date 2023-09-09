@@ -6,12 +6,16 @@ import TabTableContainer from './Components/TabComponents/TabTableContainer/TabT
 import AppContextProvider from './Data/AppContent';
 import * as Tone from 'tone'
 import './GlobalStyles.css';
+import Sidepanel from './Components/Sidepanel/Sidepanel';
+import PromptController from './Components/Prompts/PromptController';
 
 
 function App() {
   return (
-    <div className="App backgroundColor1">
+    <div className="App bgCol1">
       <AppContextProvider>
+        <PromptController/>
+        <Sidepanel/>
         <TabTableContainer/>
       </AppContextProvider>
     </div>

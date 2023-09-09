@@ -1,8 +1,30 @@
 #newTabPrompt {
   position: absolute;
-  left: 20px;
+  width: 312px;
+  left: 48px;
   top: 20px;
   z-index: 1;
-  background-color: rgba(6, 6, 6, 0.9176470588);
   color: whitesmoke;
+  border-radius: 16px;
+  border-style: solid;
+  border-width: 4px;
+}
+#newTabPrompt .closeBtn {
+  position: absolute;
+  right: 4px;
+  top: 4px;
+}
+#newTabPrompt #Title {
+  border: none;
+  background: none;
+  text-align: center;
+  font-size: 1.1em;
+  width: 100%;
+  margin-top: 12px;
+  outline: none;
+}
+#newTabPrompt .midSection {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  margin-bottom: 24px;
 }/*# sourceMappingURL=NewTabPrompt.css.map */

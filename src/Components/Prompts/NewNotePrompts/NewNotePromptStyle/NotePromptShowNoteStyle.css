@@ -1,0 +1,12 @@
+#NotePromptShowNote {
+  position: absolute;
+  bottom: 50%;
+  z-index: 4;
+  color: #e4e4d6;
+  font-size: 1.2em;
+  background-color: rgba(148, 37, 37, 0.7058823529);
+  padding: 4px 8px;
+  border-radius: 4px;
+  border: 2px solid black;
+  box-shadow: 0px 0px 2px black inset;
+}/*# sourceMappingURL=NotePromptShowNoteStyle.css.map */

@@ -1,0 +1,48 @@
+#Sidepanel {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  height: 100vh;
+  width: 32px;
+  border-right: 3px solid black;
+}
+#Sidepanel .iconsContainer {
+  position: relative;
+  top: 64px;
+  width: -moz-max-content;
+  width: max-content;
+  display: grid;
+  row-gap: 32px;
+}
+#Sidepanel .iconsContainer .iconContainer {
+  width: 64px;
+  height: 64px;
+  border-radius: 0px 16px 16px 0px;
+  border-right: 2px solid black;
+}
+#Sidepanel .iconsContainer .iconContainer #BtnIcon {
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#Sidepanel .iconsContainer .iconContainer #BtnIcon svg {
+  font-size: 48px;
+  color: black;
+}
+#Sidepanel .iconsContainer .iconContainer #BtnIcon .customBtn {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#Sidepanel .iconsContainer .iconContainer #BtnIcon .customBtn img {
+  width: 38px;
+  height: 38px;
+}
+#Sidepanel .iconsContainer .iconContainer #BtnIcon .guitarHead img {
+  transform: rotate(45deg);
+}/*# sourceMappingURL=SidepanelStyle.css.map */

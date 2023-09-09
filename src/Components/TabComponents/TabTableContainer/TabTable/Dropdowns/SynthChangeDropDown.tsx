@@ -1,13 +1,15 @@
 import { synthName } from "../../../../../Data/@types/types";
 import DropDown from "../../../../Inputs/DropDown";
+
 type props = {
     stateChange : React.Dispatch<React.SetStateAction<synthName>>,
     activeSynth : string,
-    synthNames : string[]
+    synthNames : string[],
+    className : string
 }
 const SynthChangeDropDown = (props:props)=>{
-    const dropDownSynthChange = (e:React.ChangeEvent<HTMLSelectElement>)=>{
-        const targetValue = e.target.value;
+    const dropDownSynthChange = (valueIn:string)=>{
+        const targetValue = valueIn;
         let output : synthName  = "Synth";
         // This is quite messy lulz
         switch (targetValue){
@@ -26,12 +28,13 @@ const SynthChangeDropDown = (props:props)=>{
             case "Piano1"   : output = "Piano1"; break;
             case "Banjo1"   : output = "Banjo1"; break;
             case "Woah"    : output = "Woah"; break;
+            case "Flute1"   : output = "Flute1"; break;
+            default : console.log(targetValue, " not recognised");
         }        
-        // setSynth(output);
         props.stateChange(output);
     }
     return (
-        <DropDown defaultOption={props.activeSynth} options={props.synthNames} onChangeFunc={dropDownSynthChange}/>
+        <DropDown className={props.className} selectedOption={props.activeSynth} options={props.synthNames} onChangeFunc={dropDownSynthChange}/>
 
     )
 }

@@ -1,0 +1,33 @@
+#newNotePromptSimple{
+    position: absolute;
+    width:178px;
+    top:100%;
+    left:35%;
+    // left:24px; top:24px;
+    z-index: 2;
+    border-radius: 24px 24px 2px 2px;
+    border-width:4px 4px 2px 4px; border-style: solid;
+    div[class~="topSection"]{
+        font-size: 1.5em;
+        height:32px;
+        display: flex; justify-content: space-evenly;
+        align-items: center;
+        input{
+            background:none;
+            outline:none;
+            color:inherit;
+            border:none;
+            height:100%;
+            min-width:10%; max-width: 50%;
+            font-size: inherit;
+            text-align: center;
+        }
+        span{
+            height:100% !important;
+        }
+
+    }
+    section[class~="topSection"]{
+        display:none;
+    }
+}

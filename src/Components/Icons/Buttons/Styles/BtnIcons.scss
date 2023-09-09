@@ -1,4 +1,9 @@
 #BtnIcon{
     display:flex;
     cursor: pointer;
+    color:#363636
+}
+#BtnIcon:hover{
+    color:#838383;
+    transform: scale(1.05);
 }

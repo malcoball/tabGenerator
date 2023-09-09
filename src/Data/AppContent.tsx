@@ -1,9 +1,17 @@
 import * as React from 'react';
-import { tabType, AppContextType, note, instrumentName, scaleName } from './@types/types';
+import * as Tone from 'tone';
+import { tabType, AppContextType, note, instrumentName, scaleName, effectType, promptTypes } from './@types/types';
 import { newTab } from './TabGeneration/TabGeneration';
 
 interface Props {
     children : React.ReactNode;
+}
+type promptInfo = {
+    notePrompt : {
+        tabIndex : number,
+        noteIndex : number,
+    },
+    savePrompt : tabType // sort pls thnx
 }
 
 
@@ -11,6 +19,7 @@ export const AppContext = React.createContext<AppContextType | null>(null);
 
 const AppContextProvider: React.FC<Props> = ({children}) =>{
     const [tabIndex,setTabIndex] = React.useState<number>(3);
+    const [effectIndex,setEffectIndex] = React.useState<number>(5);
     const [tabs,setTabs] = React.useState<tabType[]>([
         {
             title:'For whom the bell tolls intro - bass',
@@ -31,41 +40,145 @@ const AppContextProvider: React.FC<Props> = ({children}) =>{
             tempo:120,
             change:false
         },
-        // {
-        //     title:'Dueling Banjos',
-        //     index:1,
-        //     tab:[
-        //         {note:'15',length:'16n'},
-        //         {note:'15',length:'16n'},
-        //         {note:'15',length:'16n'},
-        //         {note:'17',length:'8n'},
-        //         {note:'19',length:'8n'},
-        //         {note:'20',length:'8n'},
-        //         {note:'22',length:'8n'},
-        //         {note:'20',length:'8n'},
-        //         {note:'19',length:'4n'},
-        //         // {note:'24',length:'4n'},
-        //     ],
-        //     scale:'aeolian',
-        //     instrumentName : 'guitar',
-        //     tempo:120,
-        //     change:false
-        // },
-        // {
-        //     title:'Jasmine',
-        //     index:2,
-        //     tab:[
-        //         {note:'5',length:'16n'},
-        //         {note:'3',length:'16n'},
-        //         {note:'2',length:'16n'},
-        //         {note:'16',length:'16n'},
-        //     ],
-        //     scale:'aeolian',
-        //     instrumentName : 'guitar',
-        //     tempo:120,
-        //     change:false
-        // },
+        {
+            title:'Dueling Banjos',
+            index:1,
+            tab:[
+                {note:'15',length:'16n'},
+                {note:'15',length:'16n'},
+                {note:'15',length:'16n'},
+                {note:'17',length:'8n'},
+                {note:'19',length:'8n'},
+                {note:'20',length:'8n'},
+                {note:'22',length:'8n'},
+                {note:'20',length:'8n'},
+                {note:'19',length:'4n'},
+                // {note:'24',length:'4n'},
+            ],
+            scale:'aeolian',
+            instrumentName : 'guitar',
+            tempo:120,
+            change:false
+        },
+        {
+            title:'Jasmine',
+            index:2,
+            tab:[
+                {note:'0',length:'8n'},
+                {note:'5',length:'8n'},
+                {note:'10',length:'8n'},
+                {note:'15',length:'8n'},
+                {note:'19',length:'8n'},
+                {note:'24',length:'8n'},
+                {note:'13',length:'8n'},
+            ],
+            scale:'aeolian',
+            instrumentName : 'guitar',
+            tempo:120,
+            change:false
+        },
     ])
+    const [effects,setEffects] = React.useState<effectType[]>([
+        {
+            index : 0,
+            title: 'off',
+            distortion:{
+                active : false,value : [0.3],type:"distortion"
+            },
+            reverb: {
+                active : false,value : [0.3],type:"reverb"
+            },
+            tremolo: {
+                active : false,value : [0.3],type:"tremolo"
+            },
+            eq: {
+                active : false,value : [0.3],type:"eq"
+            },
+        },
+        {
+            index : 1,
+            title: 'distortion',
+            distortion:{
+                active : true,value : [0.5],type:"distortion"
+            },
+            reverb: {
+                active : false,value : [0.3,0.7],type:"reverb"
+            },
+            tremolo: {
+                active : false,value : [0.3],type:"tremolo"
+            },
+            eq: {
+                active : false,value : [0.3],type:"eq"
+            },
+        },
+        {
+            index : 2,
+            title: 'reverb',
+            distortion:{
+                active : false,value : [0.8],type:"distortion"
+            },
+            reverb: {
+                active : true,value : [0.6],type:"reverb"
+            },
+            tremolo: {
+                active : false,value : [0.1],type:"tremolo"
+            },
+            eq: {
+                active : false,value : [0.3],type:"eq"
+            },
+        },
+        {
+            index : 3,
+            title: 'tremolo',
+            distortion:{
+                active : false,value : [0.8],type:"distortion"
+            },
+            reverb: {
+                active : false,value : [0.6],type:"reverb"
+            },
+            tremolo: {
+                active : true,value : [9,0.75],type:"tremolo"
+            },
+            eq: {
+                active : false,value : [0.3],type:"eq"
+            },
+        },
+        {
+            index : 4,
+            title: 'crusher',
+            distortion:{
+                active : false,value : [0.8],type:"distortion"
+            },
+            reverb: {
+                active : false,value : [0.6],type:"reverb"
+            },
+            tremolo: {
+                active : false,value : [9,0.75],type:"tremolo"
+            },
+            eq: {
+                active : true,value : [0.3],type:"eq"
+            },
+        },
+
+    ])
+    const [activePrompt,setActivePrompt] = React.useState<promptTypes>(null);
+    const [promptInfo,setPromptInfo] = React.useState<promptInfo>({
+        notePrompt : {
+            // noteValue : {note : "",length:'32n'},
+            tabIndex : -1,
+            noteIndex: -1
+        },
+        savePrompt : {
+            title: 'not set',
+            index:-1,
+            tab : [],
+            scale : 'aeolian',
+            instrumentName:'bass',
+            tempo: -1,
+            change: false
+        }
+    })
+    
     const getTabs = {
         single:{
             full : (tabIndex:number)=>{
@@ -126,7 +239,7 @@ const AppContextProvider: React.FC<Props> = ({children}) =>{
             tabsNew[index].change = !tabsNew[index].change;
             setTabs(tabsNew);
         },
-        add : (title:string,scale:scaleName,instrument:instrumentName,length:number,rootNote:number,octave:number,noteLengths:boolean[],deadNoteChance:number)=>{
+        create : (title:string,scale:scaleName,instrument:instrumentName,length:number,rootNote:number,octave:number,noteLengths:boolean[],deadNoteChance:number)=>{
             const tabOut : tabType = {
                 tab : newTab(scale,length,rootNote,octave,noteLengths,deadNoteChance),
                 index : tabIndex,
@@ -139,6 +252,14 @@ const AppContextProvider: React.FC<Props> = ({children}) =>{
             setTabIndex(tabOut.index+1);
             const tabsNew = [...tabs];
             tabsNew.push(tabOut);
+            setTabs(tabsNew);
+        },
+        add : (tab:tabType)=>{
+            // Handle the index here I think
+            tab.index = tabIndex
+            setTabIndex(tab.index+1);
+            const tabsNew = [...tabs];
+            tabsNew.push(tab);
             setTabs(tabsNew);
         },
         remove : (tabIndex:number)=>{
@@ -162,11 +283,109 @@ const AppContextProvider: React.FC<Props> = ({children}) =>{
             tabsNew[index].tempo = tempo;
             tabsNew[index].change = !tabsNew[index].change;
             setTabs(tabsNew);
-        }
+        },
 
     }
+    const getEffects = {
+        single : {
+            byIndex : (index:number)=>{
+                let out = effects[0];
+                effects.forEach(effect=>{
+                    if (effect.index === index) out = effect;
+                })
+                return out;
+            },
+            byTitle : (title:string)=>{
+                let out = effects[0];
+                effects.forEach(effect=>{
+                    if (effect.title === title) out = effect;
+                })
+                return out;
+            },
+            toTone : (title:string)=>{
+                const info = getEffects.single.byTitle(title);
+                const out = [];
+                // const dist = info.distortion;const rev = info.reverb;
+                const {distortion,reverb,tremolo,eq} = info;
+                // Tried to do this externally but the returned Tone obj still needed to be called here so it didn't really save anything
+                if (distortion.active === true){
+                    out.push(new Tone.Distortion(distortion.value[0]).toDestination());
+                }
+                if (reverb.active === true){
+                    const JCReverb = new Tone.JCReverb(reverb.value[0]).toDestination();
+                    const delay = new Tone.FeedbackDelay(reverb.value[1]);
+                    out.push(JCReverb,delay);
+                }
+                if (tremolo.active === true){
+                    out.push(new Tone.Tremolo(tremolo.value[0],tremolo.value[1]).toDestination().start());
+                }
+                if (eq.active === true){
+                    out.push(new Tone.EQ3(0,2,0).toDestination())
+                }
+                return out;
+            }
+        },
+        all :{
+            title  : () => {
+                const out : string[] = [];
+                effects.forEach(effect=>out.push(effect.title));
+                return out;
+            }
+        }
+    }
+    const changeEffects = {
+        add : (input:effectType)=>{
+            const effectNew = input;
+            effectNew.index = effectIndex;
+            setEffects([...effects,effectNew]);
+            setEffectIndex(effectIndex+1);
+        }
+    }
+    const getPrompts = {
+        active : activePrompt,
+        newNote : ()=>{
+            const {tabIndex,noteIndex} = promptInfo.notePrompt;
+            const noteValue = getTabs.single.note(tabIndex,noteIndex);
+            return {tabIndex,noteIndex,noteValue};
+        },
+        saveInfo : {
+            tabInfo : promptInfo.savePrompt
+        }
+    }
+    const changePrompts = {
+        set:{
+            newNote : {
+                simple : (tabIndex:number,noteIndex:number)=>{
+                    const promptInfoNew = {...promptInfo};
+                    promptInfoNew.notePrompt = {tabIndex,noteIndex};
+                    setPromptInfo(promptInfoNew);
+                    setActivePrompt('newNoteSimple');
+                },
+                fretboard : (tabIndex:number,noteIndex:number)=>{
+                    const promptInfoNew = {...promptInfo};
+                    promptInfoNew.notePrompt = {tabIndex,noteIndex};
+                    setPromptInfo(promptInfoNew);
+                    setActivePrompt('newNoteFretboard');
+                },
+            },
+            save : (tabIndex:number)=>{
+                const promptInfoNew = {...promptInfo};
+                promptInfoNew.savePrompt = getTabs.single.full(tabIndex);
+                setPromptInfo(promptInfoNew);
+                setActivePrompt('saveTab')
+            },
+            load : ()=>{
+                setActivePrompt('load')
+            },
+            effect : ()=>{setActivePrompt('newEffect')},
+            tab : ()=>{setActivePrompt('newTab')}
+        },
+        close : ()=>{
+            setActivePrompt(null);
+        }
+    }
     return (
-        <AppContext.Provider value={{tabs,getTabs,changeTabs}}>
+        <AppContext.Provider value={{tabs,getTabs,changeTabs,effects,getEffects,changeEffects,changePrompts,getPrompts}}>
             {children}
         </AppContext.Provider>
     )

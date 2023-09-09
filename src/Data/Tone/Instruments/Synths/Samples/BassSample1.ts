@@ -9,10 +9,10 @@ const BassSample1:synthType = {
     title:'Bass1',
     synth:new Tone.Sampler({
         urls: {
-            A2: A2,
-            D2: D2,
+            A3: A2,
+            D3: D2,
             E2: E2,
-            G2: G2
+            G3: G2
         },
     }).toDestination()
 }

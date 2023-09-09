@@ -3,5 +3,6 @@
     #tables{
         display:grid;
         grid-template-columns: repeat(3, 33%);
+        row-gap: 64px;
     }
 }

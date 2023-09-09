@@ -1,14 +1,18 @@
 #tabTable {
+  position: relative;
   width: 393px;
+  height: -moz-min-content;
+  height: min-content;
   border-color: rgba(0, 0, 0, 0.5333333333);
   border-style: solid;
   border-width: 0px;
   border-bottom-width: 1px;
   border-right-width: 1px;
   border-top-left-radius: 24px;
+  padding: 12px;
+  margin: auto;
 }
 #tabTable .row {
-  border: 1px solid rgba(255, 0, 0, 0.479);
   width: 100%;
   display: flex;
 }
@@ -16,24 +20,102 @@
   font-size: 16px;
   width: 70%;
 }
+#tabTable .topIcons {
+  position: absolute;
+  right: 4px;
+  top: 4px;
+}
 #tabTable .topSection {
-  justify-content: space-around;
+  justify-content: space-between;
   margin: 11px 0px;
 }
+#tabTable .topSection .textInput {
+  width: 100%;
+  text-align: center;
+  font-weight: 500;
+  font-size: 1.5em;
+}
 #tabTable .midSection {
-  flex-direction: column;
-  padding: 0px 12px 0px 128px;
+  flex-direction: row;
+  align-items: end;
+  justify-content: space-between;
 }
-#tabTable .midSection .text {
-  font-size: 12px;
-  font-weight: 600;
-}
-#tabTable .midSection .inputContainer {
-  display: flex;
+#tabTable .midSection .midMidSection .inputContainer input {
+  width: 32px;
 }
 #tabTable .midSection .midIcons {
   display: flex;
   justify-content: space-between;
+}
+#tabTable .bottomSection {
+  margin-top: 12px;
+  height: 192px;
+  margin-bottom: 12px;
+}
+#tabTable .bottomSection .bottomRightSection {
+  width: 100%;
+}
+#tabTable .bottomSection .bottomRightSection .tableContainer {
+  border-radius: inherit;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  width: 100%;
+  height: 100%;
+  border-top-left-radius: 16px;
+  border-width: 2px 0px 0px 2px;
+  border-style: solid;
+  box-shadow: 2px 2px 2px rgba(73, 0, 0, 0.25) inset;
+}
+#tabTable .bottomSection .bottomRightSection .tableContainer .tableBody {
+  position: relative;
+  width: -moz-max-content;
+  width: max-content;
+  padding-bottom: 12px;
+  display: flex;
+  flex-direction: row;
+}
+#tabTable .bottomSection .bottomRightSection .tableContainer .tableBody .tableRow {
+  width: 24px;
+  display: flex;
+  align-items: center;
+  flex-direction: column-reverse;
+}
+#tabTable .bottomSection .bottomRightSection .tableContainer .tableBody .tableRow span {
+  display: inline-block;
+  width: 16px;
+  height: 24px;
+  font-weight: 500;
+}
+#tabTable .bottomSection .bottomRightSection .tableContainer .tableBody .tableRow .noteItem {
+  cursor: pointer;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+#tabTable .bottomSection .bottomRightSection .tableContainer .tableBody .tableRow .header {
+  font-weight: 600;
+  margin: 0px 4px;
+  text-align: center;
+}
+#tabTable .bottomSection .bottomRightSection .tableContainer .tableBody .tableRow .header::after {
+  margin-left: 2px;
+  content: "|";
+}
+#tabTable .bottomSection .bottomRightSection .tableContainer .tableBody .tableRow .noteTiming {
+  text-align: center;
+  font-size: 0.75em;
+}
+#tabTable .bottomSection .bottomRightSection .tableContainer .tableBody .highlight .noteItem {
+  color: red !important;
+}
+#tabTable .bottomSection .bottomRightSection .tableContainer .tableBody .highlighted .noteItem {
+  color: rgba(255, 0, 0, 0.25) !important;
+}
+#tabTable .bottomSection .bottomRightSection .tableContainer .tableBody .tableFooter {
+  position: absolute;
+  bottom: 0px;
+  left: 27px;
+  width: calc(100% - 25px);
+  height: 16px;
 }
 #tabTable .iconDiv {
   display: flex;
@@ -42,15 +124,4 @@
   border: none;
   border-color: transparent;
   outline: none;
-}
-#tabTable tbody {
-  display: flex;
-  flex-direction: row;
-}
-#tabTable tbody tr {
-  display: flex;
-  flex-direction: column-reverse;
-}
-#tabTable tbody .highlight {
-  color: red;
 }/*# sourceMappingURL=TabTable.css.map */

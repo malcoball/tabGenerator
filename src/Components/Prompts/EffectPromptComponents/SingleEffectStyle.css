@@ -1,0 +1,176 @@
+.effectContainer {
+  width: 220px;
+  position: relative;
+  z-index: 2;
+  border: 2px solid rgba(0, 0, 0, 0.5);
+  border-radius: 21px 21px 10px 11px;
+  background: rgb(208, 208, 208);
+  background: linear-gradient(180deg, rgb(208, 208, 208) 0%, rgb(167, 167, 167) 100%);
+}
+.effectContainer .content {
+  position: relative;
+  z-index: 3;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.effectContainer .content .powerLight {
+  transition: 1s;
+  position: absolute;
+  width: 20px;
+  aspect-ratio: 1;
+  top: 12px;
+  left: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  border-radius: 12px;
+  background-color: yellow;
+  box-shadow: -2px -1px 4px 3px red inset, -2px -1px 1px 3px rgb(134, 91, 40) inset;
+}
+.effectContainer .content .behindPowerLight {
+  position: absolute;
+  width: 20px;
+  aspect-ratio: 1;
+  top: 12px;
+  left: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  border-radius: 12px;
+  background-color: grey;
+}
+.effectContainer .content .sliderContainer {
+  width: 100%;
+  margin-top: 32px;
+  margin-bottom: 12px;
+}
+.effectContainer .content .sliderContainer .slider {
+  border: 1px solid black;
+  background-color: #8c8c8c;
+  color: #84deea;
+  padding: 3px 0px;
+}
+.effectContainer .content .sliderContainer .slider .MuiSlider-thumb {
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  height: 14px;
+  width: 14px;
+  box-shadow: 1px -1px 2px 2px rgba(0, 0, 0, 0.3) inset;
+}
+.effectContainer .content .dataDisplay {
+  position: relative;
+  width: 190px;
+  border-width: 2px 1px 0.5px 1px;
+  border-style: solid;
+  border-color: rgba(0, 0, 0, 0.5);
+  padding: 8px;
+  border-radius: 12px;
+  margin-bottom: 48px;
+}
+.effectContainer .content .dataDisplay .dataDisplayOverlay {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+  background-image: url("../../../Assets/Images/Textures/noise1.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  opacity: 0.2;
+}
+.effectContainer .content .dataDisplay span {
+  transition: 1s;
+  position: relative;
+  z-index: 4;
+  font-family: "Wallpoet", cursive;
+  text-transform: uppercase;
+  font-size: 1.5em;
+  background: linear-gradient(to right, #ffc3b0 20%, #dc7e49 80%);
+  -webkit-background-clip: text;
+          background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
+.effectContainer .content .dataDisplay .dataSectionContainer {
+  display: flex;
+  justify-content: space-evenly;
+}
+.effectContainer .content .dataDisplay .dataSectionContainer .dataSection {
+  position: relative;
+  width: 50%;
+}
+.effectContainer .content .dataDisplay .dataSectionContainer .dataSection .valueName {
+  position: relative;
+  font-size: 8px;
+}
+.effectContainer .content .toggleButton {
+  margin-bottom: 24px;
+  background-image: url("../../../Assets/Images/Other/Screw/Design 1.png");
+  background-size: cover;
+  background-position: center;
+  height: -moz-max-content;
+  height: max-content;
+  width: -moz-max-content;
+  width: max-content;
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  border-radius: 6px 6px 16px 16px;
+  background-color: #4b4444;
+  box-shadow: #8c8c8c 0px 0px 1px 6px inset;
+}
+.effectContainer .content .toggleButton button {
+  cursor: pointer;
+  margin: 12px;
+  aspect-ratio: 1;
+  width: 32px;
+  border-radius: 32px;
+  border: 2px solid rgba(0, 0, 0, 0.4156862745);
+  box-shadow: 2px -2px 2px 2px rgba(0, 0, 0, 0.25) inset;
+}
+.effectContainer .content .toggleButton button:active {
+  transform: scale(0.95);
+}
+.effectContainer .textureOverlay {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  background-image: url("../../../Assets/Images/Textures/Metal1.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  border-radius: inherit;
+  opacity: 0.5;
+}
+
+.effectContainer[class~=effectOff] .powerLight {
+  transition: 0.1s;
+  opacity: 0;
+}
+.effectContainer[class~=effectOff] .slider {
+  cursor: default;
+}
+.effectContainer[class~=effectOff] .slider .MuiSlider-track {
+  transition: 0.1s;
+  opacity: 0;
+}
+.effectContainer[class~=effectOff] .slider .MuiSlider-thumb {
+  transition: 0.1s;
+  opacity: 0;
+}
+.effectContainer[class~=effectOff] .dataDisplay span {
+  transition: 0.2s;
+  opacity: 0.5;
+}
+
+.leftSection .effectContainer:nth-of-type(1) {
+  box-shadow: 4px 3px 8px rgba(0, 0, 0, 0.5);
+}
+.leftSection .effectContainer:nth-of-type(2) {
+  box-shadow: 4px -3px 8px rgba(0, 0, 0, 0.5);
+}
+
+.rightSection .effectContainer:nth-of-type(1) {
+  box-shadow: -4px 3px 8px rgba(0, 0, 0, 0.5);
+}
+.rightSection .effectContainer:nth-of-type(2) {
+  box-shadow: -4px -3px 8px rgba(0, 0, 0, 0.5);
+}/*# sourceMappingURL=SingleEffectStyle.css.map */

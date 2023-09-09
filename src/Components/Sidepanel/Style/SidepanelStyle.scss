@@ -1,0 +1,46 @@
+#Sidepanel{
+    position: fixed;
+    top:0; left: 0; z-index:1;
+    height:100vh;width:32px;
+    border-right: 3px solid black;
+    .iconsContainer{
+        position: relative;
+        top:64px;
+        width:max-content;
+        display:grid;
+        row-gap: 32px;
+
+        .iconContainer{
+            width:64px;
+            height:64px;
+            border-radius: 0px 16px 16px 0px;
+            border-right:2px solid black;
+            #BtnIcon{
+                width:64px; 
+                height:64px;
+                display: flex; align-items: center; justify-content: center;
+
+                svg{
+                    font-size: 48px;
+                    color:black;
+                }
+                .customBtn{
+                    width:100%;
+                    height:100%;
+                    display: flex; align-items: center; justify-content: center;
+                    img{
+                        width: 38px; 
+                        height:38px;
+                    }
+                    
+                }
+                .guitarHead{
+                    img{
+                        transform: rotate(45deg);
+
+                    }
+                }
+            }
+        }
+    }
+}
