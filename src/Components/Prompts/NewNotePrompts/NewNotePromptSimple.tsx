@@ -1,15 +1,14 @@
 import {useState, useContext, useEffect} from 'react';
-import { noteLengths,note } from '../../../Data/@types/types';
+import { DataContext } from './FretboardExtras/FretboardContext';
+import { noteLengths } from '../../../Data/@types/types';
 import './NewNotePromptStyle/NewNoteSimpleStyle.css';
-import { MultiSelectInput } from '../NewTabPrompt';
 import { conversions } from '../../../Data/StaticFunctions';
 import MultiSelectComponent from '../TabPromptComponents/MultiSelectComponent';
-import { AppContext } from '../../../Data/AppContent';
-import { DataContext } from './NewNotePromptFretboard';
 
 
 const NewNotePromptSimple = ()=>{
     const context = useContext(DataContext);
+    const rootNote = context.data.rootNote;
     const noteLengthOptions : noteLengths[] = ['1n','2n','4n','8n','16n','32n'];
     const noteLengthChange = (indexIn:number)=>{
 
@@ -20,6 +19,9 @@ const NewNotePromptSimple = ()=>{
         setNoteLengths(lengthsOut);
     }
     const [noteLengths,setNoteLengths] = useState<boolean[]>(conversions.length.toBooleans(context.data.selectedLength));
+    useEffect(()=>{
+        context.updateSelectedLength(conversions.lengths.booleansToLengths(noteLengths)[0]);
+    },[noteLengths])
     const btnClick = ()=>{
         context.updateTab();
     }
@@ -28,7 +30,8 @@ const NewNotePromptSimple = ()=>{
     // Show the parsed note data
     const [letterValue,setLetterValue] = useState(conversions.noteTo.noteLetter(value.toString()))
     useEffect(()=>{
-        const letter = conversions.noteTo.noteLetter(value.toString())
+        const parseData = (parseInt(value)+rootNote).toString();
+        const letter = conversions.noteTo.noteLetter(parseData);
         setLetterValue(letter);
     },[value]);
 
@@ -49,7 +52,7 @@ const NewNotePromptSimple = ()=>{
         }
         if (update) {
             const parse = conversions.noteLetterTo.number(value);
-            context.updateState(parse,'selectedNote')
+            context.updateState(parse-rootNote,'selectedNote');
         }
     }
     return (

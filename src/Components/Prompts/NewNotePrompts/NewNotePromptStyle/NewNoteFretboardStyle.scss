@@ -55,6 +55,17 @@
                         width:100%; height:100%;
                     }
                 }
+                #selectedNote{
+                    position: absolute;
+                    height:120%;left:40%;
+                    aspect-ratio: 1;
+                    z-index: 3;
+                    color:#fafafa;
+                    background:rgba(204, 38, 38, 0.5);
+                    border:1px solid rgba(0, 0, 0, 0.5); border-radius: 4px;
+                    box-shadow: 0px 0px 2px black inset;
+                    // padding:4px;
+                }
             }
             .stringShadow{
                 position:absolute;
@@ -66,6 +77,9 @@
         }
         .string[class~='bassStrings']{
             height:25%;
+        }
+        .string[class~='guitarStrings']{
+            height:calc(100%/6);
         }
         .fretMarkersContainer{
             display:flex;
@@ -94,6 +108,10 @@
         background: rgb(210,216,218);
         background: linear-gradient(180deg, rgba(210,216,218,1) 8%, rgba(120,126,126,1) 50%, rgba(139,146,147,1) 72%);
     }
+    .guitarString{
+        background: rgb(210,216,218);
+        background: linear-gradient(180deg, rgba(210,216,218,1) 8%, rgba(120,126,126,1) 50%, rgba(139,146,147,1) 72%);
+    }
     
     #BassE{
         height:4px;
@@ -106,6 +124,24 @@
     }
     #BassG{
         height:2px;
+    }
+    #GuitarE{
+        height:4px;
+    }
+    #GuitarA{
+        height:3px;
+    }
+    #GuitarD{
+        height:2px;
+    }
+    #GuitarG{
+        height:2px;
+    }
+    #GuitarB{
+        height:2px;
+    }
+    #Guitare{
+        height:1px;
     }
 }
 

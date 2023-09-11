@@ -1,3 +1,5 @@
+import { instrumentProperty } from "../Music/Instruments";
+
 type noteLengths = "32n" | "16n" | "8n" | "4n" | "2n" | "1n";
 
 export type note = {
@@ -39,7 +41,15 @@ export interface instrument{
     name :string,
     breakPoints : number[],
     stringNames : string[],
-    rootNote : string
+    stringAmount : number,
+    rootNote : string,
+    fretAmount : number,
+    fretBoard : {
+        widths : {
+            start : number, change : number
+        },
+        stringIds : string[]
+    }
 }
 export type synthName ="Bass1" | "Bass2" | "Guitar1" | "AcousticGuitar1" | "Piano1" | "Banjo1" |"Duo" 
 | "Synth" | "FMSynth" | "AMSynth" | "MembraneSynth" |"MetalSynth"| "MonoSynth"|"PluckSynth" | "Woah" |'Flute1';
@@ -94,6 +104,7 @@ export type AppContextType = {
             tabIndex: number;
             noteIndex: number;
             noteValue: note;
+            instrument:instrumentProperty;
         }
         saveInfo : {
             tabInfo : tabType
@@ -102,8 +113,8 @@ export type AppContextType = {
     changePrompts : {
         set:{
             newNote :{
-                simple : (tabIndex:number,noteIndex:number)=>void,
-                fretboard : (tabIndex:number,noteIndex:number)=>void,
+                simple : (tabIndex:number,noteIndex:number,instrument:instrumentProperty)=>void,
+                fretboard : (tabIndex:number,noteIndex:number,instrument:instrumentProperty)=>void,
             },
             save :(tabIndex:number)=>void,
             load : ()=>void,

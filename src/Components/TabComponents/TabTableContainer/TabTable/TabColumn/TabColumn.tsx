@@ -38,7 +38,8 @@ export const TabColumnCell = (props:cellProps)=>{
     },[change])
 
     const data = parseData.map((item,index)=>
-    <TabItem showNoteLengths={showNoteLengths} 
+    <TabItem showNoteLengths={showNoteLengths}
+            instrumentName={instrument} 
             shortestLength={shortestNoteLength}
             noteLength={noteLength} key={index} noteIndex={noteIndex}  
             tabIndex={tabIndex} value={item} noteColor={props.noteColor} state="notPlayed"/>)

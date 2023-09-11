@@ -118,7 +118,7 @@ export const conversions = {
                 default : return 0;
             }
         },
-        toBooleans : (noteLength:noteLengths)=>{
+        toBooleans : (noteLength:noteLengths|string)=>{
             const test = ['1n','2n','4n','8n','16n','32n']
             const out:boolean[] = [];
             test.forEach((item)=>{

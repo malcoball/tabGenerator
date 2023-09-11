@@ -2,6 +2,7 @@ import * as React from 'react';
 import * as Tone from 'tone';
 import { tabType, AppContextType, note, instrumentName, scaleName, effectType, promptTypes } from './@types/types';
 import { newTab } from './TabGeneration/TabGeneration';
+import { instrumentProperty } from './Music/Instruments';
 
 interface Props {
     children : React.ReactNode;
@@ -10,6 +11,7 @@ type promptInfo = {
     notePrompt : {
         tabIndex : number,
         noteIndex : number,
+        instrument : instrumentProperty
     },
     savePrompt : tabType // sort pls thnx
 }
@@ -165,6 +167,7 @@ const AppContextProvider: React.FC<Props> = ({children}) =>{
     const [promptInfo,setPromptInfo] = React.useState<promptInfo>({
         notePrompt : {
             // noteValue : {note : "",length:'32n'},
+            instrument : 'bass',
             tabIndex : -1,
             noteIndex: -1
         },
@@ -344,9 +347,9 @@ const AppContextProvider: React.FC<Props> = ({children}) =>{
     const getPrompts = {
         active : activePrompt,
         newNote : ()=>{
-            const {tabIndex,noteIndex} = promptInfo.notePrompt;
+            const {tabIndex,noteIndex,instrument} = promptInfo.notePrompt;
             const noteValue = getTabs.single.note(tabIndex,noteIndex);
-            return {tabIndex,noteIndex,noteValue};
+            return {tabIndex,noteIndex,noteValue,instrument};
         },
         saveInfo : {
             tabInfo : promptInfo.savePrompt
@@ -355,15 +358,15 @@ const AppContextProvider: React.FC<Props> = ({children}) =>{
     const changePrompts = {
         set:{
             newNote : {
-                simple : (tabIndex:number,noteIndex:number)=>{
+                simple : (tabIndex:number,noteIndex:number,instrument:instrumentProperty)=>{
                     const promptInfoNew = {...promptInfo};
-                    promptInfoNew.notePrompt = {tabIndex,noteIndex};
+                    promptInfoNew.notePrompt = {tabIndex,noteIndex,instrument};
                     setPromptInfo(promptInfoNew);
                     setActivePrompt('newNoteSimple');
                 },
-                fretboard : (tabIndex:number,noteIndex:number)=>{
+                fretboard : (tabIndex:number,noteIndex:number,instrument:instrumentProperty)=>{
                     const promptInfoNew = {...promptInfo};
-                    promptInfoNew.notePrompt = {tabIndex,noteIndex};
+                    promptInfoNew.notePrompt = {tabIndex,noteIndex,instrument};
                     setPromptInfo(promptInfoNew);
                     setActivePrompt('newNoteFretboard');
                 },

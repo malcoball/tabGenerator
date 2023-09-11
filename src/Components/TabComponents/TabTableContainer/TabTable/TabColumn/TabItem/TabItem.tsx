@@ -2,12 +2,14 @@ import { useContext} from "react";
 import { AppContext } from "../../../../../../Data/AppContent";
 import { note, noteLengthDisplays, noteLengths } from "../../../../../../Data/@types/types";
 import { conversions } from "../../../../../../Data/StaticFunctions";
+import { instrumentProperty } from "../../../../../../Data/Music/Instruments";
 
 type TabItemProps = {
     value : string ,
     state : "playing" | "played" | "notPlayed",
     tabIndex : number,
     noteIndex : number,
+    instrumentName : instrumentProperty,
     shortestLength : noteLengths,
     showNoteLengths : noteLengthDisplays,
     noteLength : noteLengths,
@@ -15,7 +17,7 @@ type TabItemProps = {
 }
 
 const TabItem = (props:TabItemProps)=>{
-    const {value,state,tabIndex,noteIndex,noteLength,shortestLength} = props;
+    const {value,state,tabIndex,noteIndex,noteLength,shortestLength,instrumentName} = props;
     const context = useContext(AppContext);
     if (!context){
         throw new Error(
@@ -25,7 +27,7 @@ const TabItem = (props:TabItemProps)=>{
     
     const handleClick = ()=>{
         // context.changePrompts.set.newNote.simple(tabIndex,noteIndex);
-        context.changePrompts.set.newNote.fretboard(tabIndex,noteIndex);
+        context.changePrompts.set.newNote.fretboard(tabIndex,noteIndex,instrumentName);
 
     }
 

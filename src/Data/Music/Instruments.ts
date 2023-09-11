@@ -10,20 +10,37 @@ type InstrumentsProperties = {
         all :(instrumentName : instrumentProperty)=>any
     },
 }
-type instrumentProperty = keyof typeof Instruments;
+export type instrumentProperty = keyof typeof Instruments;
 
 export const Instruments : InstrumentsProperties = {
     bass : {
         name:'bass',
         breakPoints : [0,5,10,15],
         stringNames : ['E','A','D','G'],
-        rootNote : 'E2'
+        stringAmount : 4,
+        fretAmount : 26,
+        rootNote : 'E0',
+        fretBoard : {
+            widths : {
+                start : 92, change : -2.5
+            },
+            stringIds : ['BassE','BassA','BassD','BassG']
+        },
+
     },
     guitar : {
         name:'guitar',
         breakPoints : [0,5,10,15,19,24],
         stringNames : ['E','A','D','G','B','e'],
-        rootNote : 'E3'
+        stringAmount : 6,
+        fretAmount : 26,
+        rootNote : 'E0',
+        fretBoard : {
+            widths : {
+                start : 92, change : -2.5
+            },
+            stringIds : ['GuitarE','GuitarA','GuitarD','GuitarG','GuitarB','Guitare']
+        },
     },
     getSingle : {
         breakPoints : (instrumentName : instrumentProperty)=>{
