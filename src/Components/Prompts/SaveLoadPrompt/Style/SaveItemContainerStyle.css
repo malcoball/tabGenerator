@@ -1,0 +1,26 @@
+.saveItemContainer {
+  height: 75%;
+  width: 90%;
+  margin: auto;
+  margin-top: 8px;
+  border: 2px solid rgba(0, 0, 0, 0.25);
+  border-radius: 24px 24px 12px 12px;
+  overflow-y: auto;
+}
+.saveItemContainer .savedItem {
+  width: 90%;
+  margin: auto;
+  padding: 12px 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.saveItemContainer .savedItem .value {
+  text-align: left;
+}
+.saveItemContainer .savedItem:nth-of-type(1) {
+  border-radius: 12px 12px 0px 0px;
+}
+.saveItemContainer .savedItem:last-of-type {
+  border-radius: 0px 0px 12px 12px;
+}/*# sourceMappingURL=SaveItemContainerStyle.css.map */

@@ -28,6 +28,7 @@ const TabItem = (props:TabItemProps)=>{
     const handleClick = ()=>{
         // context.changePrompts.set.newNote.simple(tabIndex,noteIndex);
         context.changePrompts.set.newNote.fretboard(tabIndex,noteIndex,instrumentName);
+        console.log(`Instrument name : ${instrumentName}`);
 
     }
 

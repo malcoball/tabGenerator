@@ -1,8 +1,16 @@
 .promptSelect{
-    width:96px;
-    height:192px;
+    // width:96px;
+    width:max-content;
+    height:max-content;
+    // height:192px;
     position:absolute;
-    border:1px solid red;
-    left:200%;
+    border:2px solid black;
+    background-color: #0000001c;
+    left:64px;
     top:168px;
+    border-radius: 4px;
+    div{
+        // background-color: #000000;
+        padding: 4px;
+    }
 }

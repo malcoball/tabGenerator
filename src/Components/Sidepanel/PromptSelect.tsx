@@ -6,7 +6,7 @@ type props = {
     closeFunc:()=>void
 }
 
-const PromptSelect = (props:props)=>{
+const PromptSelect = (props:props)=>{ 
     const context = useContext(AppContext);
     if (!context){throw new Error('This cant be used here lulz');}
     
@@ -20,8 +20,8 @@ const PromptSelect = (props:props)=>{
     
     return(
         <div className='promptSelect'>
-            <div className="clickable" onClick={()=>{btnClick("newTab")}}>New Tab?</div>
-            <div className="clickable" onClick={()=>{btnClick("newEffect")}}>New Effect?</div>
+            <div className="clickable col1 col2H bgCol5" onClick={()=>{btnClick("newTab")}}>New Tab?</div>
+            <div className="clickable col1 col2H bgCol5" onClick={()=>{btnClick("newEffect")}}>New Effect?</div>
         </div>
     )
 }

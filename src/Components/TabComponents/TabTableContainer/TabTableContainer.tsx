@@ -17,7 +17,6 @@ const TabTableContainer = ()=>{
     const tables = context.tabs.map((item,index)=><TabTable key={index} tab={item}/>)
     return (
         <div id="TabTableContainer">
-            <h2>I hold all of these little tabs</h2>
             <div id="tables">
                 {tables}
             </div>

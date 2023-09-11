@@ -8,6 +8,7 @@ import './NewNotePromptStyle/NewNoteFretboardStyle.css';
 import NotePromptShowNote from './NotePromptShowNote';
 import { AppContext } from '../../../Data/AppContent';
 import {getFretMarkers } from './FretboardExtras/FretboardExtras';
+import PromptBehind from '../PromptBehind';
 
 const FretDots = (props:{markerAmount : number})=>{
     const Markers = [];
@@ -32,7 +33,8 @@ const Fret = (props:{width:number,value:number,fretNumber:number,onClick:(value:
         setShowPrompt(false);
     }
     let className = props.active ? 'active' : '';
-    const stringClass = props.stringName.charAt(0) === "G" ? 'guitarString' : 'bassString';
+    if (fretNumber === 0) className += 'openString'
+    const stringClass = stringName.charAt(0) === "G" ? 'guitarString' : 'bassString';
     return (
         <div style={{width: width}} className={`fret ${className}`} onMouseLeave={offHover} onMouseEnter={onHover} onClick={()=>{onClick(value)}}>
             <div className="fretMarker">
@@ -71,7 +73,6 @@ const Frets = (props:{fretAmount: number,stringName:string,breakPoint:number})=>
 }
 
 const String = (props:{stringName:string,fretAmount:number,breakPoint:number})=>{
-    // console.log(`stringNames : ${props.stringName}`);
     const stringClass = props.stringName.charAt(0) === "G" ? 'guitarStrings' : 'bassStrings';
     return (
         <div className={`string ${stringClass}`}>
@@ -116,7 +117,7 @@ const NeckHeader = ()=>{
     if (!context) throw Error("duh");
     const StringName = context.data.instrument.stringNames.map((name,int)=><span key={"neck"+int}>{name}</span>)
     return (
-        <div className='headerContainer'>
+        <div className={`headerContainer ${context.data.instrument.name}`}>
             {StringName}
         </div>
     )
@@ -125,7 +126,9 @@ const NewNotePromptFretboard = ()=>{
     const context = useContext(AppContext);
     if (!context) throw Error('not loaded');
     const contextData = context.getPrompts.newNote();
-    const instrument : instrumentProperty = 'guitar'; // This should be put in the context data when everything works.
+    let instrument: instrumentProperty = contextData.instrument === 'bass' ? 'bass' : 'guitar'; 
+
+    // const instrument : instrumentProperty = contextData.instrument; // This should be put in the context data when everything works.
     const [data,setData] = useState<ContextData>({
         highlightedNote : -1,
         selectedNote : contextData.noteValue.note,

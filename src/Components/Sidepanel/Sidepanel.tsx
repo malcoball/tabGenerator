@@ -19,7 +19,7 @@ const Sidepanel = ()=>{
             <div className="iconContainer bgCol6"><BtnIcon icon="guitarHead"/></div>
             <div className="iconContainer bgCol6"><BtnIcon onClick={newBtnClick} icon="add"/></div>
             <div className="iconContainer bgCol6"><BtnIcon onClick={loadBtnClick} icon="save"/></div>
-            <div className="iconContainer bgCol6"><BtnIcon icon="switch"/></div>
+            {/* <div className="iconContainer bgCol6"><BtnIcon icon="switch"/></div> */}
         </div>
         {/* {showPrompt && <NewTabPrompt closeFunc={()=>{setShowPrompt(false)}}/>} */}
         {/* {showPrompt && <NewEffectsPrompt closeFunc={()=>{setShowPrompt(false)}}/>} */}

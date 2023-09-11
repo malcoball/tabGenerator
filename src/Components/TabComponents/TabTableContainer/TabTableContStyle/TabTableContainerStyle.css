@@ -1,5 +1,8 @@
 #TabTableContainer {
+  padding-top: 96px;
+  padding-bottom: 24px;
   padding-inline: 36px;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.2);
 }
 #TabTableContainer #tables {
   display: grid;

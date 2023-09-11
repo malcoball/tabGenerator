@@ -70,7 +70,7 @@ const NewNotePromptSimple = ()=>{
                     />
             </div>
             <MultiSelectComponent title="yes" activeValues={noteLengths} values={noteLengthOptions} updateValues={noteLengthChange}/>
-            <button className='bgCol7 col2H col1 clickable' id='createButton' onClick={btnClick}>New Note</button>
+            <button className='bgCol7 col2H col1 clickable' id='createButton' onClick={btnClick}>Change note</button>
         </div>
     )
 }

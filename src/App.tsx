@@ -12,6 +12,7 @@ function App() {
       <AppContextProvider>
         <PromptController/>
         <Sidepanel/>
+        <h1 className='font1'>Tab Generator</h1>
         <TabTableContainer/>
       </AppContextProvider>
     </div>

@@ -1,7 +1,7 @@
 #newNotePromptFretboard {
   display: flex;
   position: fixed;
-  z-index: 4;
+  z-index: 5;
   left: 10vw;
   border: 2px solid black;
   width: -moz-max-content;
@@ -9,6 +9,7 @@
   height: -moz-max-content;
   height: max-content;
   color: black;
+  background-color: black;
   background-image: url("../../../../Assets/Images/Textures/Wooden1.png");
   background-position: center;
   background-repeat: no-repeat;
@@ -17,6 +18,14 @@
 #newNotePromptFretboard .headerContainer {
   display: flex;
   flex-direction: column-reverse;
+  visibility: hidden;
+  width: 2px;
+}
+#newNotePromptFretboard .headerContainer[class~=bass] {
+  height: 112px;
+}
+#newNotePromptFretboard .headerContainer[class~=guitar] {
+  height: 128px;
 }
 #newNotePromptFretboard .stringsContainer {
   position: relative;
@@ -47,6 +56,11 @@
   border-right-color: rgb(102, 102, 102);
   border-style: ridge;
 }
+#newNotePromptFretboard .stringsContainer .string .fret .fretMarker #OpenFret {
+  position: relative;
+  z-index: 4;
+  color: white;
+}
 #newNotePromptFretboard .stringsContainer .string .fret .stringMarker {
   position: relative;
   z-index: 2;
@@ -73,6 +87,9 @@
   border: 1px solid rgba(0, 0, 0, 0.5);
   border-radius: 4px;
   box-shadow: 0px 0px 2px black inset;
+}
+#newNotePromptFretboard .stringsContainer .string .openString {
+  background-color: rgba(0, 0, 0, 0.5);
 }
 #newNotePromptFretboard .stringsContainer .string .stringShadow {
   position: absolute;
@@ -121,16 +138,16 @@
   background: linear-gradient(180deg, rgb(210, 216, 218) 8%, rgb(120, 126, 126) 50%, rgb(139, 146, 147) 72%);
 }
 #newNotePromptFretboard #BassE {
-  height: 4px;
+  height: 5px;
 }
 #newNotePromptFretboard #BassA {
-  height: 3px;
+  height: 4px;
 }
 #newNotePromptFretboard #BassD {
-  height: 2px;
+  height: 3px;
 }
 #newNotePromptFretboard #BassG {
-  height: 2px;
+  height: 2.5px;
 }
 #newNotePromptFretboard #GuitarE {
   height: 4px;
@@ -148,5 +165,5 @@
   height: 2px;
 }
 #newNotePromptFretboard #Guitare {
-  height: 1px;
+  height: 2px;
 }/*# sourceMappingURL=NewNoteFretboardStyle.css.map */

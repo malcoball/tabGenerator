@@ -4,7 +4,6 @@ import './NewEffectsStyle/NewEffectPromptStyle.css';
 import EffectSettings from "../../Data/Tone/Effects/EffectSettings";
 import { effectName, effectType } from "../../Data/@types/types";
 import { AppContext } from "../../Data/AppContent";
-import BtnIcon from "../Icons/Buttons/BtnIcon";
 
 type dataType = {
     value : number []
@@ -89,7 +88,6 @@ const NewEffectsPrompt = ()=>{
                 <SingleEffect changeValue={changeValue} changeActive={changeActive} title="reverb"     value={values.reverb.value}/>
                 <SingleEffect changeValue={changeValue} changeActive={changeActive} title="tremolo"    value={values.tremolo.value}/>
             </section>
-            <BtnIcon className="cancelBtn" icon="cancel" onClick={()=>{context.changePrompts.close();}}/>
             
         </div>
     )

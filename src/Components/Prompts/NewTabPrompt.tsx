@@ -99,7 +99,6 @@ const NewTabPrompt = ()=>{
     return (
         <div id="newTabPrompt" className='borderCol6 promptBgCol1'>
             <textarea className='col1' id='Title' value={title} onChange={(event)=>{setTitle(event.target.value)}} placeholder='Enter Name'/>
-            <BtnIcon icon="remove" onClick={onCloseClick} className='closeBtn'/>
             <div className="midSection">
                 <div className="leftSection">
                     <SliderComponent title='Tempo' value={tempo} setValue={handleTempoChange} max={240}/>

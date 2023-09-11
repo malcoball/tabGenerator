@@ -1,13 +1,15 @@
 #newNotePromptFretboard{
     display:flex; 
     position:fixed;
-    z-index: 4;
+    z-index: 5;
     left:10vw;
     border: 2px solid black;
     width:max-content;
     height:max-content;
     color:black;
+    background-color: black;
     background-image: url('../../../../Assets/Images/Textures/Wooden1.png');
+    // background-image: url('../../../../Assets/Images/Textures/Metal1.jpg');
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -15,6 +17,14 @@
     .headerContainer{
         display:flex;
         flex-direction: column-reverse;
+        visibility: hidden;
+        width:2px;
+    }
+    .headerContainer[class~='bass']{
+        height:112px;
+    }
+    .headerContainer[class~='guitar']{
+        height:128px;
     }
     .stringsContainer{
         position:relative;
@@ -41,6 +51,10 @@
                     // outline-width: 0px 2px 0px 1px;
                     // outline-style: solid;
                     // outline-color: red;
+                    #OpenFret{
+                        position: relative; z-index: 4;
+                        color:white;
+                    }
                 }
                 .stringMarker{
                     position: relative;
@@ -66,6 +80,10 @@
                     box-shadow: 0px 0px 2px black inset;
                     // padding:4px;
                 }
+            }
+           
+            .openString{
+                background-color: rgba(0, 0, 0, 0.5);
             }
             .stringShadow{
                 position:absolute;
@@ -114,16 +132,16 @@
     }
     
     #BassE{
-        height:4px;
+        height:5px;
     }
     #BassA{
-        height:3px;
+        height:4px;
     }
     #BassD{
-        height:2px;
+        height:3px;
     }
     #BassG{
-        height:2px;
+        height:2.5px;
     }
     #GuitarE{
         height:4px;
@@ -141,7 +159,7 @@
         height:2px;
     }
     #Guitare{
-        height:1px;
+        height:2px;
     }
 }
 
