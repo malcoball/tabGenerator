@@ -40,7 +40,7 @@ const AppContextProvider: React.FC<Props> = ({children}) =>{
             scale:'aeolian',
             instrumentName : 'bass',
             tempo:120,
-            change:false
+            change:false,
         },
         {
             title:'Dueling Banjos',
@@ -60,7 +60,7 @@ const AppContextProvider: React.FC<Props> = ({children}) =>{
             scale:'aeolian',
             instrumentName : 'guitar',
             tempo:120,
-            change:false
+            change:false,
         },
         {
             title:'Jasmine',
@@ -77,7 +77,7 @@ const AppContextProvider: React.FC<Props> = ({children}) =>{
             scale:'aeolian',
             instrumentName : 'guitar',
             tempo:120,
-            change:false
+            change:false,
         },
     ])
     const [effects,setEffects] = React.useState<effectType[]>([
@@ -178,7 +178,7 @@ const AppContextProvider: React.FC<Props> = ({children}) =>{
             scale : 'aeolian',
             instrumentName:'bass',
             tempo: -1,
-            change: false
+            change: false,
         }
     })
     
@@ -243,6 +243,7 @@ const AppContextProvider: React.FC<Props> = ({children}) =>{
             setTabs(tabsNew);
         },
         create : (title:string,scale:scaleName,instrument:instrumentName,length:number,rootNote:number,octave:number,noteLengths:boolean[],deadNoteChance:number)=>{
+            const currentDate = new Date();
             const tabOut : tabType = {
                 tab : newTab(scale,length,rootNote,octave,noteLengths,deadNoteChance),
                 index : tabIndex,

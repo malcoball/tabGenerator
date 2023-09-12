@@ -207,3 +207,20 @@ export const getShortestNote = (notesIn:noteLengths[])=>{
     });
     return shortestLength;
 }
+export const keyMethods = {
+    fileKey : {
+        create : (title:string,type:'tab'|'effect')=>{
+            
+            const fileType = type === 'tab' ? '.tb' : '.et';
+            return title + fileType;
+        },
+        parse : (key : string)=>{
+            return key.slice(0,key.length-3);
+        },
+        getType : (key : string|null)=>{
+            if (key === null) return console.error("null innit");
+            const type = key.charAt(key.length) === 'b' ? 'tab' : 'effect';
+            return type;
+        }
+    }
+}

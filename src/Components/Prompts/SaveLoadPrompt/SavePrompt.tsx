@@ -10,6 +10,7 @@ const SavePrompt = (props:{type:'tab'|'effect'})=>{
     const data = context.getPrompts.saveInfo.tabInfo;
     const [saveName,setSaveName] = useState(data.title);
     const btnClick = ()=>{
+        data.title = saveName;
         SaveData.tabTo.localStorage(data,saveName);
         context.changePrompts.close();
     }
