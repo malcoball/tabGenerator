@@ -10,7 +10,6 @@ import Synths from "../../../../Data/Tone/Instruments/Synths/Synths";
 import BtnIcon from "../../../Icons/Buttons/BtnIcon";
 import TimingDisplayIcon from "../../../Icons/Other/TimingDisplayIcon";
 import MidSection from "./Sections/MidSection";
-import * as Tone from 'tone';
 interface TabTableProps {
     tab : tabType;
 }
