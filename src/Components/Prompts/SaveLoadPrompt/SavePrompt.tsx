@@ -1,4 +1,4 @@
-import {useState, useContext} from 'react';
+import {useState, useContext, useRef, useEffect, useMemo} from 'react';
 import LoadData from '../../../Data/SaveLoad/LoadData';
 import { AppContext } from '../../../Data/AppContent';
 import SaveData from '../../../Data/SaveLoad/SaveData';
@@ -10,35 +10,39 @@ const SavePrompt = (props:{type:'tab'|'effect'})=>{
     const context = useContext(AppContext);
     if (!context) throw Error("context not loaded");
     const data = context.getPrompts.saveInfo.tabInfo;
+    const saves = LoadData.localStorage.tab.getAll();
     const [saveName,setSaveName] = useState(data.title);
-    const btnClick = ()=>{
-        let saveExist = false;
-        const saves = LoadData.localStorage.tab.getAll();
-        saves.forEach(save => {
-            const parse = keyMethods.fileKey.parse(save);
-            if (parse === saveName){
-                saveExist = true;
-            }
-        })
-        if (saveExist !== false){
-            data.title = saveName;
-            SaveData.tabTo.localStorage(data,saveName);
-            context.changePrompts.close.standard();
-            console.log("push ye")
+    const [saveExist,setsaveExist] = useState(false);
+    
+    const saveBtnClick = ()=>{
+        if (saveExist){
+            console.error('save already exists, I told you this');
         } else {
-            console.log(`${data.title} already exists`)
+            saveData();
         }
-        // data.title = saveName;
-        // SaveData.tabTo.localStorage(data,saveName);
-        // context.changePrompts.close.standard();
     }
+    const overBtnClick = ()=>{
+        saveData();
+    }
+    const saveData = ()=>{
+        data.title = saveName;
+        SaveData.tabTo.localStorage(data,saveName);
+        context.changePrompts.close.standard();
+    }
+    useEffect(()=>{
+        const test = keyMethods.fileKey.create(saveName,'tab');
+        let match = (saves.includes(test));
+        setsaveExist(match);
+    },[saveName])
     return (
         <div className="savePrompt bgCol2">
-            <SavedItemContainer className='top' setState={setSaveName}/>
+            <SavedItemContainer className='top' saves={saves} setState={setSaveName}/>
             <section className="bottom">
                 <span>Save as : </span>
                 <input type="text" value={saveName} onChange={(event)=>{setSaveName(event.target.value)}}/>
-                <button onClick={btnClick}>Save</button>
+                {saveExist && <span>Name already exists</span>}
+                <button onClick={saveBtnClick}>Save</button>
+                <button onClick={overBtnClick}>Override</button>
             </section>
             
         </div>

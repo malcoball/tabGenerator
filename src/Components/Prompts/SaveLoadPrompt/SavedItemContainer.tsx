@@ -28,8 +28,8 @@ const SavedItem = (props:{value:string,setState:Function,change:Function,index:n
         <div  className={containerClass}><span onClick={onClick} className={singleClass}>{value} </span><BtnIcon onClick={deleteItem} icon="remove"/></div>
     )
 }
-const SavedItemContainer = (props:{className:string,setState:Function})=>{
-    const saves = LoadData.localStorage.tab.getAll();
+const SavedItemContainer = (props:{className:string,setState:Function,saves:string[]|null})=>{
+    const saves = props.saves === null? LoadData.localStorage.tab.getAll() : props.saves;
     const [change,setChange] = useState(true);
     const onChange = ()=>{
         setChange(!change);
@@ -46,6 +46,7 @@ const SavedItemContainer = (props:{className:string,setState:Function})=>{
     )
 }
 SavedItemContainer.defaultProps = {
-    className : ""
+    className : "",
+    saves : null
 }
 export default SavedItemContainer;
