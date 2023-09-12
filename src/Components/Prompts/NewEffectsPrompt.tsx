@@ -72,7 +72,7 @@ const NewEffectsPrompt = ()=>{
         }
 
         context.changeEffects.add(newEffect);
-        context.changePrompts.close();
+        context.changePrompts.close.standard();
     }
     return (
         <div className="effectsPrompt bgCol6">

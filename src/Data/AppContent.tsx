@@ -3,6 +3,7 @@ import * as Tone from 'tone';
 import { tabType, AppContextType, note, instrumentName, scaleName, effectType, promptTypes } from './@types/types';
 import { newTab } from './TabGeneration/TabGeneration';
 import { instrumentProperty } from './Music/Instruments';
+import LoadData from './SaveLoad/LoadData';
 
 interface Props {
     children : React.ReactNode;
@@ -243,7 +244,6 @@ const AppContextProvider: React.FC<Props> = ({children}) =>{
             setTabs(tabsNew);
         },
         create : (title:string,scale:scaleName,instrument:instrumentName,length:number,rootNote:number,octave:number,noteLengths:boolean[],deadNoteChance:number)=>{
-            const currentDate = new Date();
             const tabOut : tabType = {
                 tab : newTab(scale,length,rootNote,octave,noteLengths,deadNoteChance),
                 index : tabIndex,
@@ -384,8 +384,16 @@ const AppContextProvider: React.FC<Props> = ({children}) =>{
             effect : ()=>{setActivePrompt('newEffect')},
             tab : ()=>{setActivePrompt('newTab')}
         },
-        close : ()=>{
-            setActivePrompt(null);
+
+        close: {
+            standard : ()=>{setActivePrompt(null)},
+            loadPrompt : (key : string)=>{
+                const tab = LoadData.localStorage.tab.loadSingle(key);
+                if (tab === null) return console.error(`${tab} wasn't found lulz`);
+                
+                changeTabs.add(promptInfo.savePrompt);
+                setActivePrompt(null);
+            }
         }
     }
     return (

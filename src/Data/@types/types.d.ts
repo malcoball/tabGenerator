@@ -125,7 +125,11 @@ export type AppContextType = {
         // newNote:{
         //     simple:(notePromptValues : {noteValue:note,tabIndex:number,noteIndex:number})=>void
         // }
-        close :()=>void
+        // close :()=>void
+        close : {
+            standard : ()=>void,
+            loadPrompt : (key : string)=>void
+        }
     };
 }
 export type promptTypes =null | 'saveTab' | 'saveEffect' | 'newTab' | 'newEffect' | 'newNoteSimple' | 'newNoteFretboard' | 'load';

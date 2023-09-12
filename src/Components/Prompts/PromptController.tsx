@@ -21,7 +21,7 @@ const PromptController = ()=>{
             {activePrompt === 'newEffect' && <NewEffectsPrompt/>}
             {activePrompt === 'newNoteFretboard' && <NewNotePromptFretboard/>}
             {activePrompt === 'newTab' && <NewTabPrompt/>}
-            {activePrompt !== null && <PromptBehind closeFunc={context.changePrompts.close}/>}
+            {activePrompt !== null && <PromptBehind closeFunc={context.changePrompts.close.standard}/>}
         </>
     )
 }

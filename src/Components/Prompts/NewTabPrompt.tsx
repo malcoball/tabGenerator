@@ -90,7 +90,7 @@ const NewTabPrompt = ()=>{
       };
 
     const onCloseClick = ()=>{
-        context.changePrompts.close();
+        context.changePrompts.close.standard();
     }
     const handleCreateButton = ()=>{
         context.changeTabs.create(title,scale,instrumentName,length,rootnote,octave,noteLengths,deadNotes);

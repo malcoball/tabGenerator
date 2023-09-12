@@ -154,7 +154,8 @@ const NewNotePromptFretboard = ()=>{
     const updateTab = ()=>{
         const noteOut = data.selectedNote
         context.changeTabs.singleNote.change(contextData.tabIndex,contextData.noteIndex,{note:noteOut,length:data.selectedLength})
-        context.changePrompts.close();
+        context.changePrompts.close.standard();
+
     }
     return(
         <div id="newNotePromptFretboard">
