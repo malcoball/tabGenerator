@@ -16,6 +16,7 @@
   row-gap: 32px;
 }
 #Sidepanel .iconsContainer .iconContainer {
+  position: relative;
   width: 64px;
   height: 64px;
   border-radius: 0px 16px 16px 0px;

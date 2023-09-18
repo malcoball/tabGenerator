@@ -17,7 +17,8 @@ const PromptController = ()=>{
         <>
             {activePrompt === 'saveTab' && <SavePrompt type="tab"/>}
             {activePrompt === 'saveEffect' && <SavePrompt type="effect"/>}
-            {activePrompt === 'load' && <LoadPrompt/>}
+            {activePrompt === 'loadTab' && <LoadPrompt type='tab'/>}
+            {activePrompt === 'loadEffect' && <LoadPrompt type='effect'/>}
             {activePrompt === 'newEffect' && <NewEffectsPrompt/>}
             {activePrompt === 'newNoteFretboard' && <NewNotePromptFretboard/>}
             {activePrompt === 'newTab' && <NewTabPrompt/>}

@@ -18,8 +18,23 @@
         display:flex;
         flex-direction: column;
         z-index:1;
-        #dropDownItem{
-            padding:8px 0;
+        .dropDownItemContainer{
+            position:relative;
+            display:grid;
+            grid-template-columns: 80% auto;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 0px 18px ;
+            #dropDownItem{
+                padding:8px 0;
+            }
+            .buttonContainer{
+                display:flex; flex-direction: column;
+                justify-content: space-evenly;
+                position: absolute;
+                right:6px; top:0px;
+                height:100%;
+            }
         }
     }
     .downArrow{

@@ -16,8 +16,8 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import {GuitarHeadIcon} from './CustomBtns';
 
 import './Styles/BtnIcons.css';
-type iconTypes = 'play' | 'cancel' | 'save' | 'stop' | 'loop' | 'add' | 'remove' | 'pause' | 'settings'
-| 'guitarHead' | 'switch' |'arrowDown' | "arrowBack" | "arrowFoward";
+export type iconTypes = 'play' | 'cancel' | 'save' | 'stop' | 'loop' | 'add' | 'remove' | 'pause' | 'settings'
+| 'guitarHead' | 'switch' |'arrowDown' | "arrowBack" | "arrowFoward" | 'null';
 type props = {
     onClick : any, // couldn't get multiple functions to work
     icon : iconTypes;
@@ -26,7 +26,7 @@ type props = {
     active : boolean;
 }
 const getIcon = (iconIn:iconTypes|null)=>{
-    if (iconIn === null) return null;
+    if (iconIn === null || iconIn ==='null') return null;
     switch (iconIn){
         case 'play': return <PlayCircleIcon/>;
         case 'cancel': return <CloseIcon/>;

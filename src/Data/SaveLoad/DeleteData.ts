@@ -7,7 +7,7 @@ const DeleteData = {
                 localStorage.removeItem(key);
             },
             byTitle : (title:string)=>{
-                const key = LoadData.localStorage.tab.getKey.byTitle(title);
+                const key = LoadData.localStorage.getKey.byTitle(title);
                 console.log("key : ",key);
                 key !== null ? 
                     DeleteData.localStorage.tab.byKey(key) : 

@@ -24,8 +24,25 @@
   flex-direction: column;
   z-index: 1;
 }
-#dropDownContainer #dropDownList #dropDownItem {
+#dropDownContainer #dropDownList .dropDownItemContainer {
+  position: relative;
+  display: grid;
+  grid-template-columns: 80% auto;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 0px 18px;
+}
+#dropDownContainer #dropDownList .dropDownItemContainer #dropDownItem {
   padding: 8px 0;
+}
+#dropDownContainer #dropDownList .dropDownItemContainer .buttonContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  position: absolute;
+  right: 6px;
+  top: 0px;
+  height: 100%;
 }
 #dropDownContainer .downArrow {
   transition: 0.25s;

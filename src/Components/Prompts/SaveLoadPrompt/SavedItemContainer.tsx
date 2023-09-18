@@ -28,19 +28,24 @@ const SavedItem = (props:{value:string,setState:Function,change:Function,index:n
         <div  className={containerClass}><span onClick={onClick} className={singleClass}>{value} </span><BtnIcon onClick={deleteItem} icon="remove"/></div>
     )
 }
-const SavedItemContainer = (props:{className:string,setState:Function,saves:string[]|null})=>{
-    const saves = props.saves === null? LoadData.localStorage.tab.getAll() : props.saves;
+const SavedItemContainer = (props:{className:string,setState:Function,saves:string[]|null,dataType:'tab' | 'effect'})=>{
+    // const saves = props.saves === null? LoadData.localStorage.tab.getAll() : props.saves;
+    let saves:any[] = [];
+    if (props.saves === null) {
+        saves = props.dataType === 'tab' ? LoadData.localStorage.tab.getAll() : LoadData.localStorage.effect.getAll();
+    } else {
+        saves = props.saves;
+    }
     const [change,setChange] = useState(true);
     const onChange = ()=>{
         setChange(!change);
     }
-    // const Items = saves.map((item,index)=><SavedItem index={index} value={item} setState={props.setState}/>)
     const Items = useMemo(()=>{
         return saves.map((item,index)=><SavedItem change={onChange} index={index} value={item} setState={props.setState}/>)
-    },[change])
+    },[change,props.saves])
     return (
         <section className={`saveItemContainer bgCol1 font1 ${props.className}`}>
-            <h4>Type of what data's being handled</h4>
+            <h4>{props.dataType} saved data</h4>
             {Items}
         </section>
     )

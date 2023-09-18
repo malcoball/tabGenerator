@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as Tone from 'tone';
-import { tabType, AppContextType, note, instrumentName, scaleName, effectType, promptTypes } from './@types/types';
+import { tabType, note, instrumentName, scaleName, effectType, promptTypes } from './@types/types';
+import { AppContextType } from './@types/contextType';
 import { newTab } from './TabGeneration/TabGeneration';
 import { instrumentProperty } from './Music/Instruments';
 import LoadData from './SaveLoad/LoadData';
@@ -14,7 +15,14 @@ type promptInfo = {
         noteIndex : number,
         instrument : instrumentProperty
     },
-    savePrompt : tabType // sort pls thnx
+    savePrompt : {
+        tab : tabType,
+        // effect : effectType
+        effect : {
+            data : effectType,
+            mode : 'new' | 'replace' 
+        }
+    }
 }
 
 
@@ -84,22 +92,38 @@ const AppContextProvider: React.FC<Props> = ({children}) =>{
     const [effects,setEffects] = React.useState<effectType[]>([
         {
             index : 0,
-            title: 'off',
+            title: 'New Effect',
             distortion:{
-                active : false,value : [0.3],type:"distortion"
+                active : false,value : [0],type:"distortion"
             },
             reverb: {
-                active : false,value : [0.3],type:"reverb"
+                active : false,value : [0],type:"reverb"
             },
             tremolo: {
-                active : false,value : [0.3],type:"tremolo"
+                active : false,value : [0],type:"tremolo"
             },
             eq: {
-                active : false,value : [0.3],type:"eq"
+                active : false,value : [0],type:"eq"
             },
         },
         {
             index : 1,
+            title: 'Add Effect',
+            distortion:{
+                active : false,value : [0],type:"distortion"
+            },
+            reverb: {
+                active : false,value : [0],type:"reverb"
+            },
+            tremolo: {
+                active : false,value : [0],type:"tremolo"
+            },
+            eq: {
+                active : false,value : [0],type:"eq"
+            },
+        },
+        {
+            index : 2,
             title: 'distortion',
             distortion:{
                 active : true,value : [0.5],type:"distortion"
@@ -115,13 +139,13 @@ const AppContextProvider: React.FC<Props> = ({children}) =>{
             },
         },
         {
-            index : 2,
+            index : 3,
             title: 'reverb',
             distortion:{
                 active : false,value : [0.8],type:"distortion"
             },
             reverb: {
-                active : true,value : [0.6],type:"reverb"
+                active : true,value : [0.6,0.8],type:"reverb"
             },
             tremolo: {
                 active : false,value : [0.1],type:"tremolo"
@@ -131,7 +155,7 @@ const AppContextProvider: React.FC<Props> = ({children}) =>{
             },
         },
         {
-            index : 3,
+            index : 4,
             title: 'tremolo',
             distortion:{
                 active : false,value : [0.8],type:"distortion"
@@ -140,14 +164,14 @@ const AppContextProvider: React.FC<Props> = ({children}) =>{
                 active : false,value : [0.6],type:"reverb"
             },
             tremolo: {
-                active : true,value : [9,0.75],type:"tremolo"
+                active : true,value : [9,0.7],type:"tremolo"
             },
             eq: {
                 active : false,value : [0.3],type:"eq"
             },
         },
         {
-            index : 4,
+            index : 5,
             title: 'crusher',
             distortion:{
                 active : false,value : [0.8],type:"distortion"
@@ -167,19 +191,39 @@ const AppContextProvider: React.FC<Props> = ({children}) =>{
     const [activePrompt,setActivePrompt] = React.useState<promptTypes>(null);
     const [promptInfo,setPromptInfo] = React.useState<promptInfo>({
         notePrompt : {
-            // noteValue : {note : "",length:'32n'},
             instrument : 'bass',
             tabIndex : -1,
             noteIndex: -1
         },
         savePrompt : {
-            title: 'not set',
-            index:-1,
-            tab : [],
-            scale : 'aeolian',
-            instrumentName:'bass',
-            tempo: -1,
-            change: false,
+            tab : {
+                title: 'not set',
+                index:-1,
+                tab : [],
+                scale : 'aeolian',
+                instrumentName:'bass',
+                tempo: -1,
+                change: false,
+            },
+            effect : {
+                mode : 'new',
+                data : {
+                    index : -1,
+                    title: 'testing yo',
+                    distortion:{
+                        active : false,value : [0],type:"distortion"
+                    },
+                    reverb: {
+                        active : false,value : [0,0],type:"reverb"
+                    },
+                    tremolo: {
+                        active : false,value : [0,0],type:"tremolo"
+                    },
+                    eq: {
+                        active : false,value : [0,0,0],type:"eq"
+                    },
+                }
+            },
         }
     })
     
@@ -343,7 +387,25 @@ const AppContextProvider: React.FC<Props> = ({children}) =>{
             effectNew.index = effectIndex;
             setEffects([...effects,effectNew]);
             setEffectIndex(effectIndex+1);
+        },
+        remove : (effectIndex:number)=>{
+            let effectsNew = [...effects];
+            effectsNew = effectsNew.filter(item => {
+                // item.change = !item.change;
+                return item.index !== effectIndex
+            });
+            setEffects(effectsNew);
+        },
+        replace : (effectIn:effectType)=>{
+            // const out = [];
+            const out = [...effects];
+            effects.forEach((item,ind)=>{
+                if (item.index === effectIn.index) out[ind] = effectIn; 
+                // item.index !== index ? out.push(item) : out.push(effectIn);
+            })
+            setEffects(out);
         }
+        
     }
     const getPrompts = {
         active : activePrompt,
@@ -353,7 +415,8 @@ const AppContextProvider: React.FC<Props> = ({children}) =>{
             return {tabIndex,noteIndex,noteValue,instrument};
         },
         saveInfo : {
-            tabInfo : promptInfo.savePrompt
+            tabInfo : promptInfo.savePrompt.tab,
+            effectInfo : promptInfo.savePrompt.effect
         }
     }
     const changePrompts = {
@@ -372,16 +435,60 @@ const AppContextProvider: React.FC<Props> = ({children}) =>{
                     setActivePrompt('newNoteFretboard');
                 },
             },
-            save : (tabIndex:number)=>{
-                const promptInfoNew = {...promptInfo};
-                promptInfoNew.savePrompt = getTabs.single.full(tabIndex);
-                setPromptInfo(promptInfoNew);
-                setActivePrompt('saveTab')
+            save :{
+                tab : (tabIndex:number)=>{
+                    const promptInfoNew = {...promptInfo};
+                    promptInfoNew.savePrompt.tab = getTabs.single.full(tabIndex);
+                    setPromptInfo(promptInfoNew);
+                    setActivePrompt('saveTab')
+                },
+                effect : {
+                    byIndex : (effectIndex:number)=>{
+                        const effect = getEffects.single.byIndex(effectIndex);
+                        changePrompts.set.save.effect.byInput(effect);
+                        // console.error("function hasn't been made yet");
+                    },
+                    byInput : (effectIn:effectType)=>{
+                        const promptInfoNew = {...promptInfo};
+                        promptInfoNew.savePrompt.effect.data = effectIn;
+                        setPromptInfo(promptInfoNew);
+                        setActivePrompt('saveEffect');
+                    },
+                    reset: ()=>{
+                        const promptInfoNew = {...promptInfo};
+                        promptInfoNew.savePrompt.effect.data = {
+                            index : -1,
+                            title: 'testing yo',
+                            distortion:{
+                                active : false,value : [0],type:"distortion"
+                            },
+                            reverb: {
+                                active : false,value : [0,0],type:"reverb"
+                            },
+                            tremolo: {
+                                active : false,value : [0,0],type:"tremolo"
+                            },
+                            eq: {
+                                active : false,value : [0,0,0],type:"eq"
+                            },
+                        }
+                        setPromptInfo(promptInfoNew);
+                    },
+                    changeMode : (mode : 'new' | 'replace' )=>{
+                        const promptInfoNew = {...promptInfo};
+                        promptInfoNew.savePrompt.effect.mode = mode;
+                        setPromptInfo(promptInfoNew);
+                    }
+                }
             },
-            load : ()=>{
-                setActivePrompt('load')
+            load : {
+                tab : ()=>{setActivePrompt('loadTab')},
+                effect : ()=>{setActivePrompt('loadEffect')},
             },
-            effect : ()=>{setActivePrompt('newEffect')},
+            effect : (mode:'new' | 'replace')=>{
+                changePrompts.set.save.effect.changeMode(mode);
+                setActivePrompt('newEffect');
+            },
             tab : ()=>{setActivePrompt('newTab')}
         },
 
@@ -391,7 +498,7 @@ const AppContextProvider: React.FC<Props> = ({children}) =>{
                 const tab = LoadData.localStorage.tab.loadSingle(key);
                 if (tab === null) return console.error(`${tab} wasn't found lulz`);
                 
-                changeTabs.add(promptInfo.savePrompt);
+                changeTabs.add(promptInfo.savePrompt.tab);
                 setActivePrompt(null);
             }
         }

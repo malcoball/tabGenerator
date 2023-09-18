@@ -34,7 +34,7 @@ const SynthChangeDropDown = (props:props)=>{
         props.stateChange(output);
     }
     return (
-        <DropDown className={props.className} selectedOption={props.activeSynth} options={props.synthNames} onChangeFunc={dropDownSynthChange}/>
+        <DropDown type='.syn' className={props.className} selectedOption={props.activeSynth} options={props.synthNames} onChangeFunc={dropDownSynthChange}/>
 
     )
 }

@@ -14,10 +14,15 @@ type props = {
 }
 const DataSection = (props:props)=>{
     const {value,title,changeValue,settings} = props;
-    const Sliders = value.map((item,index)=>
-        <Slider className="slider" value={item} step={settings[index].steps}
-        min={settings[index].min} max={settings[index].max} onChange={(event,value)=>{changeValue(event,value,index)}}/>
+    const Sliders = settings.map((item,index)=>{
+           const currentValue = value[index];
+            return <Slider className="slider" value={currentValue} step={settings[index].steps}
+            min={settings[index].min} max={settings[index].max} onChange={(event,value)=>{changeValue(event,value,index)}}/>}
     )
+    // const Sliders = value.map((item,index)=>
+    //     <Slider className="slider" value={item} step={settings[index].steps}
+    //     min={settings[index].min} max={settings[index].max} onChange={(event,value)=>{changeValue(event,value,index)}}/>
+    // )
     const DataSection = value.map((item,index)=>{
         return <div className="dataSection">
             <span>{item}</span>

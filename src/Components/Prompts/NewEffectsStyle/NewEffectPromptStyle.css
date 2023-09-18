@@ -1,15 +1,14 @@
 .effectsPrompt {
   display: grid;
-  width: -moz-max-content;
-  width: max-content;
+  width: 966px;
   justify-content: space-around;
-  grid-template-columns: auto 20% auto;
+  grid-template-columns: auto 50% auto;
   border: 1px solid black;
   border-radius: 32px 32px 8px 8px;
   position: fixed;
   padding: 16px;
   z-index: 4;
-  left: 96px;
+  left: 483px;
   top: 32px;
   box-shadow: 16px 12px 16px 8px rgba(255, 255, 255, 0.1) inset;
 }
@@ -18,8 +17,32 @@
 }
 .effectsPrompt .midSection {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+.effectsPrompt .midSection .divider {
+  height: 32px;
+}
+.effectsPrompt .midSection .buttonContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.effectsPrompt .midSection .buttonContainer button {
+  width: 60%;
+  font-size: 18px;
+  height: 56px;
+  border-color: inherit;
+  border-top-width: 0px;
+  margin: 0px 32px;
+  cursor: pointer;
+}
+.effectsPrompt .midSection .buttonContainer button:nth-of-type(1) {
+  border-radius: 16px 16px 0 0;
+}
+.effectsPrompt .midSection .buttonContainer button:nth-of-type(2) {
+  border-radius: 0 0 16px 16px;
 }
 .effectsPrompt .midSection input {
   background: none;
@@ -29,16 +52,5 @@
   border-color: black;
   border-style: solid;
   outline: none;
-}
-.effectsPrompt .midSection button {
-  position: absolute;
-  left: 20%;
-  bottom: -70px;
-  border-radius: 0 0 16px 16px;
-  width: 60%;
-  font-size: 18px;
-  height: 56px;
-  margin-bottom: 12px;
-  border-color: inherit;
-  border-top-width: 0px;
+  width: 80%;
 }/*# sourceMappingURL=NewEffectPromptStyle.css.map */

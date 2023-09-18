@@ -49,7 +49,7 @@ const TabTable = (props:TabTableProps)=>{
     const [tempo,setTempo] = useState(props.tab.tempo);
     const [noteLengthDisplay,setNoteLengthDisplay] =useState<noteLengthDisplays>("compressed");
     const [synth,setSynth] = useState<synthName>("Synth");
-    const [effectName,setEffectName] = useState('off');
+    const [effectName,setEffectName] = useState('No Effect');
     const synthNames = Synths.getAllNames();
     const noteColors = {
         primaryColor    : 'col10',
@@ -96,7 +96,7 @@ const TabTable = (props:TabTableProps)=>{
         context.changeTabs.remove(index);
     }
     const saveBtnFunc = ()=>{
-        context.changePrompts.set.save(index);
+        context.changePrompts.set.save.tab(index);
     }
 
     // All for playing the tab
@@ -177,7 +177,24 @@ const TabTable = (props:TabTableProps)=>{
         setNoteLengthDisplay(output);
     }
     const dropDownEffectChange = (valueIn:string)=>{
-        setEffectName(valueIn);
+        const valueLower = valueIn.toLocaleLowerCase();
+        switch(valueLower){
+            case 'new effect' : 
+                context.changePrompts.set.effect('new');
+                break;
+            case 'add effect' :
+                // treat
+                console.log("add an effect pls");
+                break;
+            default : 
+                setEffectName(valueIn);
+                break;
+        } 
+        // if (valueIn.toLocaleLowerCase() === "new effect"){
+        //     context.changePrompts.set.effect();
+        // } else {
+        //     setEffectName(valueIn);
+        // }
     }
 
 

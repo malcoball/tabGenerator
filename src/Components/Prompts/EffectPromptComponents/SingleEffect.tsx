@@ -7,7 +7,7 @@ import EffectSettings, { singleSettings } from "../../../Data/Tone/Effects/Effec
 
 type props = {
     title: effectName,
-    value : number[]
+    value : {gain:number[],activeInp:boolean},
     // value : {value:{name:string,amount:number,min: number, max: number}[]},
     // active:boolean,
     changeValue : (target: string, value: number, index:number) => void,
@@ -16,8 +16,9 @@ type props = {
 
 const SingleEffect = (props:props)=>{
     const {title,value,changeActive} = props;
+    const {gain,activeInp} = value;
     const settings = EffectSettings[title];
-    const [active,setActive] = useState(false);
+    const [active,setActive] = useState(activeInp);
     const activeClass = active ? "On" : "Off";
     const changeValue = (event:Event, newValue : number | number[],valueTarget:number)=>{
         // setTest(newValue as number);
@@ -34,7 +35,7 @@ const SingleEffect = (props:props)=>{
             <div className="content">
                 <div className="behindPowerLight"></div>
                 <div className="powerLight"></div>
-                <DataSection title={title} value={value} active={active} changeValue={changeValue} settings={settings}/>
+                <DataSection title={title} value={gain} active={active} changeValue={changeValue} settings={settings}/>
                 <div className="toggleButton">
                     <div className="underButton">
                         <button onClick={buttonClick}></button>

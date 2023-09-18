@@ -2,9 +2,10 @@ import SynthChangeDropDown from "./Dropdowns/SynthChangeDropDown";
 import DropDown from "../../../Inputs/DropDown";
 import { instrumentName, noteLengthDisplays, synthName } from "../../../../Data/@types/types";
 import './TabTableStyle/DropDownSettingsStyle.css';
-import BtnIcon from "../../../Icons/Buttons/BtnIcon";
+import BtnIcon, { iconTypes } from "../../../Icons/Buttons/BtnIcon";
 import { useContext } from "react";
 import { AppContext } from "../../../../Data/AppContent";
+import { effectIcons } from "./DropDownExtras/DropDownSettingsEffect";
 
 type props = {
     setSynth : React.Dispatch<React.SetStateAction<synthName>>, synth: synthName, synthNames : string[],
@@ -27,8 +28,11 @@ const DropDownSettings = (props:props)=>{
         )
     };
     const effectNames = context.getEffects.all.title();
+    const effectIconsCont: iconTypes[][] = effectIcons(effectNames);
 
-    const backgroundColor1 = "bgCol5 bgCol2H"
+    
+    const backgroundColor1 = "bgCol5 bgCol2H";
+
 
     
     return <div className="dropDownSettings bgCol3">
@@ -42,9 +46,9 @@ const DropDownSettings = (props:props)=>{
             <span>BPM : </span>
             <input min="1" max="240" className={`textInput text ${backgroundColor1}`} typeof="number" value={tempo}onChange={(e)=>setTempo(parseInt(e.target.value))}onBlur={(e)=>changeTempo(parseInt(e.target.value))}/>
         </div>
-        <DropDown className={`dropDownContainer ${backgroundColor1}`} selectedOption={noteLengthDisplay} options={['compressed','simplified','simplified raw']} onChangeFunc={dropDownLengthChange}/>
-        <DropDown className={`dropDownContainer ${backgroundColor1}`} selectedOption={instrumentName} options={['bass','guitar']} onChangeFunc={dropDownInstrumentChange}/>
-        <DropDown className={`dropDownContainer ${backgroundColor1}`} selectedOption={effectName} options={effectNames} onChangeFunc={dropDownEffectChange}/>
+        <DropDown type='.not' className={`dropDownContainer ${backgroundColor1}`} selectedOption={noteLengthDisplay} options={['compressed','simplified','simplified raw']} onChangeFunc={dropDownLengthChange}/>
+        <DropDown type='.ins' className={`dropDownContainer ${backgroundColor1}`} selectedOption={instrumentName} options={['bass','guitar']} onChangeFunc={dropDownInstrumentChange}/>
+        <DropDown type='.eff' className={`dropDownContainer ${backgroundColor1}`} selectedOption={effectName} options={effectNames} onChangeFunc={dropDownEffectChange} icon={effectIconsCont}/>
 
     </div>
 }
