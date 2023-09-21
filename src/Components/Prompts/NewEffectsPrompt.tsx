@@ -1,9 +1,11 @@
 import { useState, useContext, useEffect } from "react";
 import SingleEffect from "./EffectPromptComponents/SingleEffect";
 import './NewEffectsStyle/NewEffectPromptStyle.css';
-import { effectName, effectType } from "../../Data/@types/types";
+import { effectName, effectType, note } from "../../Data/@types/types";
 import { AppContext } from "../../Data/AppContent";
 import SavePrompt from "./SaveLoadPrompt/SavePrompt";
+import { playNote } from "../../Data/Tone/Tone";
+import Synths from "../../Data/Tone/Instruments/Synths/Synths";
 
 type dataType = {
     value : number []
@@ -20,6 +22,8 @@ const NewEffectsPrompt = ()=>{
     const type = info.mode;
     const data = info.data;
     const [title,setTitle] = useState(data.title);
+    const buttonClass = title.length > 0 ?  'buttonShow bgCol1 bgCol2H' : 
+                                            'buttonHide bgCol1';
     const [showSavePrompt,setShowSavePrompt] = useState(false);
     const [values,setValues] = useState<valueTypes>({
         distortion : data.distortion,
@@ -67,8 +71,6 @@ const NewEffectsPrompt = ()=>{
     const handleTableReplaceBtn = ()=>{
         const newEffect = createEffect();
         context.changeEffects.replace(newEffect);
-        // context.changeEffects.
-        // context.changeEffects.add(newEffect);
         context.changePrompts.close.standard();
     }
     
@@ -80,6 +82,27 @@ const NewEffectsPrompt = ()=>{
         }
         setShowSavePrompt(!showSavePrompt);
     }
+    
+    const handlePlayBtn = ()=>{
+        // const effect = context.parseEffects.toTone({active:true,value:0.7})
+        // const effect = context.getEffects.single.byTitle('distortion');
+        const effectParse = context.getEffects.single.toTone('distortion');
+        console.log(effectParse);
+        const note:note = {note:'15',length:'8n'}
+        const synth = Synths.getSynth('Bass1').synth;
+        // synth.connect(effectParse);
+        playNote(note,2,120,synth);
+    }
+
+    const buttonClick = (button:'tablePush'|'tableReplace'|'save')=>{
+        if (title.length > 0){
+            switch(button){
+                case "tablePush": handleTablePushBtn(); break;
+                case "tableReplace":handleTableReplaceBtn(); break;
+                case "save": handleSaveBtn(); break;
+            }
+        }
+    }
     return (
         <div className="effectsPrompt bgCol6">
             <section className="leftSection">
@@ -87,14 +110,17 @@ const NewEffectsPrompt = ()=>{
                 <SingleEffect changeValue={changeValue} changeActive={changeActive} title="eq"   value={{gain:values.eq.value,activeInp:values.eq.active}}/>
             </section>
             <section className="midSection">
-                <input placeholder="Title" type="text" value={title} onChange={(event)=>{setTitle(event.target.value)}}/>
+
+                <button onClick={handlePlayBtn}>Preview effect</button>
+                <div className="divider"></div>
+                <input placeholder="Enter title" type="text" value={title} onChange={(event)=>{setTitle(event.target.value)}}/>
                 <div className="divider"></div>
                 <div className="buttonContainer">
                     {type === 'new' ? 
-                        <button onClick={handleTablePushBtn}>Add Effect to tables</button> : 
-                        <button onClick={handleTableReplaceBtn}>Replace Effect on tables</button>}
+                        <button className={buttonClass} onClick={()=>{buttonClick('tablePush')}}>Add Effect to tables</button> : 
+                        <button className={buttonClass} onClick={()=>{buttonClick('tableReplace')}}>Replace Effect on tables</button>}
                     
-                    <button onClick={handleSaveBtn}>Save Effect</button>
+                    <button className={buttonClass} onClick={()=>{buttonClick('save')}}>Save Effect</button>
                 </div>
             </section>
             <section className="rightSection">

@@ -1,3 +1,5 @@
+import { effectType, singleEffect } from "../../@types/types"
+
 export type singleSettings = {
     name : string, min:number, max: number,steps:number,
     description: string
@@ -33,5 +35,21 @@ const EffectSettings:allSettings = {
         {name:'Delay', min:0, max:1,steps:0.1,
          description:'not set'},
     ],
+}
+export const defaultEffectData:effectType = {
+    index : -1,
+    title: '',
+    distortion:{
+        active : false,value : [0],type:"distortion"
+    },
+    reverb: {
+        active : false,value : [0,0],type:"reverb"
+    },
+    tremolo: {
+        active : false,value : [0,0],type:"tremolo"
+    },
+    eq: {
+        active : false,value : [0,0,0],type:"eq"
+    },
 }
 export default EffectSettings;

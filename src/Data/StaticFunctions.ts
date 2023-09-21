@@ -220,8 +220,6 @@ export const keyMethods = {
         getType : (key : string|null)=>{
             if (key === null) return console.error("null innit");
             const type = key.charAt(key.length-1) === 'b' ? 'tab' : 'effect';
-            console.log("key : ",key);
-            console.log("type : ",type);
             return type;
         }
     }

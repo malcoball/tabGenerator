@@ -5,6 +5,7 @@ import { AppContextType } from './@types/contextType';
 import { newTab } from './TabGeneration/TabGeneration';
 import { instrumentProperty } from './Music/Instruments';
 import LoadData from './SaveLoad/LoadData';
+import { defaultEffectData } from './Tone/Effects/EffectSettings';
 
 interface Props {
     children : React.ReactNode;
@@ -207,22 +208,7 @@ const AppContextProvider: React.FC<Props> = ({children}) =>{
             },
             effect : {
                 mode : 'new',
-                data : {
-                    index : -1,
-                    title: 'testing yo',
-                    distortion:{
-                        active : false,value : [0],type:"distortion"
-                    },
-                    reverb: {
-                        active : false,value : [0,0],type:"reverb"
-                    },
-                    tremolo: {
-                        active : false,value : [0,0],type:"tremolo"
-                    },
-                    eq: {
-                        active : false,value : [0,0,0],type:"eq"
-                    },
-                }
+                data : defaultEffectData
             },
         }
     })
@@ -404,8 +390,32 @@ const AppContextProvider: React.FC<Props> = ({children}) =>{
                 // item.index !== index ? out.push(item) : out.push(effectIn);
             })
             setEffects(out);
+        },
+    };
+    const parseEffects = {
+        // Not sure if this needed to be it's own object but it'd be out of place otherwise.
+        toTone : (distortion:{active:boolean,value:number})=>{
+            // const info = getEffects.single.byTitle(title);
+                const out = [];
+                // const dist = info.distortion;const rev = info.reverb;
+                // const {distortion,reverb,tremolo,eq} = info;
+                // Tried to do this externally but the returned Tone obj still needed to be called here so it didn't really save anything
+                if (distortion.active === true){
+                    out.push(new Tone.Distortion(distortion.value).toDestination());
+                }
+                // if (reverb.active === true){
+                //     const JCReverb = new Tone.JCReverb(reverb.value[0]).toDestination();
+                //     const delay = new Tone.FeedbackDelay(reverb.value[1]);
+                //     out.push(JCReverb,delay);
+                // }
+                // if (tremolo.active === true){
+                //     out.push(new Tone.Tremolo(tremolo.value[0],tremolo.value[1]).toDestination().start());
+                // }
+                // if (eq.active === true){
+                //     out.push(new Tone.EQ3(0,2,0).toDestination())
+                // }
+                return out;
         }
-        
     }
     const getPrompts = {
         active : activePrompt,
@@ -456,22 +466,7 @@ const AppContextProvider: React.FC<Props> = ({children}) =>{
                     },
                     reset: ()=>{
                         const promptInfoNew = {...promptInfo};
-                        promptInfoNew.savePrompt.effect.data = {
-                            index : -1,
-                            title: 'testing yo',
-                            distortion:{
-                                active : false,value : [0],type:"distortion"
-                            },
-                            reverb: {
-                                active : false,value : [0,0],type:"reverb"
-                            },
-                            tremolo: {
-                                active : false,value : [0,0],type:"tremolo"
-                            },
-                            eq: {
-                                active : false,value : [0,0,0],type:"eq"
-                            },
-                        }
+                        promptInfoNew.savePrompt.effect.data = defaultEffectData;
                         setPromptInfo(promptInfoNew);
                     },
                     changeMode : (mode : 'new' | 'replace' )=>{
@@ -504,7 +499,7 @@ const AppContextProvider: React.FC<Props> = ({children}) =>{
         }
     }
     return (
-        <AppContext.Provider value={{tabs,getTabs,changeTabs,effects,getEffects,changeEffects,changePrompts,getPrompts}}>
+        <AppContext.Provider value={{tabs,getTabs,changeTabs,effects,getEffects,changeEffects,parseEffects,changePrompts,getPrompts}}>
             {children}
         </AppContext.Provider>
     )

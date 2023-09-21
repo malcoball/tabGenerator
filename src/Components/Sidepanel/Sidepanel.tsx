@@ -25,7 +25,7 @@ const Sidepanel = ()=>{
                 {showPrompt === 'new' && <PromptSelect prompts={[{title:'New tab ? ',type:'newTab'},{title:'New effect ? ',type:'newEffect'}]} closeFunc={closeFunc}/>}
             </div>
             <div className="iconContainer bgCol6"><BtnIcon onClick={loadBtnClick} icon="save"/>
-                {showPrompt === 'load' && <PromptSelect prompts={[{title:'Load tab ? ',type:'loadTab'}]} closeFunc={closeFunc}/>}
+                {showPrompt === 'load' && <PromptSelect prompts={[{title:'Load tab ? ',type:'loadTab'},{title:'Load effect ?',type:'loadEffect'}]} closeFunc={closeFunc}/>}
             </div>
             {/* <div className="iconContainer bgCol6"><BtnIcon icon="switch"/></div> */}
         </div>
