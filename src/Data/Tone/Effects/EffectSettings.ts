@@ -52,4 +52,100 @@ export const defaultEffectData:effectType = {
         active : false,value : [0,0,0],type:"eq"
     },
 }
+export const effectDefaults:effectType[] = [{
+    index : 0,
+    title: 'New Effect',
+    distortion:{
+        active : false,value : [0],type:"distortion"
+    },
+    reverb: {
+        active : false,value : [0],type:"reverb"
+    },
+    tremolo: {
+        active : false,value : [0],type:"tremolo"
+    },
+    eq: {
+        active : false,value : [0],type:"eq"
+    },
+},
+{
+    index : 1,
+    title: 'Add Effect',
+    distortion:{
+        active : false,value : [0],type:"distortion"
+    },
+    reverb: {
+        active : false,value : [0],type:"reverb"
+    },
+    tremolo: {
+        active : false,value : [0],type:"tremolo"
+    },
+    eq: {
+        active : false,value : [0],type:"eq"
+    },
+},
+{
+    index : 2,
+    title: 'distortion',
+    distortion:{
+        active : true,value : [0.5],type:"distortion"
+    },
+    reverb: {
+        active : false,value : [0.3,0.7],type:"reverb"
+    },
+    tremolo: {
+        active : false,value : [0.3],type:"tremolo"
+    },
+    eq: {
+        active : false,value : [0.3],type:"eq"
+    },
+},
+{
+    index : 3,
+    title: 'reverb',
+    distortion:{
+        active : false,value : [0.8],type:"distortion"
+    },
+    reverb: {
+        active : true,value : [0.6,0.8],type:"reverb"
+    },
+    tremolo: {
+        active : false,value : [0.1],type:"tremolo"
+    },
+    eq: {
+        active : false,value : [0.3],type:"eq"
+    },
+},
+{
+    index : 4,
+    title: 'tremolo',
+    distortion:{
+        active : false,value : [0.8],type:"distortion"
+    },
+    reverb: {
+        active : false,value : [0.6],type:"reverb"
+    },
+    tremolo: {
+        active : true,value : [9,0.7],type:"tremolo"
+    },
+    eq: {
+        active : false,value : [0.3],type:"eq"
+    },
+},
+{
+    index : 5,
+    title: 'crusher',
+    distortion:{
+        active : false,value : [0.8],type:"distortion"
+    },
+    reverb: {
+        active : false,value : [0.6],type:"reverb"
+    },
+    tremolo: {
+        active : false,value : [9,0.75],type:"tremolo"
+    },
+    eq: {
+        active : true,value : [0.3],type:"eq"
+    },
+},]
 export default EffectSettings;

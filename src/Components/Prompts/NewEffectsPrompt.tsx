@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext, useRef, useEffect } from "react";
 import SingleEffect from "./EffectPromptComponents/SingleEffect";
 import './NewEffectsStyle/NewEffectPromptStyle.css';
 import { effectName, effectType, note } from "../../Data/@types/types";
@@ -31,6 +31,11 @@ const NewEffectsPrompt = ()=>{
         tremolo : data.tremolo,
         eq : data.eq
     })
+    useEffect(()=>{
+        synthRefresh();
+    },[values]);
+    const synth = useRef(Synths.getSynth('Bass1').synth);
+
 
     const changeValue = (target:string,value:number,index:number)=>{
         const valuesOut = {...values};
@@ -84,15 +89,33 @@ const NewEffectsPrompt = ()=>{
     }
     
     const handlePlayBtn = ()=>{
-        // const effect = context.parseEffects.toTone({active:true,value:0.7})
-        // const effect = context.getEffects.single.byTitle('distortion');
-        const effectParse = context.getEffects.single.toTone('distortion');
-        console.log(effectParse);
+        attachEffect();
         const note:note = {note:'15',length:'8n'}
-        const synth = Synths.getSynth('Bass1').synth;
-        // synth.connect(effectParse);
-        playNote(note,2,120,synth);
+        playNote(note,2,120,synth.current);
     }
+    const synthRefresh = ()=>{
+        synth.current.disconnect();
+        synth.current = Synths.getSynth('Bass1').synth.toDestination();
+    }
+    const attachEffect = ()=>{
+        synthRefresh();
+        const active = values.distortion.active;
+        const value:any = {};
+        for (let i in values){
+            const obj = values[i as keyof typeof values];
+            value[i] = obj.active === true ? obj.value : null; 
+        }
+        if (active === true){
+            const effect = context.parseEffects.toTone(value);
+            if (effect.length > 0){
+                effect.forEach(item => {
+                    if (item !== null) synth.current.connect(item);
+                });
+            }
+        }
+    }
+
+
 
     const buttonClick = (button:'tablePush'|'tableReplace'|'save')=>{
         if (title.length > 0){

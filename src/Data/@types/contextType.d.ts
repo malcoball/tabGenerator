@@ -42,7 +42,7 @@ export type AppContextType = {
         replace:(newEffect:effectType)=>void
     };
     parseEffects : {
-        toTone : (distortion:{active:boolean,value:number})=>void
+        toTone : (value:{distortion:number[]|null,reverb:number[]|null,eq:number[]|null,tremolo:number[]|null})=>any[]
     }
     getPrompts :{
         active : promptTypes

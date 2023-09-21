@@ -2,10 +2,10 @@ import * as React from 'react';
 import * as Tone from 'tone';
 import { tabType, note, instrumentName, scaleName, effectType, promptTypes } from './@types/types';
 import { AppContextType } from './@types/contextType';
-import { newTab } from './TabGeneration/TabGeneration';
+import { newTab, tabDefaults } from './TabGeneration/TabGeneration';
 import { instrumentProperty } from './Music/Instruments';
 import LoadData from './SaveLoad/LoadData';
-import { defaultEffectData } from './Tone/Effects/EffectSettings';
+import { defaultEffectData, effectDefaults } from './Tone/Effects/EffectSettings';
 
 interface Props {
     children : React.ReactNode;
@@ -32,163 +32,8 @@ export const AppContext = React.createContext<AppContextType | null>(null);
 const AppContextProvider: React.FC<Props> = ({children}) =>{
     const [tabIndex,setTabIndex] = React.useState<number>(3);
     const [effectIndex,setEffectIndex] = React.useState<number>(5);
-    const [tabs,setTabs] = React.useState<tabType[]>([
-        {
-            title:'For whom the bell tolls intro - bass',
-            index:0,
-            tab:[
-                {note:'34',length:'8n'},
-                {note:'33',length:'8n'},
-                {note:'32',length:'8n'},
-                {note:'31',length:'2n'},
-                {note:'27',length:'8n'},
-                {note:'26',length:'8n'},
-                {note:'34',length:'8n'},
-                {note:'22',length:'8n'},
-                {note:'21',length:'2n'},
-            ],
-            scale:'aeolian',
-            instrumentName : 'bass',
-            tempo:120,
-            change:false,
-        },
-        {
-            title:'Dueling Banjos',
-            index:1,
-            tab:[
-                {note:'15',length:'16n'},
-                {note:'15',length:'16n'},
-                {note:'15',length:'16n'},
-                {note:'17',length:'8n'},
-                {note:'19',length:'8n'},
-                {note:'20',length:'8n'},
-                {note:'22',length:'8n'},
-                {note:'20',length:'8n'},
-                {note:'19',length:'4n'},
-                // {note:'24',length:'4n'},
-            ],
-            scale:'aeolian',
-            instrumentName : 'guitar',
-            tempo:120,
-            change:false,
-        },
-        {
-            title:'Jasmine',
-            index:2,
-            tab:[
-                {note:'0',length:'8n'},
-                {note:'5',length:'8n'},
-                {note:'10',length:'8n'},
-                {note:'15',length:'8n'},
-                {note:'19',length:'8n'},
-                {note:'24',length:'8n'},
-                {note:'13',length:'8n'},
-            ],
-            scale:'aeolian',
-            instrumentName : 'guitar',
-            tempo:120,
-            change:false,
-        },
-    ])
-    const [effects,setEffects] = React.useState<effectType[]>([
-        {
-            index : 0,
-            title: 'New Effect',
-            distortion:{
-                active : false,value : [0],type:"distortion"
-            },
-            reverb: {
-                active : false,value : [0],type:"reverb"
-            },
-            tremolo: {
-                active : false,value : [0],type:"tremolo"
-            },
-            eq: {
-                active : false,value : [0],type:"eq"
-            },
-        },
-        {
-            index : 1,
-            title: 'Add Effect',
-            distortion:{
-                active : false,value : [0],type:"distortion"
-            },
-            reverb: {
-                active : false,value : [0],type:"reverb"
-            },
-            tremolo: {
-                active : false,value : [0],type:"tremolo"
-            },
-            eq: {
-                active : false,value : [0],type:"eq"
-            },
-        },
-        {
-            index : 2,
-            title: 'distortion',
-            distortion:{
-                active : true,value : [0.5],type:"distortion"
-            },
-            reverb: {
-                active : false,value : [0.3,0.7],type:"reverb"
-            },
-            tremolo: {
-                active : false,value : [0.3],type:"tremolo"
-            },
-            eq: {
-                active : false,value : [0.3],type:"eq"
-            },
-        },
-        {
-            index : 3,
-            title: 'reverb',
-            distortion:{
-                active : false,value : [0.8],type:"distortion"
-            },
-            reverb: {
-                active : true,value : [0.6,0.8],type:"reverb"
-            },
-            tremolo: {
-                active : false,value : [0.1],type:"tremolo"
-            },
-            eq: {
-                active : false,value : [0.3],type:"eq"
-            },
-        },
-        {
-            index : 4,
-            title: 'tremolo',
-            distortion:{
-                active : false,value : [0.8],type:"distortion"
-            },
-            reverb: {
-                active : false,value : [0.6],type:"reverb"
-            },
-            tremolo: {
-                active : true,value : [9,0.7],type:"tremolo"
-            },
-            eq: {
-                active : false,value : [0.3],type:"eq"
-            },
-        },
-        {
-            index : 5,
-            title: 'crusher',
-            distortion:{
-                active : false,value : [0.8],type:"distortion"
-            },
-            reverb: {
-                active : false,value : [0.6],type:"reverb"
-            },
-            tremolo: {
-                active : false,value : [9,0.75],type:"tremolo"
-            },
-            eq: {
-                active : true,value : [0.3],type:"eq"
-            },
-        },
-
-    ])
+    const [tabs,setTabs] = React.useState<tabType[]>(tabDefaults)
+    const [effects,setEffects] = React.useState<effectType[]>(effectDefaults)
     const [activePrompt,setActivePrompt] = React.useState<promptTypes>(null);
     const [promptInfo,setPromptInfo] = React.useState<promptInfo>({
         notePrompt : {
@@ -394,26 +239,22 @@ const AppContextProvider: React.FC<Props> = ({children}) =>{
     };
     const parseEffects = {
         // Not sure if this needed to be it's own object but it'd be out of place otherwise.
-        toTone : (distortion:{active:boolean,value:number})=>{
+        toTone : (value:{distortion:number[]|null,reverb:number[]|null,eq:number[]|null,tremolo:number[]|null})=>{
             // const info = getEffects.single.byTitle(title);
+            const {distortion,reverb,eq,tremolo} = value;
                 const out = [];
-                // const dist = info.distortion;const rev = info.reverb;
-                // const {distortion,reverb,tremolo,eq} = info;
                 // Tried to do this externally but the returned Tone obj still needed to be called here so it didn't really save anything
-                if (distortion.active === true){
-                    out.push(new Tone.Distortion(distortion.value).toDestination());
-                }
-                // if (reverb.active === true){
-                //     const JCReverb = new Tone.JCReverb(reverb.value[0]).toDestination();
-                //     const delay = new Tone.FeedbackDelay(reverb.value[1]);
-                //     out.push(JCReverb,delay);
-                // }
-                // if (tremolo.active === true){
-                //     out.push(new Tone.Tremolo(tremolo.value[0],tremolo.value[1]).toDestination().start());
-                // }
-                // if (eq.active === true){
-                //     out.push(new Tone.EQ3(0,2,0).toDestination())
-                // }
+                distortion !== null ? out.push(new Tone.Distortion(distortion[0]).toDestination()) : out.push(null);
+
+                if (reverb !== null){
+                    const JCReverb = new Tone.JCReverb(reverb[0]).toDestination();const delay = new Tone.FeedbackDelay(reverb[1]);out.push(JCReverb,delay);
+                } else out.push(null);
+
+                if (tremolo !== null){
+                    out.push(new Tone.Tremolo(tremolo[0],tremolo[1]).toDestination().start());
+                } else out.push(null);
+
+                eq !== null ? out.push(new Tone.EQ3(eq[0],eq[1],eq[2]).toDestination()) : out.push(null);
                 return out;
         }
     }
