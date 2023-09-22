@@ -40,7 +40,8 @@ const LoadData = {
             loadSingle : (key : string) : tabType | null => {
                 const load = localStorage.getItem(key);
                 const out = typeof(load) === "string" ? JSON.parse(load) : null;
-                if (keyMethods.fileKey.getType(load) !== 'tab') return null;
+                if (keyMethods.fileKey.getType(key) !== 'tab') return null;
+                console.log("out : ",out);
                 return out;
             },
             getAll : ()=>{
@@ -48,7 +49,7 @@ const LoadData = {
             }
         },
         effect : {
-            loadSingle : (key : string) : effectType | null => {
+            loadSingle : (key : string) : any | null => { 
                 const load = localStorage.getItem(key);
                 const out = typeof(load) === "string" ? JSON.parse(load) : null;
                 if (keyMethods.fileKey.getType(load) !== 'effect') return null;

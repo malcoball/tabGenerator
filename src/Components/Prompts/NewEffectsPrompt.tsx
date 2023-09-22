@@ -6,6 +6,7 @@ import { AppContext } from "../../Data/AppContent";
 import SavePrompt from "./SaveLoadPrompt/SavePrompt";
 import { playNote } from "../../Data/Tone/Tone";
 import Synths from "../../Data/Tone/Instruments/Synths/Synths";
+import PromptBehind from "./PromptBehind";
 
 type dataType = {
     value : number []
@@ -99,17 +100,25 @@ const NewEffectsPrompt = ()=>{
     }
     const attachEffect = ()=>{
         synthRefresh();
-        const active = values.distortion.active;
+        // const active = values.distortion.active;
+        let active = false;
         const value:any = {};
         for (let i in values){
             const obj = values[i as keyof typeof values];
-            value[i] = obj.active === true ? obj.value : null; 
+            // value[i] = obj.active === true ? obj.value : null; 
+            if (obj.active === true){
+                value[i] = obj.value; active = true;
+            } else {
+                value[i] = null;
+            }
         }
         if (active === true){
+            console.log("effect active");
             const effect = context.parseEffects.toTone(value);
             if (effect.length > 0){
                 effect.forEach(item => {
                     if (item !== null) synth.current.connect(item);
+                    console.log("item : ",item);
                 });
             }
         }
@@ -127,31 +136,35 @@ const NewEffectsPrompt = ()=>{
         }
     }
     return (
-        <div className="effectsPrompt bgCol6">
-            <section className="leftSection">
-                <SingleEffect changeValue={changeValue} changeActive={changeActive} title="distortion" value={{gain:values.distortion.value,activeInp:values.distortion.active}}/>
-                <SingleEffect changeValue={changeValue} changeActive={changeActive} title="eq"   value={{gain:values.eq.value,activeInp:values.eq.active}}/>
-            </section>
-            <section className="midSection">
+        <div className="promptContainer"> 
+            <div className="effectsPrompt bgCol6">
+                <section className="leftSection">
+                    <SingleEffect changeValue={changeValue} changeActive={changeActive} title="distortion" value={{gain:values.distortion.value,activeInp:values.distortion.active}}/>
+                    <SingleEffect changeValue={changeValue} changeActive={changeActive} title="eq"   value={{gain:values.eq.value,activeInp:values.eq.active}}/>
+                </section>
+                <section className="midSection">
+                    <div className="buttonContainer">
+                        <button onClick={handlePlayBtn}>Preview effect</button>
+                    </div>
+                    <div className="divider"></div>
+                    <input placeholder="Enter title" type="text" value={title} onChange={(event)=>{setTitle(event.target.value)}}/>
+                    <div className="divider"></div>
+                    <div className="buttonContainer">
+                        {type === 'new' ? 
+                            <button className={buttonClass} onClick={()=>{buttonClick('tablePush')}}>Add Effect to tables</button> : 
+                            <button className={buttonClass} onClick={()=>{buttonClick('tableReplace')}}>Replace Effect on tables</button>}
 
-                <button onClick={handlePlayBtn}>Preview effect</button>
-                <div className="divider"></div>
-                <input placeholder="Enter title" type="text" value={title} onChange={(event)=>{setTitle(event.target.value)}}/>
-                <div className="divider"></div>
-                <div className="buttonContainer">
-                    {type === 'new' ? 
-                        <button className={buttonClass} onClick={()=>{buttonClick('tablePush')}}>Add Effect to tables</button> : 
-                        <button className={buttonClass} onClick={()=>{buttonClick('tableReplace')}}>Replace Effect on tables</button>}
-                    
-                    <button className={buttonClass} onClick={()=>{buttonClick('save')}}>Save Effect</button>
-                </div>
-            </section>
-            <section className="rightSection">
-                <SingleEffect changeValue={changeValue} changeActive={changeActive} title="reverb"     value={{gain:values.reverb.value,activeInp:values.reverb.active}}/>
-                <SingleEffect changeValue={changeValue} changeActive={changeActive} title="tremolo"    value={{gain:values.tremolo.value,activeInp:values.tremolo.active}}/>
-            </section>
-            {showSavePrompt && <SavePrompt type='effect'/>}
-        </div>
+                        <button className={buttonClass} onClick={()=>{buttonClick('save')}}>Save Effect</button>
+                    </div>
+                </section>
+                <section className="rightSection">
+                    <SingleEffect changeValue={changeValue} changeActive={changeActive} title="reverb"     value={{gain:values.reverb.value,activeInp:values.reverb.active}}/>
+                    <SingleEffect changeValue={changeValue} changeActive={changeActive} title="tremolo"    value={{gain:values.tremolo.value,activeInp:values.tremolo.active}}/>
+                </section>
+                {showSavePrompt && <SavePrompt type='effect'/>}
+            </div>
+            <PromptBehind closeFunc={()=>{context.changePrompts.close.standard()}}/>
+        </div>   
     )
 }
 

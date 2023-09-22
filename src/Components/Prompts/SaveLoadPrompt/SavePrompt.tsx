@@ -5,6 +5,7 @@ import SaveData from '../../../Data/SaveLoad/SaveData';
 import './Style/SavePromptStyle.css';
 import SavedItemContainer from './SavedItemContainer';
 import { keyMethods } from '../../../Data/StaticFunctions';
+import PromptBehind from '../PromptBehind';
 
 const SavePrompt = (props:{type:'tab'|'effect'})=>{
     const {type} = props;
@@ -41,18 +42,20 @@ const SavePrompt = (props:{type:'tab'|'effect'})=>{
         setsaveExist(match);
     },[saveName])
     return (
-        <div className="savePrompt bgCol6">
-            <SavedItemContainer dataType={props.type} className='top' setState={setSaveName}/>
-            <section className="bottom">
-                <span className='col2'>Save as : </span>
-                <input type="text" value={saveName} onChange={(event)=>{setSaveName(event.target.value)}}/>
-                {saveExist && <span>Override existing save ?</span>}
-                <div className="saveBtnContainer">
-                    <button className={"saveBtn "+getActiveClass(!saveExist)} onClick={saveBtnClick}>Save</button>
-                    <button className={"saveBtn "+getActiveClass(saveExist)} onClick={overBtnClick}>Yes</button>
-                </div>
-            </section>
-            
+        <div className="savePromptContainer">
+            <div className="savePrompt bgCol6">
+                <SavedItemContainer dataType={props.type} className='top' setState={setSaveName}/>
+                <section className="bottom">
+                    <span className='col2'>Save as : </span>
+                    <input type="text" value={saveName} onChange={(event)=>{setSaveName(event.target.value)}}/>
+                    {saveExist && <span>Override existing save ?</span>}
+                    <div className="saveBtnContainer">
+                        <button className={"saveBtn "+getActiveClass(!saveExist)} onClick={saveBtnClick}>Save</button>
+                        <button className={"saveBtn "+getActiveClass(saveExist)} onClick={overBtnClick}>Yes</button>
+                    </div>
+                </section>
+            </div>
+            <PromptBehind closeFunc={()=>{context.changePrompts.close.standard()}}/>
         </div>
     )
 }

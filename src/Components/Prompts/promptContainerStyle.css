@@ -1,0 +1,11 @@
+.promptContainer {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.4);
+  box-shadow: 0px 0px 48px 24px rgba(48, 48, 48, 0.1) inset;
+}/*# sourceMappingURL=promptContainerStyle.css.map */

@@ -82,21 +82,4 @@ export const tabDefaults:tabType[] = [
         tempo:120,
         change:false,
     },
-    {
-        title:'Jasmine',
-        index:2,
-        tab:[
-            {note:'0',length:'8n'},
-            {note:'5',length:'8n'},
-            {note:'10',length:'8n'},
-            {note:'15',length:'8n'},
-            {note:'19',length:'8n'},
-            {note:'24',length:'8n'},
-            {note:'13',length:'8n'},
-        ],
-        scale:'aeolian',
-        instrumentName : 'guitar',
-        tempo:120,
-        change:false,
-    },
 ]

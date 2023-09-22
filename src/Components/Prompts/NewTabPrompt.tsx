@@ -8,7 +8,7 @@ import { AppContext } from '../../Data/AppContent';
 import SliderComponent from './TabPromptComponents/SliderComponent';
 import MultiSelectComponent from './TabPromptComponents/MultiSelectComponent';
 import DropDownComponent from './TabPromptComponents/DropdownComponent';
-import BtnIcon from '../Icons/Buttons/BtnIcon';
+import PromptBehind from './PromptBehind';
 
 type MultiSelectInputProps = {
     updateState : (index:number)=>void,
@@ -56,6 +56,7 @@ const NewTabPrompt = ()=>{
     const [tempo,setTempo] = useState<number>(120);
 
     const [title,setTitle] = useState<string>('');
+    const buttonClass = title.length > 0 ? 'bgCol7 col2H col1 clickable active' : 'bgCol1 bgCol1H unactive';
 
     const [length,setLength] = useState<number>(4);
 
@@ -93,27 +94,32 @@ const NewTabPrompt = ()=>{
         context.changePrompts.close.standard();
     }
     const handleCreateButton = ()=>{
-        context.changeTabs.create(title,scale,instrumentName,length,rootnote,octave,noteLengths,deadNotes);
-        onCloseClick();
+        if (title.length > 0){
+            context.changeTabs.create(title,scale,instrumentName,length,rootnote,octave,noteLengths,deadNotes);
+            onCloseClick();
+        }
     }
     return (
-        <div id="newTabPrompt" className='borderCol6 promptBgCol1'>
-            <textarea className='col1' id='Title' value={title} onChange={(event)=>{setTitle(event.target.value)}} placeholder='Enter Name'/>
-            <div className="midSection">
-                <div className="leftSection">
-                    <SliderComponent title='Tempo' value={tempo} setValue={handleTempoChange} max={240}/>
-                    <SliderComponent title='Length' value={length} setValue={handleLengthChange} min={1} max={12}/>
-                    <SliderComponent title='Octave' value={octave} setValue={handleOctaveChange} max={5}/>
-                    <SliderComponent title='Rootnote' value={rootnote} setValue={handleRootnoteChange} max={11}/>
+        <div className="promptContainer">
+            <div id="newTabPrompt" className='borderCol6 promptBgCol1'>
+                <textarea className='col1' id='Title' value={title} onChange={(event)=>{setTitle(event.target.value)}} placeholder='Enter Name'/>
+                <div className="midSection">
+                    <div className="leftSection">
+                        <SliderComponent title='Tempo' value={tempo} setValue={handleTempoChange} max={240}/>
+                        <SliderComponent title='Length' value={length} setValue={handleLengthChange} min={1} max={12}/>
+                        <SliderComponent title='Octave' value={octave} setValue={handleOctaveChange} max={5}/>
+                        <SliderComponent title='Rootnote' value={rootnote} setValue={handleRootnoteChange} max={11}/>
+                    </div>
+                    <div className="rightSection">
+                        <SliderComponent title='Deadnote chance' value={deadNotes} setValue={handleDeadNotesChange} max={100}/>
+                        <DropDownComponent title="Instrument" values={instruments} activeValue={instrumentName} updateState={setinstrumentName}/>
+                        <DropDownComponent title="Scale" values={scales} activeValue={scale} updateState={setScale}/>
+                        <MultiSelectComponent title='Note Lengths' values={noteLengthOptions} activeValues={noteLengths} updateValues={noteLengthChange}/>
+                    </div>
                 </div>
-                <div className="rightSection">
-                    <SliderComponent title='Deadnote chance' value={deadNotes} setValue={handleDeadNotesChange} max={100}/>
-                    <DropDownComponent title="Instrument" values={instruments} activeValue={instrumentName} updateState={setinstrumentName}/>
-                    <DropDownComponent title="Scale" values={scales} activeValue={scale} updateState={setScale}/>
-                    <MultiSelectComponent title='Note Lengths' values={noteLengthOptions} activeValues={noteLengths} updateValues={noteLengthChange}/>
-                </div>
+                <button className={buttonClass} onClick={handleCreateButton} id='createButton'>Create Tab</button>
             </div>
-            <button className='bgCol7 col2H col1 clickable' onClick={handleCreateButton} id='createButton'>Create Tab</button>
+            <PromptBehind closeFunc={onCloseClick}/>
         </div>
     )
 }

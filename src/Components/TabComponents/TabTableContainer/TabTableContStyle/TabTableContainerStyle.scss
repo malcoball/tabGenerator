@@ -8,4 +8,16 @@
         grid-template-columns: repeat(3, 33%);
         row-gap: 64px;
     }
+    @media (max-width:1400px) {
+        #tables{
+        grid-template-columns: repeat(2, 50%);
+
+        }
+    }
+    @media (max-width:992px) {
+        #tables{
+        grid-template-columns: repeat(1, 100%);
+
+        }
+    }
 }

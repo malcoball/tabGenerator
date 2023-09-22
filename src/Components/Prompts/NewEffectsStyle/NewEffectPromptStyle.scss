@@ -6,7 +6,7 @@
     grid-template-columns: auto 50% auto;
     border:1px solid black;
     border-radius: 32px 32px 8px 8px;
-    position:fixed;
+    // position:fixed;
     padding:16px;
     z-index:4;
     left:calc(966px/2);
@@ -63,5 +63,11 @@
             width:80%;
         }
         
+    }
+}
+@media (max-width:1400px){
+    .effectsPrompt{
+    grid-template-columns: auto 25vw auto;
+
     }
 }

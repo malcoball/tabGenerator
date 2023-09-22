@@ -6,7 +6,7 @@ import NewEffectsPrompt from "./NewEffectsPrompt";
 import NewNotePromptFretboard from "./NewNotePrompts/NewNotePromptFretboard";
 import NewTabPrompt from "./NewTabPrompt";
 import LoadPrompt from "./SaveLoadPrompt/LoadPrompt";
-import PromptBehind from "./PromptBehind";
+import './promptContainerStyle.css';
 const PromptController = ()=>{
     const context = useContext(AppContext);
     if (!context) throw Error("didn't load lulz");
@@ -22,7 +22,6 @@ const PromptController = ()=>{
             {activePrompt === 'newEffect' && <NewEffectsPrompt/>}
             {activePrompt === 'newNoteFretboard' && <NewNotePromptFretboard/>}
             {activePrompt === 'newTab' && <NewTabPrompt/>}
-            {activePrompt !== null && <PromptBehind closeFunc={context.changePrompts.close.standard}/>}
         </>
     )
 }

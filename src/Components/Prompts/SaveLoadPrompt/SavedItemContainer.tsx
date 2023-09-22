@@ -5,7 +5,7 @@ import { keyMethods } from "../../../Data/StaticFunctions";
 import BtnIcon from "../../Icons/Buttons/BtnIcon";
 import './Style/SaveItemContainerStyle.css';
 
-const SavedItem = (props:{value:string,setState:Function,change:Function,index:number})=>{
+const SavedItem = (props:{value:string,setState:Function,change:Function,index:number,dataType:'tab'|'effect'})=>{
     const singleColors = 'col9 col5H'
     const backgroundClass = props.index %  2 === 0 ? 'bgCol2' : 'bgCol3';
     const containerClass = `${backgroundClass} savedItem`;
@@ -14,8 +14,8 @@ const SavedItem = (props:{value:string,setState:Function,change:Function,index:n
     const onClick = ()=>{
         props.setState(value);
     }
-    const deleteItem = ()=>{
-        const targetKey = keyMethods.fileKey.create(value,'tab');
+    const deleteItem = (type:'tab'|'effect')=>{
+        const targetKey = keyMethods.fileKey.create(value,type);
         console.log("targetKey : ",targetKey)
         DeleteData.localStorage.tab.byKey(targetKey);
         console.log("eh yo");
@@ -25,7 +25,7 @@ const SavedItem = (props:{value:string,setState:Function,change:Function,index:n
         // console.log("delete pls");
     }
     return (
-        <div  className={containerClass}><span onClick={onClick} className={singleClass}>{value} </span><BtnIcon onClick={deleteItem} icon="remove"/></div>
+        <div  className={containerClass}><span onClick={onClick} className={singleClass}>{value} </span><BtnIcon onClick={()=>{deleteItem(props.dataType)}} icon="remove"/></div>
     )
 }
 const SavedItemContainer = (props:{className:string,setState:Function,saves:string[]|null,dataType:'tab' | 'effect'})=>{
@@ -41,7 +41,7 @@ const SavedItemContainer = (props:{className:string,setState:Function,saves:stri
         setChange(!change);
     }
     const Items = useMemo(()=>{
-        return saves.map((item,index)=><SavedItem change={onChange} index={index} value={item} setState={props.setState}/>)
+        return saves.map((item,index)=><SavedItem dataType={props.dataType} change={onChange} index={index} value={item} setState={props.setState}/>)
     },[change,props.saves])
     return (
         <section className={`saveItemContainer bgCol1 font1 ${props.className}`}>

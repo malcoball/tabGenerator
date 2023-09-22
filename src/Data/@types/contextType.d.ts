@@ -97,7 +97,7 @@ export type AppContextType = {
         // close :()=>void
         close : {
             standard : ()=>void,
-            loadPrompt : (key : string)=>void
+            loadPrompt : (key : string,type:'tab'|'effect')=>void
         }
     };
 }

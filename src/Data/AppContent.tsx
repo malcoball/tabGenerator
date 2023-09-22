@@ -214,6 +214,7 @@ const AppContextProvider: React.FC<Props> = ({children}) =>{
     }
     const changeEffects = {
         add : (input:effectType)=>{
+            console.log("input : ",input);
             const effectNew = input;
             effectNew.index = effectIndex;
             setEffects([...effects,effectNew]);
@@ -251,6 +252,7 @@ const AppContextProvider: React.FC<Props> = ({children}) =>{
                 } else out.push(null);
 
                 if (tremolo !== null){
+                    
                     out.push(new Tone.Tremolo(tremolo[0],tremolo[1]).toDestination().start());
                 } else out.push(null);
 
@@ -330,11 +332,17 @@ const AppContextProvider: React.FC<Props> = ({children}) =>{
 
         close: {
             standard : ()=>{setActivePrompt(null)},
-            loadPrompt : (key : string)=>{
-                const tab = LoadData.localStorage.tab.loadSingle(key);
-                if (tab === null) return console.error(`${tab} wasn't found lulz`);
-                
-                changeTabs.add(promptInfo.savePrompt.tab);
+            loadPrompt : (key : string,type:'tab'|'effect')=>{
+                if (type === 'tab'){
+                    const tab = LoadData.localStorage.tab.loadSingle(key);
+                    if (tab === null) return console.error(`${tab} wasn't found lulz`);
+                    changeTabs.add(tab);
+                } else {
+                    const effect = LoadData.localStorage.effect.loadSingle(key);
+                    if (effect === null) return console.error(`${effect} wasn't found lulz`);
+                    console.log("effect : ",effect.data);
+                    changeEffects.add(effect.data);
+                }
                 setActivePrompt(null);
             }
         }

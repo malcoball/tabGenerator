@@ -1,15 +1,12 @@
 #newTabPrompt{
-    position: absolute;
+    position: fixed;
     width:312px;
-    left:48px; top:20px;
-    z-index: 2;
+    // left:48px; top:20px;
+    z-index: 4;
     color:whitesmoke;
     border-radius: 16px;
     border-style:solid; border-width: 4px;
-    .closeBtn{
-        position:absolute;
-        right:4px; top:4px;
-    }
+
     #Title{
         border:none;
         background:none;
@@ -23,5 +20,9 @@
         display:grid;
         grid-template-columns: 50% 50%;
         margin-bottom: 24px;
+    }
+    .unactive{
+        opacity: 0.1;
+        transition: opacity 1s;
     }
 }
