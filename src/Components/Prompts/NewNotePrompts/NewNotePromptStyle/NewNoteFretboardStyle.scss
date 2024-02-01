@@ -1,45 +1,53 @@
-#newNotePromptFretboard{
-    display:flex; 
+.notePromptContainer{
+    outline : 1px solid black;
+    width:100vw;
+    height:100vh;
     position:fixed;
     z-index: 5;
-    left:10vw;
-    border: 2px solid black;
-    width:max-content;
-    height:max-content;
-    color:black;
-    background-color: black;
-    background-image: url('../../../../Assets/Images/Textures/Wooden1.png');
-    // background-image: url('../../../../Assets/Images/Textures/Metal1.jpg');
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    
-    .headerContainer{
-        display:flex;
-        flex-direction: column-reverse;
-        visibility: hidden;
-        width:2px;
-    }
-    .headerContainer[class~='bass']{
-        height:112px;
-    }
-    .headerContainer[class~='guitar']{
-        height:128px;
-    }
-    .stringsContainer{
-        position:relative;
-        .string{
+    top:0; left:0;
+    display:flex; justify-content: center; align-items: center;
+    #newNotePromptFretboard{
+        display:flex; 
+        position:fixed;
+        z-index: 5;
+        // left:10vw;
+        border: 2px solid black;
+        width:max-content;
+        height:max-content;
+        color:black;
+        background-color: black;
+        background-image: url('../../../../Assets/Images/Textures/Wooden1.png');
+        // background-image: url('../../../../Assets/Images/Textures/Metal1.jpg');
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+
+        .headerContainer{
+            display:flex;
+            flex-direction: column-reverse;
+            visibility: hidden;
+            width:2px;
+        }
+        .headerContainer[class~='bass']{
+            height:112px;
+        }
+        .headerContainer[class~='guitar']{
+            height:128px;
+        }
+        .stringsContainer{
             position:relative;
-            display:flex; flex-direction: row;
-            border-width:0px 1px;
-            border-style:solid;
-            border-color:black;
-            .fret{
-                cursor: pointer;
+            .string{
                 position:relative;
-                display:flex; flex-direction: column;
-                justify-content: center;
-                .fretMarker{
+                display:flex; flex-direction: row;
+                border-width:0px 1px;
+                border-style:solid;
+                border-color:black;
+                .fret{
+                    cursor: pointer;
+                    position:relative;
+                    display:flex; flex-direction: column;
+                    justify-content: center;
+                    .fretMarker{
                     position:absolute;
                     top:0px; left:0px;
                     width:100%;
@@ -55,8 +63,8 @@
                         position: relative; z-index: 4;
                         color:white;
                     }
-                }
-                .stringMarker{
+                    }
+                    .stringMarker{
                     position: relative;
                     z-index: 2;
                     .stringOverlay{
@@ -68,8 +76,8 @@
                         top:0px; left:0px;
                         width:100%; height:100%;
                     }
-                }
-                #selectedNote{
+                    }
+                    #selectedNote{
                     position: absolute;
                     height:120%;left:40%;
                     aspect-ratio: 1;
@@ -79,88 +87,119 @@
                     border:1px solid rgba(0, 0, 0, 0.5); border-radius: 4px;
                     box-shadow: 0px 0px 2px black inset;
                     // padding:4px;
+                    }
+                    .mouseInteract{
+                        position:absolute;
+                        width:100%; 
+                        height:100%;
+                        z-index: 5;
+                    }
+                }
+
+                .openString{
+                    background-color: rgba(0, 0, 0, 0.5);
+                }
+                .stringShadow{
+                    position:absolute;
+                    top:50%;left:0px;
+                    width:100%;height:100%;
+                    box-shadow: 0px 1px 4px saddlebrown;
+                    // border:1px solid black;
                 }
             }
-           
-            .openString{
-                background-color: rgba(0, 0, 0, 0.5);
+            .string[class~='bassStrings']{
+                height:25%;
             }
-            .stringShadow{
-                position:absolute;
-                top:50%;left:0px;
-                width:100%;height:100%;
-                box-shadow: 0px 1px 4px saddlebrown;
-                // border:1px solid black;
+            .string[class~='guitarStrings']{
+                height:calc(100%/6);
             }
-        }
-        .string[class~='bassStrings']{
-            height:25%;
-        }
-        .string[class~='guitarStrings']{
-            height:calc(100%/6);
-        }
-        .fretMarkersContainer{
-            display:flex;
-            position:absolute;
-            top:0px;left:0px;
-            height:100%;
-            .fretDotsContainer{
+            .fretMarkersContainer{
                 display:flex;
-                flex-direction: column;
-                justify-content: space-around;
-                align-items: center;
+                position:absolute;
+                top:0px;left:0px;
+                height:100%;
+                .fretDotsContainer{
+                    display:flex;
+                    flex-direction: column;
+                    justify-content: space-around;
+                    align-items: center;
+                    span{
+                        width:12px; aspect-ratio: 1;
+                        border-radius: 12px;
+                        background-color: #fafafa;
+                        border: 1px solid #313131;
+                    }
+                }
                 span{
-                    width:12px; aspect-ratio: 1;
-                    border-radius: 12px;
-                    background-color: #fafafa;
-                    border: 1px solid #313131;
+                    display:block;
+                    width:32px;
                 }
             }
-            span{
-                display:block;
-                width:32px;
-            }
         }
-    }
-    .bassString{
-        background: rgb(210,216,218);
-        background: linear-gradient(180deg, rgba(210,216,218,1) 8%, rgba(120,126,126,1) 50%, rgba(139,146,147,1) 72%);
-    }
-    .guitarString{
-        background: rgb(210,216,218);
-        background: linear-gradient(180deg, rgba(210,216,218,1) 8%, rgba(120,126,126,1) 50%, rgba(139,146,147,1) 72%);
-    }
-    
-    #BassE{
-        height:5px;
-    }
-    #BassA{
-        height:4px;
-    }
-    #BassD{
-        height:3px;
-    }
-    #BassG{
-        height:2.5px;
-    }
-    #GuitarE{
-        height:4px;
-    }
-    #GuitarA{
-        height:3px;
-    }
-    #GuitarD{
-        height:2px;
-    }
-    #GuitarG{
-        height:2px;
-    }
-    #GuitarB{
-        height:2px;
-    }
-    #Guitare{
-        height:2px;
+        // Moved this outside to prevent looping again
+        $fretWidth : 5; $change : 0.14;
+        $minWidth : 72; $minChange : 2.5;
+        $cutoff : 13;
+        $maxWidth : 1116px;
+            @for $i from 1 through 28{
+                $fretWidth : $fretWidth - $change;
+                $minWidth : $minWidth - $minChange;
+                
+                .fret:nth-of-type(#{$i}){
+                    width:#{$fretWidth}vw;
+                    min-width:#{$minWidth}px;
+                    @media (max-width : $maxWidth){
+                        @if $i > $cutoff{display:none !important;}
+                    }
+                }
+                .fretDotsContainer:nth-of-type(#{$i}){
+                    width:#{$fretWidth}vw;
+                    min-width:#{$minWidth}px;
+                    @media (max-width : $maxWidth){
+                        @if $i > $cutoff{display:none !important;}
+                    }
+                }
+            }
+            
+        .bassString{
+            background: rgb(210,216,218);
+            background: linear-gradient(180deg, rgba(210,216,218,1) 8%, rgba(120,126,126,1) 50%, rgba(139,146,147,1) 72%);
+        }
+        .guitarString{
+            background: rgb(210,216,218);
+            background: linear-gradient(180deg, rgba(210,216,218,1) 8%, rgba(120,126,126,1) 50%, rgba(139,146,147,1) 72%);
+        }
+
+        #BassE{
+            height:5px;
+        }
+        #BassA{
+            height:4px;
+        }
+        #BassD{
+            height:3px;
+        }
+        #BassG{
+            height:2.5px;
+        }
+        #GuitarE{
+            height:4px;
+        }
+        #GuitarA{
+            height:3px;
+        }
+        #GuitarD{
+            height:2px;
+        }
+        #GuitarG{
+            height:2px;
+        }
+        #GuitarB{
+            height:2px;
+        }
+        #Guitare{
+            height:2px;
+        }
     }
 }
-
 // I'm doing the different strings with CSS rather than JS for performance, if it'd be faster in JS please let me know. If it's not me reading this anyway.

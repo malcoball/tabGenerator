@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react"
 import { breakPoints } from "../../../../../Data/StaticFunctions"
 import TabItem from "./TabItem/TabItem"
-import { instrumentName, noteLengthDisplays, noteLengths } from "../../../../../Data/@types/types"
+import { instrumentName, noteLengthDisplays, noteLengths, synthName } from "../../../../../Data/@types/types"
 type headerProps = {
     data : string[],
     noteClass : string,
@@ -26,12 +26,16 @@ type cellProps = {
     activeIndex : number
     showNoteLengths : noteLengthDisplays
     noteColor : string,
-    lengthColor : string
+    lengthColor : string,
+    synth : synthName,
+    octave:number
 }
 
 
 export const TabColumnCell = (props:cellProps)=>{
-    const {instrument,line,noteLength,shortestNoteLength,tabIndex,change,noteIndex,showNoteLengths} = props;
+    const {instrument,line,noteLength,shortestNoteLength,
+        tabIndex,change,noteIndex,showNoteLengths,
+        synth,octave} = props;
     
     const parseData = useMemo(()=>{
         return(breakPoints.line.parseFull(line,instrument))
@@ -42,7 +46,9 @@ export const TabColumnCell = (props:cellProps)=>{
             instrumentName={instrument} 
             shortestLength={shortestNoteLength}
             noteLength={noteLength} key={index} noteIndex={noteIndex}  
-            tabIndex={tabIndex} value={item} noteColor={props.noteColor} state="notPlayed"/>)
+            synth={synth}
+            tabIndex={tabIndex} value={item} noteColor={props.noteColor} state="notPlayed"
+            octave={octave}/>)
     // const highlightClass = props.activeIndex === noteIndex ? " highlight" : "";
     let highlightClass = "";
     if (props.activeIndex === noteIndex) highlightClass = "highlight"; else 

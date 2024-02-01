@@ -45,8 +45,12 @@ const TabTable = (props:TabTableProps)=>{
     }
 
     const [title,setTitle] = useState(props.tab.title);
-    const [playOctave,setPlayOctave] = useState(1);
     const [tempo,setTempo] = useState(props.tab.tempo);
+    useEffect(()=>{
+        setTitle(props.tab.title);
+        setTempo(props.tab.tempo);
+    },[props.tab])
+    const [playOctave,setPlayOctave] = useState(1);
     const [noteLengthDisplay,setNoteLengthDisplay] =useState<noteLengthDisplays>("compressed");
     const [synth,setSynth] = useState<synthName>("Synth");
     const [effectName,setEffectName] = useState('No Effect');
@@ -155,10 +159,12 @@ const TabTable = (props:TabTableProps)=>{
     const body = tab.map((line,mapIndex)=>{
         return (
             <TabColumnCell 
+                synth={synth}
                 shortestNoteLength={shortestNoteLength} showNoteLengths={noteLengthDisplay}
                 noteLength={line.length} activeIndex={currentNote} 
                 noteIndex={mapIndex} change={change} key={mapIndex} tabIndex={index} 
-                instrument={instrumentName} line={line.note} lengthColor={noteColors.secondColor} noteColor={noteColors.primaryColor}/>
+                instrument={instrumentName} line={line.note} lengthColor={noteColors.secondColor} noteColor={noteColors.primaryColor}
+                octave={playOctave}/>
         )
     })
     const dropDownInstrumentChange = (valueIn:string)=>{
@@ -205,7 +211,7 @@ const TabTable = (props:TabTableProps)=>{
                     <BtnIcon icon="cancel" onClick={closeBtnFunc}/>
                 </div>
             <div className="topSection row">
-                <input className="textInput font2 col6" typeof="text" value={title} onChange={(e)=>setTitle(e.target.value)} onBlur={(e)=>textOnExit(e.target.value)}/>
+                 <input className="textInput font2 col6" typeof="text" value={title} onChange={(e)=>setTitle(e.target.value)} onBlur={(e)=>textOnExit(e.target.value)}/> 
                 
             </div>
             {/* Tried to clean it a bit with seperate components but I think the prop drilling looks worse. */}

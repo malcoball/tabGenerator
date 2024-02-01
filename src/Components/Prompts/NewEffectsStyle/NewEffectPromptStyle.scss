@@ -71,3 +71,58 @@
 
     }
 }
+@media (max-width:625px){
+    $newHeight : 60vh;
+    .effectsPrompt{
+        width:100vw; height:$newHeight;
+        overflow-y: scroll;
+
+        left:0px; top:0px;
+        position:fixed;
+        overflow-y: scroll;
+        grid-template-columns: 40vw 40vw;
+        border-bottom-left-radius: 0px;
+        border-bottom-right-radius: 0px;
+        border-bottom-width:0px;
+        .midSection{
+            // display:none;
+            // border:2px solid blue;
+            position:fixed;
+            left:0px;
+            width:100vw;
+            top:$newHeight;
+            z-index: 5;
+            border-radius: 0px 0px 32px 32px;
+            padding: 12px 0px;
+            .divider{
+                height:16px;
+                
+            }
+            input{
+                max-width:315px;
+            }
+            .buttonContainer{
+                flex-direction: row;
+                button{
+                    border-radius: 16px 16px 0 0 !important;
+                }
+            }
+        }
+
+
+    }
+}
+@media (max-width:485px){
+    .effectsPrompt{
+        top:10vh;
+        // height:100vh;
+        grid-template-columns: 80vw;
+        .effectSection{
+            display:flex; flex-direction: column;
+            align-items: center;
+            .effectContainer{
+                margin-bottom: 16px !important;
+            }
+        }
+    }
+}

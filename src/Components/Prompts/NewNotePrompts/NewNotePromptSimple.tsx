@@ -4,6 +4,9 @@ import { noteLengths } from '../../../Data/@types/types';
 import './NewNotePromptStyle/NewNoteSimpleStyle.css';
 import { conversions } from '../../../Data/StaticFunctions';
 import MultiSelectComponent from '../TabPromptComponents/MultiSelectComponent';
+import PlayNoteButton from '../../Inputs/PlayNoteButton';
+import { playNote } from '../../../Data/Tone/Tone';
+import Synths from '../../../Data/Tone/Instruments/Synths/Synths';
 
 
 const NewNotePromptSimple = ()=>{
@@ -19,9 +22,13 @@ const NewNotePromptSimple = ()=>{
         setNoteLengths(lengthsOut);
     }
     const [noteLengths,setNoteLengths] = useState<boolean[]>(conversions.length.toBooleans(context.data.selectedLength));
+    const [noteLength,setNoteLength] = useState<noteLengths>("8n");
     useEffect(()=>{
-        context.updateSelectedLength(conversions.lengths.booleansToLengths(noteLengths)[0]);
+        const lengthOut = conversions.lengths.booleansToLengths(noteLengths)[0];
+        setNoteLength(lengthOut);
+        context.updateSelectedLength(lengthOut);
     },[noteLengths])
+
     const btnClick = ()=>{
         context.updateTab();
     }
@@ -30,28 +37,33 @@ const NewNotePromptSimple = ()=>{
     // Show the parsed note data
     const [letterValue,setLetterValue] = useState(conversions.noteTo.noteLetter(value.toString()))
     useEffect(()=>{
+        const selectedSynth = context.data.selectedSynth;
+        const synth = Synths.getSynth(selectedSynth).synth;
+        const octave = context.data.octave;
+        
+        playNote({note : value,length : noteLength},octave,120,synth)
         const parseData = (parseInt(value)+rootNote).toString();
         const letter = conversions.noteTo.noteLetter(parseData);
         setLetterValue(letter);
     },[value]);
 
-    const updateLetterValue = (value:string)=>{
+    const updateLetterValue = (inputValue:string)=>{
         let update = false;
-        value = value.toUpperCase();
-        if (value.length < 2){
+        inputValue = inputValue.toUpperCase();
+        if (inputValue.length < 2){
             // Is it a letter?
-            if ((isNaN(parseInt(value)) === true) || (value === "")){
-                setLetterValue(value);
+            if ((isNaN(parseInt(inputValue)) === true) || (inputValue === "")){
+                setLetterValue(inputValue);
                 // update = true;
             }
         } else 
-        if (isNaN(parseInt(value.charAt(1))) !== true){
+        if (isNaN(parseInt(inputValue.charAt(1))) !== true){
             // Is a number?
-            setLetterValue(value);
+            setLetterValue(inputValue);
             update = true;
         }
         if (update) {
-            const parse = conversions.noteLetterTo.number(value);
+            const parse = conversions.noteLetterTo.number(inputValue);
             context.updateState(parse-rootNote,'selectedNote');
         }
     }
@@ -69,6 +81,7 @@ const NewNotePromptSimple = ()=>{
                     onChange={(event)=>{updateLetterValue(event.target.value)}}
                     />
             </div>
+            <PlayNoteButton note={{note : value,length : noteLength}} synth={context.data.selectedSynth} octave={context.data.octave}/>
             <MultiSelectComponent title="yes" activeValues={noteLengths} values={noteLengthOptions} updateValues={noteLengthChange}/>
             <button className='bgCol7 col2H col1 clickable' id='createButton' onClick={btnClick}>Change note</button>
         </div>

@@ -1,6 +1,7 @@
 #NotePromptShowNote {
   position: absolute;
-  bottom: 50%;
+  bottom: 120%;
+  left: 45%;
   z-index: 4;
   color: #e4e4d6;
   font-size: 1.2em;

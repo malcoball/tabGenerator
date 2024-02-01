@@ -4,7 +4,7 @@ $textTimeOn : 1s;
 $textTimeOff : 0.2s;
 
 .effectContainer{
-    width:220px;
+    width:220px; height:360px;
     position:relative;
     z-index: 2;
     border:2px solid rgba(0, 0, 0, 0.5);

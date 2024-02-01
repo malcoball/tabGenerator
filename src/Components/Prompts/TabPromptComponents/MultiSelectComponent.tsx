@@ -8,7 +8,7 @@ const MultiSelectComponent = (props:sliderProps)=>{
     const {title,values,activeValues,updateValues} = props;
     const Values = values.map((item,index)=>{
         const className = activeValues[index] ? "active" : "passive";
-        return <span onClick={()=>{updateValues(index)}} className={className}>{item.toString().split("n")}</span>
+        return <span key={"select"+index} onClick={()=>{updateValues(index)}} className={className}>{item.toString().split("n")}</span>
     })
     return (
         <div className="multiSelectComponent newtabComponent col8">

@@ -1,4 +1,4 @@
-import { effectType } from "./types";
+import { effectType, synthName } from "./types";
 
 export type AppContextType = {
     tabs : tabType[];
@@ -51,6 +51,8 @@ export type AppContextType = {
             noteIndex: number;
             noteValue: note;
             instrument:instrumentProperty;
+            synth:synthName;
+            octave : number
         }
         saveInfo : {
             tabInfo : tabType,
@@ -69,8 +71,8 @@ export type AppContextType = {
     changePrompts : {
         set:{
             newNote :{
-                simple : (tabIndex:number,noteIndex:number,instrument:instrumentProperty)=>void,
-                fretboard : (tabIndex:number,noteIndex:number,instrument:instrumentProperty)=>void,
+                simple : (tabIndex:number,noteIndex:number,instrument:instrumentProperty,synth : synthName, octave : number)=>void,
+                fretboard : (tabIndex:number,noteIndex:number,instrument:instrumentProperty,synth : synthName, octave : number)=>void,
             },
             // save :(tabIndex:number)=>void,
             save : {

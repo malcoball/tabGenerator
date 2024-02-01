@@ -2,11 +2,16 @@
   position: absolute;
   width: 178px;
   top: 120%;
-  left: 35%;
+  left: 40%;
   z-index: 2;
   border-radius: 24px 24px 2px 2px;
   border-width: 4px 4px 2px 4px;
   border-style: solid;
+}
+#newNotePromptSimple #BtnIcon {
+  display: block;
+  position: absolute;
+  width: 100%;
 }
 #newNotePromptSimple div[class~=topSection] {
   font-size: 1.5em;

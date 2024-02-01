@@ -4,73 +4,14 @@ import { Instruments, instrumentProperty } from '../../../Data/Music/Instruments
 import { noteLengths } from '../../../Data/@types/types';
 import { conversions } from '../../../Data/StaticFunctions';
 import NewNotePromptSimple from './NewNotePromptSimple';
-import './NewNotePromptStyle/NewNoteFretboardStyle.css';
 import NotePromptShowNote from './NotePromptShowNote';
 import { AppContext } from '../../../Data/AppContent';
-import {getFretMarkers } from './FretboardExtras/FretboardExtras';
+import {getFretMarkers, Frets, FretDots } from './FretboardExtras/FretboardExtras';
 import PromptBehind from '../PromptBehind';
+import './NewNotePromptStyle/NewNoteFretboardStyle.css';
 
-const FretDots = (props:{markerAmount : number})=>{
-    const Markers = [];
-    for (let i = 0;i < props.markerAmount; i++){
-        Markers.push(<span key={'fretDots'+i}></span>)
-    }
-    return (
-        <>
-            {Markers}
-        </>
-    )
-}
 
-const Fret = (props:{width:number,value:number,fretNumber:number,onClick:(value:number)=>void,stringName:string,active:boolean,stringId:string})=>{
-    const {width,value,onClick,stringName,fretNumber,active} = props;
-    const [showPrompt,setShowPrompt] = useState(false);
-    const letterValue = useRef(conversions.noteTo.noteLetter((value+4).toString()))
-    const onHover = ()=>{
-        setShowPrompt(true);
-    }
-    const offHover = ()=>{
-        setShowPrompt(false);
-    }
-    let className = props.active ? 'active' : '';
-    if (fretNumber === 0) className += 'openString'
-    const stringClass = stringName.charAt(0) === "G" ? 'guitarString' : 'bassString';
-    return (
-        <div style={{width: width}} className={`fret ${className}`} onMouseLeave={offHover} onMouseEnter={onHover} onClick={()=>{onClick(value)}}>
-            <div className="fretMarker">
-            </div>
 
-            <div className={`stringMarker ${stringClass}`} id={props.stringId}>
-                <div className="stringOverlay"></div>
-            </div>
-            {showPrompt && <NotePromptShowNote fretNumber={fretNumber} number={value} note={letterValue.current}/>}
-            {active && <span id="selectedNote">{letterValue.current}</span>}
-        </div>
-    )
-}
-
-const Frets = (props:{fretAmount: number,stringName:string,breakPoint:number})=>{
-    const context = useContext(DataContext);
-    const FretElements = [];
-    const widths  = {start :context.data.instrument.fretBoard.widths.start, change :context.data.instrument.fretBoard.widths.change};
-    const {start,change} = widths;
-    const onClick = (value:number)=>{
-        context.updateState(value,'selectedNote');
-    }
-    for (let i = 0; i < props.fretAmount; i++){
-        const value = i + props.breakPoint;
-        const active = value === parseInt(context.data.selectedNote) ? true : false;
-        FretElements.push(
-            <Fret stringId={props.stringName} key={'fret'+i} fretNumber={i} active={active} width={start + i * change} value={value} stringName={props.stringName} onClick={onClick}/>
-        )
-    }
-    return (
-        <>
-            {FretElements}
-            <div className="stringShadow" id={props.stringName}></div>
-        </>
-    )
-}
 
 const String = (props:{stringName:string,fretAmount:number,breakPoint:number})=>{
     const stringClass = props.stringName.charAt(0) === "G" ? 'guitarStrings' : 'bassStrings';
@@ -84,10 +25,15 @@ const String = (props:{stringName:string,fretAmount:number,breakPoint:number})=>
 const Strings = ()=>{
     const context = useContext(DataContext);
     if (!context) throw Error("");
+    const showPrompt = context.noteHighlightData.showPrompt;
 
     const {stringAmount,fretAmount,breakPoints,stringNames,fretBoard} = context.data.instrument;
+    const fretNumber = context.noteHighlightData.fretNumber;
+    const number = context.noteHighlightData.number;
+    const note = context.noteHighlightData.note;
     const StringElements = [];
     const FretMarkers = [];
+
 
     // Create the strings dug. Who's dug?
     for (let i = stringAmount-1; i > -1; i--){
@@ -95,15 +41,16 @@ const Strings = ()=>{
     }
     // Create the fret markers/little circles
     for (let i = 0; i < fretAmount; i++){
-        const width = fretBoard.widths.start + fretBoard.widths.change * i;
         const value = getFretMarkers(i);
         FretMarkers.push(
-            <div className='fretDotsContainer' key={'dot'+i} style={{width:width}}>
+            <div className='fretDotsContainer' key={'dot'+i}>
                 <FretDots markerAmount={value}/>
             </div>)
     }
     return (
         <div className='stringsContainer'>
+            {showPrompt && <NotePromptShowNote fretNumber={fretNumber} number={number} note={note}/>}
+
             {StringElements}
             <div className="fretMarkersContainer">
                 {FretMarkers}
@@ -133,8 +80,16 @@ const NewNotePromptFretboard = ()=>{
         highlightedNote : -1,
         selectedNote : contextData.noteValue.note,
         selectedLength : contextData.noteValue.length,
+        selectedSynth : contextData.synth,
         instrument : Instruments[instrument],
-        rootNote : conversions.noteLetterTo.number(Instruments[instrument].rootNote)
+        rootNote : conversions.noteLetterTo.number(Instruments[instrument].rootNote),
+        octave : contextData.octave
+    })
+    const [noteHighlightData,setNoteHighlight] = useState({
+        showPrompt : false,
+        fretNumber : 2,
+        number : 2,
+        note : "A#"
     })
     const updateState=(valueIn:string|number,target:dataTypes)=>{
         const valueNew = {...data};
@@ -146,6 +101,22 @@ const NewNotePromptFretboard = ()=>{
         }
         setData(valueNew);
     }
+    const changeNoteHighlight = (fretNumber:number,number:number,note:string)=>{
+
+        const out = {
+            showPrompt : true,
+            fretNumber : fretNumber,
+            number : number,
+            note : note
+        }
+        setNoteHighlight(out);
+    }
+    const closeNoteHighlight = ()=>{
+        const out = {...noteHighlightData};
+        out.showPrompt = false;
+        setNoteHighlight(out);
+    }
+
     const updateSelectedLength = (value:noteLengths)=>{
         const valueNew = {...data};
         valueNew.selectedLength = value;
@@ -155,16 +126,20 @@ const NewNotePromptFretboard = ()=>{
         const noteOut = data.selectedNote
         context.changeTabs.singleNote.change(contextData.tabIndex,contextData.noteIndex,{note:noteOut,length:data.selectedLength})
         context.changePrompts.close.standard();
-
     }
+
     return(
-        <div id="newNotePromptFretboard">
-            <DataContext.Provider value={{data,updateState,updateTab,updateSelectedLength}}>
-                <NeckHeader/>
-                <Strings/>
-                <NewNotePromptSimple/>
-            </DataContext.Provider>
+        <div className="notePromptContainer">
+            <div id="newNotePromptFretboard">
+                <PromptBehind closeFunc={context.changePrompts.close.standard}/>
+                <DataContext.Provider value={{data,updateState,updateTab,updateSelectedLength,noteHighlightData,changeNoteHighlight,closeNoteHighlight}}>
+                    <NeckHeader/>
+                    <Strings/>
+                    <NewNotePromptSimple/>
+                </DataContext.Provider>
+            </div>
         </div>
+
     )
 }
 

@@ -1,6 +1,6 @@
 import { useContext} from "react";
 import { AppContext } from "../../../../../../Data/AppContent";
-import { note, noteLengthDisplays, noteLengths } from "../../../../../../Data/@types/types";
+import { note, noteLengthDisplays, noteLengths, synthName } from "../../../../../../Data/@types/types";
 import { conversions } from "../../../../../../Data/StaticFunctions";
 import { instrumentProperty } from "../../../../../../Data/Music/Instruments";
 
@@ -13,11 +13,13 @@ type TabItemProps = {
     shortestLength : noteLengths,
     showNoteLengths : noteLengthDisplays,
     noteLength : noteLengths,
-    noteColor : string
+    noteColor : string,
+    synth : synthName,
+    octave:number
 }
 
 const TabItem = (props:TabItemProps)=>{
-    const {value,state,tabIndex,noteIndex,noteLength,shortestLength,instrumentName} = props;
+    const {value,state,tabIndex,noteIndex,noteLength,shortestLength,instrumentName,synth,octave} = props;
     const context = useContext(AppContext);
     if (!context){
         throw new Error(
@@ -26,10 +28,7 @@ const TabItem = (props:TabItemProps)=>{
     };
     
     const handleClick = ()=>{
-        // context.changePrompts.set.newNote.simple(tabIndex,noteIndex);
-        context.changePrompts.set.newNote.fretboard(tabIndex,noteIndex,instrumentName);
-        console.log(`Instrument name : ${instrumentName}`);
-
+        context.changePrompts.set.newNote.fretboard(tabIndex,noteIndex,instrumentName,synth,octave);
     }
 
     // Could be optimised 

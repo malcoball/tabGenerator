@@ -138,11 +138,11 @@ const NewEffectsPrompt = ()=>{
     return (
         <div className="promptContainer"> 
             <div className="effectsPrompt bgCol6">
-                <section className="leftSection">
+                <section className="leftSection effectSection">
                     <SingleEffect changeValue={changeValue} changeActive={changeActive} title="distortion" value={{gain:values.distortion.value,activeInp:values.distortion.active}}/>
                     <SingleEffect changeValue={changeValue} changeActive={changeActive} title="eq"   value={{gain:values.eq.value,activeInp:values.eq.active}}/>
                 </section>
-                <section className="midSection">
+                <section className="midSection bgCol6">
                     <div className="buttonContainer">
                         <button onClick={handlePlayBtn}>Preview effect</button>
                     </div>
@@ -157,13 +157,13 @@ const NewEffectsPrompt = ()=>{
                         <button className={buttonClass} onClick={()=>{buttonClick('save')}}>Save Effect</button>
                     </div>
                 </section>
-                <section className="rightSection">
+                <section className="rightSection effectSection">
                     <SingleEffect changeValue={changeValue} changeActive={changeActive} title="reverb"     value={{gain:values.reverb.value,activeInp:values.reverb.active}}/>
                     <SingleEffect changeValue={changeValue} changeActive={changeActive} title="tremolo"    value={{gain:values.tremolo.value,activeInp:values.tremolo.active}}/>
                 </section>
                 {showSavePrompt && <SavePrompt type='effect'/>}
             </div>
-            <PromptBehind closeFunc={()=>{context.changePrompts.close.standard()}}/>
+            <PromptBehind closeFunc={context.changePrompts.close.standard}/>
         </div>   
     )
 }
