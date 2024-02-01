@@ -1,5 +1,5 @@
 import {useState, useContext, useEffect} from 'react';
-import { DataContext } from './FretboardExtras/FretboardContext';
+import { FretboardContext } from './FretboardExtras/FretboardContext';
 import { noteLengths } from '../../../Data/@types/types';
 import './NewNotePromptStyle/NewNoteSimpleStyle.css';
 import { conversions } from '../../../Data/StaticFunctions';
@@ -10,8 +10,9 @@ import Synths from '../../../Data/Tone/Instruments/Synths/Synths';
 
 
 const NewNotePromptSimple = ()=>{
-    const context = useContext(DataContext);
-    const rootNote = context.data.rootNote;
+    const context = useContext(FretboardContext);
+    if (context === null) throw new Error("err");
+    const rootNote = context.noteData.rootNote;
     const noteLengthOptions : noteLengths[] = ['1n','2n','4n','8n','16n','32n'];
     const noteLengthChange = (indexIn:number)=>{
 
@@ -21,7 +22,7 @@ const NewNotePromptSimple = ()=>{
         })
         setNoteLengths(lengthsOut);
     }
-    const [noteLengths,setNoteLengths] = useState<boolean[]>(conversions.length.toBooleans(context.data.selectedLength));
+    const [noteLengths,setNoteLengths] = useState<boolean[]>(conversions.length.toBooleans(context.noteData.selectedLength));
     const [noteLength,setNoteLength] = useState<noteLengths>("8n");
     useEffect(()=>{
         const lengthOut = conversions.lengths.booleansToLengths(noteLengths)[0];
@@ -33,13 +34,13 @@ const NewNotePromptSimple = ()=>{
         context.updateTab();
     }
     // Show the raw note data
-    const value = context.data.selectedNote;
+    const value = context.noteData.selectedNote;
     // Show the parsed note data
     const [letterValue,setLetterValue] = useState(conversions.noteTo.noteLetter(value.toString()))
     useEffect(()=>{
-        const selectedSynth = context.data.selectedSynth;
+        const selectedSynth = context.noteData.selectedSynth;
         const synth = Synths.getSynth(selectedSynth).synth;
-        const octave = context.data.octave;
+        const octave = context.noteData.octave;
         
         playNote({note : value,length : noteLength},octave,120,synth)
         const parseData = (parseInt(value)+rootNote).toString();
@@ -64,7 +65,7 @@ const NewNotePromptSimple = ()=>{
         }
         if (update) {
             const parse = conversions.noteLetterTo.number(inputValue);
-            context.updateState(parse-rootNote,'selectedNote');
+            context.updateNoteData(parse-rootNote,'selectedNote');
         }
     }
     return (
@@ -73,7 +74,7 @@ const NewNotePromptSimple = ()=>{
                 <input
                     type='text'
                     value={value}
-                    onChange={(event)=>{context.updateState(event.target.value,'selectedNote')}}
+                    onChange={(event)=>{context.updateNoteData(event.target.value,'selectedNote')}}
                 />
                 <input 
                     type="text"
@@ -81,7 +82,7 @@ const NewNotePromptSimple = ()=>{
                     onChange={(event)=>{updateLetterValue(event.target.value)}}
                     />
             </div>
-            <PlayNoteButton note={{note : value,length : noteLength}} synth={context.data.selectedSynth} octave={context.data.octave}/>
+            <PlayNoteButton note={{note : value,length : noteLength}} synth={context.noteData.selectedSynth} octave={context.noteData.octave}/>
             <MultiSelectComponent title="yes" activeValues={noteLengths} values={noteLengthOptions} updateValues={noteLengthChange}/>
             <button className='bgCol7 col2H col1 clickable' id='createButton' onClick={btnClick}>Change note</button>
         </div>

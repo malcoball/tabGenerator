@@ -1,6 +1,6 @@
 import { useRef, useContext } from "react";
 import { conversions } from "../../../../Data/StaticFunctions";
-import { DataContext } from "./FretboardContext";
+import { FretboardContext } from "./FretboardContext";
 
 export const getFretMarkers = (fretNumber:number)=>{
     let fretNumberParse = fretNumber;
@@ -15,7 +15,9 @@ export const getFretMarkers = (fretNumber:number)=>{
     return out;
 }
 const Fret = (props:{value:number,fretNumber:number,onClick:(value:number)=>void,stringName:string,active:boolean,stringId:string})=>{
-    const context = useContext(DataContext);
+    const context = useContext(FretboardContext);
+    if (context === null) throw new Error("context hasn't loaded");
+
     const {value,onClick,stringName,fretNumber,active} = props;
     const letterValue = useRef(conversions.noteTo.noteLetter((value+4).toString()))
     const onHover = ()=>{
@@ -41,15 +43,17 @@ const Fret = (props:{value:number,fretNumber:number,onClick:(value:number)=>void
     )
 }
 export const Frets = (props:{fretAmount: number,stringName:string,breakPoint:number})=>{
-    const context = useContext(DataContext);
+    const context = useContext(FretboardContext);
+    if (context === null) throw new Error("context hasn't loaded");
+
     const FretElements = [];
     const onClick = (value:number)=>{
         console.log("listen");
-        context.updateState(value,'selectedNote');
+        context.updateNoteData(value,'selectedNote');
     }
     for (let i = 0; i < props.fretAmount; i++){
         const value = i + props.breakPoint;
-        const active = value === parseInt(context.data.selectedNote) ? true : false;
+        const active = value === parseInt(context.noteData.selectedNote) ? true : false;
         // const width = start + i * change;
         FretElements.push(
             <Fret stringId={props.stringName} key={'fret'+i} fretNumber={i} active={active} value={value} stringName={props.stringName} onClick={onClick}/>
