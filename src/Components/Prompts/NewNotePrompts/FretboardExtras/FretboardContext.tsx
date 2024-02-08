@@ -37,19 +37,22 @@ interface Props {
 export const FretboardContext = React.createContext<FretboardContextType | null>(null);
 
 const FretboardProvider: React.FC<Props> = ({children})=>{
-    const contextData = React.useContext(AppContext);
-    if (contextData === null) throw new Error("it's null");
-    const newNote = contextData.getPrompts.newNote();
+    const globalData = React.useContext(AppContext);
+    if (globalData === null) throw new Error("it's null");
+    const newNote = globalData.getPrompts.newNote();
+    const instrumentType = Instruments.getSingle.all(newNote.instrument);
     const [noteData,setNoteData] = React.useState<ContextData>({
+        // This controls the data which will be outputted back to the global context
         highlightedNote : 1,
-        selectedNote : "A2",
-        selectedLength : "16n",
-        selectedSynth : "Bass1",
-        instrument : Instruments.bass,
+        selectedNote : newNote.noteValue.note,
+        selectedLength : newNote.noteValue.length,
+        selectedSynth : newNote.synth,
+        instrument : instrumentType,
         rootNote : 2,
-        octave : 1
+        octave : newNote.octave
     })
     const [noteHighlightData,setNoteHighlightData] = React.useState<noteHighlightType>({
+        // This is just here for the highlight element to know what to show, it should be constantly updated
         showPrompt : false,
         fretNumber : 1,
         number : 1,
@@ -89,8 +92,8 @@ const FretboardProvider: React.FC<Props> = ({children})=>{
     const updateTab = ()=>{
 
         const noteOut = noteData.selectedNote;
-        contextData.changeTabs.singleNote.change(newNote.tabIndex,newNote.noteIndex,{note:noteOut,length:noteData.selectedLength});
-        contextData.changePrompts.close.standard();
+        globalData.changeTabs.singleNote.change(newNote.tabIndex,newNote.noteIndex,{note:noteOut,length:noteData.selectedLength});
+        globalData.changePrompts.close.standard();
     }
     return (
         <FretboardContext.Provider value={{noteData,noteHighlightData,updateNoteData,changeNoteHighlight,closeNoteHighlight,updateTab,updateSelectedLength}}>

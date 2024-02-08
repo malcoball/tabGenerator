@@ -1,4 +1,4 @@
-import { useState, useContext, useRef } from 'react';
+import { useState, useContext, useRef, useEffect } from 'react';
 import FretboardProvider, { FretboardContext } from './FretboardExtras/FretboardContext';
 import { Instruments, instrumentProperty } from '../../../Data/Music/Instruments';
 import { noteLengths } from '../../../Data/@types/types';
@@ -73,7 +73,6 @@ const NeckHeader = ()=>{
 const NewNotePromptFretboard = ()=>{
     const context = useContext(AppContext);
     if (!context) throw Error('not loaded');
-    const contextData = context.getPrompts.newNote();
     return(
         <div className="notePromptContainer">
             <div id="newNotePromptFretboard">
@@ -90,5 +89,6 @@ const NewNotePromptFretboard = ()=>{
 
     )
 }
+
 
 export default NewNotePromptFretboard;

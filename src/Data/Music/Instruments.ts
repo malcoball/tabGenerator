@@ -58,8 +58,9 @@ export const InstrumentsAll = {
     // Tried to put this in the object above but good ol TS wasn't having it, maybe future me can fix it. This ain't bad though
     getAll : {
         names : ()=>{
-            // Didn't see the point in looping over 3 objects
+            // Didn't see the point in looping over 3 objects, 3? I can only see 2
             return ['bass','guitar']; 
         }
-    }
+    },
 }
+
