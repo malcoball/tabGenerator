@@ -41,7 +41,6 @@ const LoadData = {
                 const load = localStorage.getItem(key);
                 const out = typeof(load) === "string" ? JSON.parse(load) : null;
                 if (keyMethods.fileKey.getType(key) !== 'tab') return null;
-                console.log("out : ",out);
                 return out;
             },
             getAll : ()=>{

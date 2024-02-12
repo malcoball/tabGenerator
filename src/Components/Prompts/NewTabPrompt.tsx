@@ -106,7 +106,7 @@ const NewTabPrompt = ()=>{
                 <div className="midSection">
                     <div className="leftSection">
                         <SliderComponent title='Tempo' value={tempo} setValue={handleTempoChange} max={240}/>
-                        <SliderComponent title='Length' value={length} setValue={handleLengthChange} min={1} max={12}/>
+                        <SliderComponent title='Length' value={length} setValue={handleLengthChange} min={1} max={24}/>
                         <SliderComponent title='Octave' value={octave} setValue={handleOctaveChange} max={5}/>
                         <SliderComponent title='Rootnote' value={rootnote} setValue={handleRootnoteChange} max={11}/>
                     </div>
